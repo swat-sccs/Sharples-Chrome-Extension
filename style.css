@@ -1,5 +1,9 @@
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: system-ui,
+        -apple-system,
+        Helvetica,
+        Arial,
+        sans-serif;
     color: #f0f0f0;
     background-color: #262528;
 }
@@ -9,13 +13,14 @@ body {
     line-height: 20px;
 }
 
-html {
+body {
     width: 500px;
-    border: 5px solid #900;
+    padding: 0px 20px 10px 20px; 
+    border: 5px solid #900
 }
 
-body {
-    margin: 0px 20px 0px 30px
+h1 {
+    margin: 10px 0px 0px 0px;
 }
 
 h2{
@@ -27,3 +32,31 @@ ul {
     margin-left: 0;
     padding-left: 15px;
 }
+
+.vegantag {
+    background-color: #228B22;
+    padding: 0px 5px 1px 5px;
+    text-decoration: none !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.halaltag {
+    background-color: #ec4899;
+    padding: 0px 5px 1px 5px;
+    text-decoration: none !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.vegettag {
+    background-color: #FF4500;
+    padding: 0px 4px 1px 4px;
+    text-decoration: none !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
