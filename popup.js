@@ -1,9 +1,3 @@
-
-
-function print(msg) {
-    document.getElementById("debug").innerHTML = msg
-}
-
 // main Jquery function
 $(function(){
     // Variables to store and get today's date elements
@@ -85,13 +79,11 @@ $(function(){
     }
 
     if (darkModeCookie == '') {
-        print("cookie created")
         setCookie("dark", 1, 9999);
         document.body.classList.toggle("dark-mode");
     }
     else {
         if (darkModeCookie == 1) {
-            print("cookie detected")
             document.body.classList.toggle("dark-mode");
             document.getElementById("mfer").checked = true
         }else{
