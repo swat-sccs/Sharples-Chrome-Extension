@@ -8,7 +8,7 @@ $(function(){
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = monthNames[today.getUTCMonth()];
     var darkModeCookie = getCookie("dark");
-    console.log(darkModeCookie)
+
 
     // runs the command (darkMode) when the toggle switch is changed
     document.getElementById("displayMode").addEventListener("change", darkMode);
@@ -69,7 +69,7 @@ $(function(){
 
     function darkMode() {
         // toggles dark mode
-        document.body.classList.toggle("dark-mode");
+        document.getElementById("inner").classList.toggle("dark-mode");
         // updates cookie based on stage
         if (darkModeCookie == 0) {
             setCookie("dark", 1, 9999);
@@ -80,17 +80,18 @@ $(function(){
 
     if (darkModeCookie == '') {
         setCookie("dark", 1, 9999);
-        document.body.classList.toggle("dark-mode");
+        document.getElementById("inner").classList.toggle("dark-mode");
     }
     else {
         if (darkModeCookie == 1) {
-            document.body.classList.toggle("dark-mode");
+            document.getElementById("inner").classList.toggle("dark-mode");
             document.getElementById("mfer").checked = true
         }else{
             document.getElementById("mfer").checked = false
         }
     }
 
+    
     $.getJSON(staticUrl, function (data) {
         console.log(data)
 

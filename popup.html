@@ -10,24 +10,25 @@
     <script type="text/javascript"></script>
 </head>
 
-<body class="dark-mode">
-    <div class="wrapper">
-        <h1 id ="title">Sharples</h1>
-        <div class="inline" id="stack">
-            <h3>Light / Dark</h3>
-            <label class="switch" id="displayMode">
-                <input type="checkbox" id = "mfer" checked>
-                <span class="slider round"></span>
-            </label>
+<body class="test">
+    <div class="dark-mode" id="inner">
+        <div class="wrapper">
+            <h1 id ="title">Sharples</h1>
+            <div class="inline" id="stack">
+                <h3>Light / Dark</h3>
+                <label class="switch" id="displayMode">
+                    <input type="checkbox" id = "mfer" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
 
+        <h2 id="lunch">Loading...</h1>
+        <ul class="small" id="lunch_items"></ul>
+
+        <h2 id="dinner">Loading...</h1>
+        <ul class="small" id="dinner_items"></ul>
     </div>
-
-    <h2 id="lunch">Loading...</h1>
-    <ul class="small" id="lunch_items"></ul>
-
-    <h2 id="dinner">Loading...</h1>
-    <ul class="small" id="dinner_items"></ul>
 </body>
 
 <script src="popup.js"></script>
