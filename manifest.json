@@ -11,6 +11,5 @@
         "16": "./icon_16.png",
         "48": "./icon_48.png",
         "128": "./icon_128.png"
-    },
-    "permissions": ["activeTab"]
+    }
 }
