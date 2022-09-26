@@ -19,18 +19,34 @@ body {
     border: 5px solid #900
 }
 
+.wrapper {
+    width: inherit;
+}
+
 h1 {
     margin: 10px 0px 0px 0px;
+    display: inline-block;
 }
 
 h2{
     margin-bottom: -10px;
 }
 
+h3 {
+    font-size: 10px;
+    width: 60px;
+    text-align: center;
+    margin: 20% auto 1px auto;
+}
+
 ul {
     list-style-type: square;
     margin-left: 0;
     padding-left: 15px;
+}
+
+#stack {
+    align-content: center;
 }
 
 .vegantag {
@@ -40,6 +56,7 @@ ul {
     border-radius: 5px;
     font-weight: bold;
     font-size: 15px;
+    color: white !important;
 }
 
 .halaltag {
@@ -49,6 +66,7 @@ ul {
     border-radius: 5px;
     font-weight: bold;
     font-size: 15px;
+    color: white !important;
 }
 
 .vegettag {
@@ -58,5 +76,76 @@ ul {
     border-radius: 5px;
     font-weight: bold;
     font-size: 15px;
+    color: white !important;
 }
 
+.inline {
+    float: right;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 16px;
+    margin: 0 25%;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 10px;
+    width: 10px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #900;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(14px);
+    -ms-transform: translateX(14px);
+    transform: translateX(14px);
+}
+
+.slider::after{
+    -webkit-transform: translateX(14px);
+    -ms-transform: translateX(14px);
+    transform: translateX(14px);
+}
+
+.slider.round {
+    border-radius: 16px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.dark-mode {
+    background-color: white;
+    color: black;
+}

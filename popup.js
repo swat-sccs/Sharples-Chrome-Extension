@@ -1,3 +1,10 @@
+
+
+function print(msg) {
+    document.getElementById("debug").innerHTML = msg
+}
+
+// main Jquery function
 $(function(){
     // Variables to store and get today's date elements
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -6,6 +13,41 @@ $(function(){
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = monthNames[today.getUTCMonth()];
+    var darkModeCookie = getCookie("dark");
+    console.log(darkModeCookie)
+
+    // runs the command (darkMode) when the toggle switch is changed
+    document.getElementById("displayMode").addEventListener("change", darkMode);
+
+    function setCookie(name, value, exp_days) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exp_days * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+    }
+
+    function getCookie(name) {
+        var cname = name + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(cname) == 0) {
+                return c.substring(cname.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function deleteCookie(name) {
+        var d = new Date();
+        d.setTime(d.getTime() - (60 * 60 * 1000));
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = name + "=;" + expires + ";path=/";
+    }
 
     // load in jquery, the program to read the JSON file
     var script = document.createElement('script');
@@ -29,6 +71,32 @@ $(function(){
     // formats time and title into a single string for titles
     function title(data, id) {
         return data.sharples[id].title+" ("+data.sharples[id].short_time+")"
+    }
+
+    function darkMode() {
+        // toggles dark mode
+        document.body.classList.toggle("dark-mode");
+        // updates cookie based on stage
+        if (darkModeCookie == 0) {
+            setCookie("dark", 1, 9999);
+        } else {
+            setCookie("dark", 0, 9999)
+        }
+    }
+
+    if (darkModeCookie == '') {
+        print("cookie created")
+        setCookie("dark", 1, 9999);
+        document.body.classList.toggle("dark-mode");
+    }
+    else {
+        if (darkModeCookie == 1) {
+            print("cookie detected")
+            document.body.classList.toggle("dark-mode");
+            document.getElementById("mfer").checked = true
+        }else{
+            document.getElementById("mfer").checked = false
+        }
     }
 
     $.getJSON(staticUrl, function (data) {
