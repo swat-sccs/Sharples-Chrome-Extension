@@ -12,5 +12,6 @@
     "axios": "^0.27.2",
     "cheerio": "^1.0.0-rc.12",
     "nodemon": "^2.0.20"
-  }
+  },
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'"
 }

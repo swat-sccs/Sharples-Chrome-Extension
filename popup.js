@@ -1,36 +1,24 @@
+$(function(){
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = monthNames[today.getUTCMonth()];
+    var yyyy = today.getFullYear();
 
-// document.querySelector('#amount').addEventListener('keyup', function () {
-//     //get input's value and call your functions here
+    var script = document.createElement('script');
+    script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
+    script.type = 'text/javascript';
 
-// });
+    var staticUrl = 'https://dash.swarthmore.edu/dining_json';
 
-var script = document.createElement('script');
-var stuff;
-script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
-script.type = 'text/javascript';
-
-var staticUrl = 'https://dash.swarthmore.edu/dining_json';
-
-$.getJSON(staticUrl, function (data) {
-    stuff = data
+    $.getJSON(staticUrl, function (data) {
+        console.log(data)
+        document.getElementById("title").innerHTML = "Sharples - " + mm +" "+ dd;
+        document.getElementById("lunch").innerHTML = data.sharples[1].title + " (" + data.sharples[1].short_time + ")"
+        document.getElementById("lunch_items").innerHTML = data.sharples[1].html_description
+        document.getElementById("dinner").innerHTML = data.sharples[3].title + " (" + data.sharples[3].short_time + ")"
+        document.getElementById("dinner_items").innerHTML = data.sharples[3].html_description 
+    });
 });
-
-document.getElementById('thebutton').onclick = doSomeStuff;
-function doSomeStuff() {
-    /*
-    data.sharples is a list of 5 objects. 
-    Each of these objects can be accessed by their respective index,
-    data.sharples[n], where n is 0-4.
-    Each object has 6 data members:
-        - .description
-        - .html_description
-        - .startdate
-        - .enddate
-        - .title
-        - .short_time
-    */
-    document.getElementById("lunch").innerHTML = stuff.sharples[1].title
-    document.getElementById("lunch_items").innerHTML = stuff.sharples[1].html_description
-    document.getElementById("dinner").innerHTML = stuff.sharples[3].title
-    document.getElementById("dinner_items").innerHTML = stuff.sharples[3].html_description
-}
