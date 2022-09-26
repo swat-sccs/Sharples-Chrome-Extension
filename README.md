@@ -39,5 +39,4 @@ you clicked on in step 1, click on the icon to see the menu.
 Things to add in the next versions:
  - Menus of the week/day after
  - Menu for Essie Maes
- - Fix the ::halal::, ::vegan::, and ::vegetarian:: tags
  - LOG THIS ON THE GITBOOK
