@@ -40,3 +40,4 @@ Things to add in the next versions:
  - Menus of the week/day after
  - Menu for Essie Maes
  - Fix the ::halal::, ::vegan::, and ::vegetarian:: tags
+ - LOG THIS ON THE GITBOOK
