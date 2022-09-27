@@ -35,6 +35,10 @@ the browser (puzzle piece icon, to the right of the URL bar).
 4) In the newly appeared icon next to the "Extensions" icon 
 you clicked on in step 1, click on the icon to see the menu.
 
+IF YOU ARE INSTALLING FOR FIREFOX:
+1) Delete "manifest.json"
+2) Rename "manifest-firefox.json" to "manifest.json"
+
 
 Things to add in the next versions:
  - Menus of the week/day after
