@@ -54,7 +54,7 @@ $(function(){
     // definition of the HTML dietary tags
     var vegan = '<abbr class="vegantag" title="Vegan">v</abbr>'
     var halal = '<abbr class="halaltag" title="Halal">h</abbr>'
-    var veget = '<abbr class="vegettag" title="Vegetarian">h</abbr>'
+    var veget = '<abbr class="vegettag" title="Vegetarian">vg</abbr>'
 
     // adds HTML elements in-text for tags
     function format(str){
