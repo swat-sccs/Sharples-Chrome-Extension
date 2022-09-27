@@ -3,11 +3,11 @@ Chrome Extension that displays a popup of Sharples' Menu
 
 Written by Alex Le, Class of 2024
 
-Thats it. That's literally all it does. 
+That's it. That's literally all it does. 
 It takes a JSON file from Swarthmore and nicely formats it
 into a little popup chrome extension. You can find the 
 extension here:
-INSERT LINK HERE WHEN PUBLISHED
+https://chrome.google.com/webstore/detail/sharples-menu/hljemhgbbhjcmclhbdlalcoljlmjidll
 
 You can copy the code and use it as you want; I don't really
 care. Credit me if you feel like it, don't credit me if you
@@ -27,7 +27,7 @@ developer mode
 5) Choose the folder that you downloaded 
 6) Viola, extension is loaded.
 
-To see the popup functionality, 
+IF YOU ARE INSTALLING FOR CHROME:
 1) Click on the "Extensions" icon at the top right corner of 
 the browser (puzzle piece icon, to the right of the URL bar).
 2) Find "Sharples Menu" under the newly opened list
@@ -38,6 +38,13 @@ you clicked on in step 1, click on the icon to see the menu.
 IF YOU ARE INSTALLING FOR FIREFOX:
 1) Delete "manifest.json"
 2) Rename "manifest-firefox.json" to "manifest.json"
+3) Open Firefox
+4) In the URL bar, type in "about:debugging"
+5) On the left-hand side of the page, click on "This Firefox"
+6) Click on "Load Temporary Add-on..."
+7) Choose the "manifest.json"
+8) In the newly appeared extension icon in the upper right
+corner of the screen, click the icon to see the menu.
 
 
 Things to add in the next versions:
