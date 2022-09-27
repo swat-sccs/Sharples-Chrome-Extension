@@ -51,3 +51,8 @@ Things to add in the next versions:
  - Menus of the week/day after
  - Menu for Essie Maes
  - LOG THIS ON THE GITBOOK
+ - Make menu items more concise
+ - Add filters for vegan/halal/vegetarian items
+ - Display lunch and dinner items OLNY before the stop time 
+    - (only display lunch items before 2:00 PM, only dinner items after)
+ - Split menu into Option 1, Option 2, and Vegetarian Bar
