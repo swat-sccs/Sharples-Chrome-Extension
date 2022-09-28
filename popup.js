@@ -1,5 +1,11 @@
 // main Jquery function
 $(function(){
+
+    $('body').on('click', 'a', function () {
+        chrome.tabs.create({ url: $(this).attr('href') });
+        return false;
+    });
+
     // Variables to store and get today's date elements
     const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -113,22 +119,32 @@ $(function(){
         var lunchitems = data.sharples[l].html_description
         var dinneritems = data.sharples[d].html_description
 
+        const parser = new DOMParser();
+        var parsed = parser.parseFromString(format(lunchitems), `text/html`);
+        var tags = parsed.getElementsByTagName(`*`);
+
         // Update the HTML Elements:
 
         // title and date
-        document.getElementById("title").innerHTML = 
-        "Sharples - " + mm +" " + dd;
+        document.getElementById("title").textContent =
+            "Sharples - " + mm + " " + dd;
 
         // lunch/brunch title
-        document.getElementById("lunch").innerHTML = title(data, l)
+        document.getElementById("lunch").textContent = title(data, l)
 
         // lunch/brunch items
-        document.getElementById("lunch_items").innerHTML = format(lunchitems);
+        for (const tag of tags) {
+            document.getElementById("lunch_items").appendChild(tag);
+        }
 
         // dinner title
-        document.getElementById("dinner").innerHTML = title(data, d)
+        document.getElementById("dinner").textContent = title(data, d)
 
         //dinner items
-        document.getElementById("dinner_items").innerHTML = format(dinneritems);
+        parsed = parser.parseFromString(format(dinneritems), `text/html`);
+        tags = parsed.getElementsByTagName(`*`);
+        for (const tag of tags) {
+            document.getElementById("dinner_items").appendChild(tag);
+        }
     });
 });

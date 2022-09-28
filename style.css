@@ -21,6 +21,7 @@ body {
     background-color: #262528;
     color: #f0f0f0;
     border-radius: 10px;
+    height: fit-content;
     border: 5px solid #900
 }
 
@@ -48,6 +49,9 @@ ul {
     list-style-type: square;
     margin-left: 0;
     padding-left: 15px;
+    width: 470px;
+    overflow: hidden;
+    font-size: 15px !important;
 }
 
 #stack {
@@ -153,4 +157,12 @@ input:checked+.slider:before {
 .dark-mode {
     background-color: white !important;
     color: black !important;
+}
+
+#link {
+    padding: 0px 0px 10px 0px;
+}
+
+#linkint {
+    color: #60a5fa;
 }
