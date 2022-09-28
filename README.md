@@ -13,6 +13,11 @@ You can copy the code and use it as you want; I don't really
 care. Credit me if you feel like it, don't credit me if you
 don't feel like it.
 
+The only part of the code I do not own is jquery-3.6.1.js.
+All rights, work, etc are all reserved by the creators of
+jquery. This program only uses it as a local file in the
+extension.
+
 You can access the JSON file that contains the dining hall
 menu information at the link:
 https://dash.swarthmore.edu/dining_json
