@@ -49,11 +49,6 @@ $(function(){
         document.cookie = name + "=;" + expires + ";path=/";
     }
 
-    // load in jquery, the program to read the JSON file
-    var script = document.createElement('script');
-    script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
-    script.type = 'text/javascript';
-
     // URL to take JSON from
     var staticUrl = 'https://dash.swarthmore.edu/dining_json';
 
@@ -146,5 +141,18 @@ $(function(){
         for (const tag of tags) {
             document.getElementById("dinner_items").appendChild(tag);
         }
+
+        // essie items
+        var str = data.essies[0].description
+        var special = str.substring(
+            str.indexOf("Special") + 7,
+            str.lastIndexOf(". A meal")
+        );
+        var meal = str.substring(
+            str.indexOf("food vendor will be")+19,
+            str.lastIndexOf(". Please be aware")
+        );
+        document.getElementById("essie_special").textContent = special
+        document.getElementById("essie_mealplan").textContent = meal
     });
 });

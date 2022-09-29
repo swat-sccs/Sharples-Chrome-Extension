@@ -7,16 +7,17 @@
     <title>Sharples Menu</title>
     <link rel="stylesheet" href="style.css">
     <script src="jquery-3.6.1.js"></script>
-    <script type="text/javascript"></script>
     <script src="popup.js"></script>
 </head>
 
 <body class="test">
     <div class="dark-mode" id="inner">
+
+        <!-- Title, date, and dark mode switch -->
         <div class="wrapper">
             <h1 id ="title">Sharples</h1>
             <div class="inline" id="stack">
-                <h3>Light / Dark</h3>
+                <h6>Light / Dark</h6>
                 <label class="switch" id="displayMode">
                     <input type="checkbox" id = "mfer" checked>
                     <span class="slider round"></span>
@@ -24,14 +25,36 @@
             </div>
         </div>
 
+        <!-- Lunch and Dinner items below -->
         <h2 id="lunch">Loading...</h1>
         <ul class="small" id="lunch_items"></ul>
 
         <h2 id="dinner">Loading...</h1>
         <ul class="small" id="dinner_items"></ul>
+
+        <!-- Essie Maes Menu Here -->
+        <h2 id="essie">
+            Essie Mae's (8:00am - 7:30pm)
+            <abbr title="This feature is currently being tested!" class="betatag">
+                Beta
+            </abbr>
+        </h2>
+        
+        <h3>Today's Lunch Special</h3>
+        <p class="essieitem" id="essie_special"></p>
+        <h3>Meal Plan Selection (3:00 - 7:00 PM)</h3>
+        <p class="essieitem" id="essie_mealplan"></p>
+
+        <!-- Links below -->
         <div id="link">
-            <a href="https://forms.gle/5fS8ieox4cXbwzLZ6" id="linkint">Have a suggestion or bug?</a>
+            <a href="https://dash.swarthmore.edu/" id="dashlink">
+                More information on the Dash
+            </a>
+            <a href="https://forms.gle/5fS8ieox4cXbwzLZ6">
+                Have a suggestion or bug?
+            </a>
         </div>
+
     </div>
 </body>
 
