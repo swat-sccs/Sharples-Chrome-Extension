@@ -54,8 +54,6 @@ corner of the screen, click the icon to see the menu.
 
 Things to add in the next versions:
  - Menus of the week/day after
- - Menu for Essie Maes ** TOP PRIORITY **
- - ADd link for Dash for more info ** TOP PRIORITY **
  - Make menu items more concise
  - Add filters for vegan/halal/vegetarian items
  - Display lunch and dinner items ONLY before the stop time 
