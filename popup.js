@@ -96,8 +96,8 @@ $(function(){
     $.getJSON(staticUrl, function (data) {
         console.log(data)
 
-        var l = 0;
-        var d = 0;
+        var l = -1;
+        var d = -1;
 
         // define the lunch/brunch and dinner ID values for format functions
         for(let i = 0; i < data.sharples.length ; i++){
@@ -110,39 +110,53 @@ $(function(){
             }
         }
 
-        // store the appropriate HTML description items for easy access
-        var lunchitems = data.sharples[l].html_description
-        var dinneritems = data.sharples[d].html_description
+        var lunchitems = ""
+        var dinneritems = ""
+
 
         const parser = new DOMParser();
         var parsed = parser.parseFromString(format(lunchitems), `text/html`);
         var tags = parsed.getElementsByTagName(`*`);
 
-        // Update the HTML Elements:
+        // if lunch was not found, then assume sharples is closed for lunch
+        // else, parse and update the HTML
+        if(l == -1){
+            document.getElementById("lunch").textContent = "Closed for Lunch"
+        } else {
+            var lunchitems = data.sharples[l].html_description
+            // lunch/brunch title
+            document.getElementById("lunch").textContent = title(data, l)
 
-        // title and date
+            // lunch/brunch items
+            for (const tag of tags) {
+                document.getElementById("lunch_items").appendChild(tag);
+            }
+        }
+
+        // if dinner was not found, then assume sharples is closed for dinner
+        // else, parse and update the HTML
+        if(d == -1){
+            document.getElementById("dinner").textContent = "Closed for Dinner"
+        } else {
+            var dinneritems = data.sharples[d].html_description
+            // dinner title
+            document.getElementById("dinner").textContent = title(data, d)
+
+            //dinner items
+            parsed = parser.parseFromString(format(dinneritems), `text/html`);
+            tags = parsed.getElementsByTagName(`*`);
+            for (const tag of tags) {
+                document.getElementById("dinner_items").appendChild(tag);
+            }
+        }
+
+
+        // set title and date
         document.getElementById("title").textContent =
             "Sharples - " + mm + " " + dd;
 
-        // lunch/brunch title
-        document.getElementById("lunch").textContent = title(data, l)
 
-        // lunch/brunch items
-        for (const tag of tags) {
-            document.getElementById("lunch_items").appendChild(tag);
-        }
-
-        // dinner title
-        document.getElementById("dinner").textContent = title(data, d)
-
-        //dinner items
-        parsed = parser.parseFromString(format(dinneritems), `text/html`);
-        tags = parsed.getElementsByTagName(`*`);
-        for (const tag of tags) {
-            document.getElementById("dinner_items").appendChild(tag);
-        }
-
-        // essie items
+        // parse and display essie items
         var str = data.essies[0].description
         var special = str.substring(
             str.indexOf("Special") + 7,
@@ -152,7 +166,18 @@ $(function(){
             str.indexOf("food vendor will be")+19,
             str.lastIndexOf(". Please be aware")
         );
-        document.getElementById("essie_special").textContent = special
-        document.getElementById("essie_mealplan").textContent = meal
+
+        // If the string description has "substantial" information (not missing
+        // menu item information), then update the menu.
+        // Else, assume Essie Mae's is closed and update.
+        if (str.length > 192) {
+            document.getElementById("essie_special").textContent = special
+            document.getElementById("essie_mealplan").textContent = meal
+        } else {
+            document.getElementById("essie_special").textContent = 
+            "Closed for the day"
+            document.getElementById("essie_mealplan").textContent = 
+            "Closed for the day"
+        }
     });
 });
