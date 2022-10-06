@@ -2,6 +2,7 @@
 Chrome Extension that displays a popup of Sharples' Menu
 
 Written by Alex Le, Class of 2024
+Omar Khan, Class of 2025
 
 That's it. That's literally all it does. 
 It takes a JSON file from Swarthmore and nicely formats it
