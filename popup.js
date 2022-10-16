@@ -56,16 +56,30 @@ $(function(){
     var vegan = '<abbr class="vegantag" title="Vegan">v</abbr>'
     var halal = '<abbr class="halaltag" title="Halal">h</abbr>'
     var veget = '<abbr class="vegettag" title="Vegetarian">vg</abbr>'
-
+    // extra dietary tags
+    var egg = '<abbr class="eggtag" title="Egg">E</abbr>'
+    var milk = '<abbr class="milktag" title="Milk">M</abbr>'
+    var soy = '<abbr class="soytag" title="Soy">S</abbr>'
+    var wheat = '<abbr class="wheattag" title="Wheat">W</abbr>'
+    var fish = '<abbr class="fishtag" title="Fish">F</abbr>'
+    var glutenfree = '<abbr class="gftag" title="Gluten Free">GF</abbr>'
     // adds HTML elements in-text for tags
     function format(str){
-        return str.replace(/::vegan::/g, vegan).replace(/::halal::/g, 
-        halal).replace(/::vegetarian::/g, veget)
+        return str.replace(/::vegan::/g, vegan)
+        .replace(/::halal::/g,halal)
+        .replace(/::vegetarian::/g, veget)
+        .replace(/::egg::/g, egg)
+        .replace(/::milk::/g, milk)
+        .replace(/::soy::/g, soy)
+        .replace(/::wheat::/g, wheat)
+        .replace(/::fish::/g, fish)
+        .replace(/::gluten free::/g, glutenfree)
+        .replace(/::locally sourced::/g, "")
     }
 
     // formats time and title into a single string for titles
     function title(data, id) {
-        return data.sharples[id].title+" ("+data.sharples[id].short_time+")"
+        return data.dining_center[id].title+" ("+data.dining_center[id].short_time+")"
     }
 
     function darkMode() {
@@ -100,12 +114,12 @@ $(function(){
         var d = -1;
 
         // define the lunch/brunch and dinner ID values for format functions
-        for(let i = 0; i < data.sharples.length ; i++){
-            if (data.sharples[i].title == "Lunch" || 
-            data.sharples[i].title == "Brunch"){
+        for(let i = 0; i < data.dining_center.length ; i++){
+            if (data.dining_center[i].title == "Lunch" || 
+            data.dining_center[i].title == "Brunch"){
                 l = i
             }
-            if (data.sharples[i].title == "Dinner") {
+            if (data.dining_center[i].title == "Dinner") {
                 d = i
             }
         }
@@ -118,12 +132,12 @@ $(function(){
         var parsed = parser.parseFromString(format(lunchitems), `text/html`);
         var tags = parsed.getElementsByTagName(`*`);
 
-        // if lunch was not found, then assume sharples is closed for lunch
+        // if lunch was not found, then assume dining_center is closed for lunch
         // else, parse and update the HTML
         if(l == -1){
             document.getElementById("lunch").textContent = "Closed for Lunch"
         } else {
-            var lunchitems = data.sharples[l].html_description
+            var lunchitems = data.dining_center[l].html_description
             // lunch/brunch title
             document.getElementById("lunch").textContent = title(data, l)
 
@@ -133,12 +147,12 @@ $(function(){
             }
         }
 
-        // if dinner was not found, then assume sharples is closed for dinner
+        // if dinner was not found, then assume dining_center is closed for dinner
         // else, parse and update the HTML
         if(d == -1){
             document.getElementById("dinner").textContent = "Closed for Dinner"
         } else {
-            var dinneritems = data.sharples[d].html_description
+            var dinneritems = data.dining_center[d].html_description
             // dinner title
             document.getElementById("dinner").textContent = title(data, d)
 
@@ -153,7 +167,7 @@ $(function(){
 
         // set title and date
         document.getElementById("title").textContent =
-            "Sharples - " + mm + " " + dd;
+            "New Sharples - " + mm + " " + dd;
 
 
         // parse and display essie items

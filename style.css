@@ -91,6 +91,66 @@ ul {
 
 .vegettag {
     background-color: #FF4500;
+    padding: 0px 5px 1px 5px;
+    text-decoration: none !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+    color: white !important;
+}
+
+.eggtag {
+    background-color: yellow;
+    padding: 0px 4px 1px 4px;
+    text-decoration: none !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+    color: black !important;
+}
+
+.milktag {
+    background-color:white;
+    padding: 0px 4px 1px 4px;
+    text-decoration: none !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+    color: black !important;
+}
+
+.soytag {
+    background-color: orange;
+    padding: 0px 4px 1px 4px;
+    text-decoration: none !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+    color: black !important;
+}
+
+.wheattag {
+    background-color: brown;
+    padding: 0px 4px 1px 4px;
+    text-decoration: none !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+    color: white !important;
+}
+
+.fishtag {
+    background-color: blue;
+    padding: 0px 4px 1px 4px;
+    text-decoration: none !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+    color: white !important;
+}
+
+.gftag {
+    background-color: #FF4500;
     padding: 0px 4px 1px 4px;
     text-decoration: none !important;
     border-radius: 5px;
