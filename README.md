@@ -61,8 +61,8 @@ corner of the screen, click the icon to see the menu.
 Things to add in the next versions:
  - Menus of the week/day after
  - Make menu items more concise
- - Add filters for vegan/halal/vegetarian items
+ - Make Lunch and Dinner menus collapse-able?
+ - Add filters for dietary restrictions and allergies
  - Display lunch and dinner items ONLY before the stop time 
     - (only display lunch items before 2:00 PM, only dinner items after)
     - Make this OPTIONAL, ADD TAB OR SWITCH TO ENABLE/DISABLE
- - Split menu into Option 1, Option 2, and Vegetarian Bar

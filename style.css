@@ -1,8 +1,9 @@
 .small {
     font-size: 15px;
     line-height: 20px;
+    width: inherit;
 }
-/*Test*/
+
 body {
     width: 550px;
     margin: 0px;
@@ -69,105 +70,72 @@ ul {
     align-content: center;
 }
 
-.vegantag {
+/* Tags Start */
+
+.tag {
+    padding: 0px 5px 1px 5px;
+    text-decoration: none !important;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.vegan {
     background-color: #228B22;
-    padding: 0px 5px 1px 5px;
-    text-decoration: none !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 15px;
     color: white !important;
 }
 
-.halaltag {
+.halal {
     background-color: #ec4899;
-    padding: 0px 5px 1px 5px;
-    text-decoration: none !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 15px;
     color: white !important;
 }
 
-.vegettag {
+.veget {
     background-color: #FF4500;
-    padding: 0px 5px 1px 5px;
-    text-decoration: none !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 15px;
     color: white !important;
 }
 
-.eggtag {
+.egg {
     background-color: yellow;
-    padding: 0px 4px 1px 4px;
-    text-decoration: none !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 15px;
     color: black !important;
 }
 
-.milktag {
-    background-color:white;
-    padding: 0px 4px 1px 4px;
-    text-decoration: none !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 15px;
+.milk {
+    background-color:rgb(212, 212, 212);
     color: black !important;
 }
 
-.soytag {
+.soy {
     background-color: orange;
-    padding: 0px 4px 1px 4px;
-    text-decoration: none !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 15px;
     color: black !important;
 }
 
-.wheattag {
+.wheat {
     background-color: brown;
-    padding: 0px 4px 1px 4px;
-    text-decoration: none !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 15px;
     color: white !important;
 }
 
-.fishtag {
+.fish {
     background-color: blue;
-    padding: 0px 4px 1px 4px;
-    text-decoration: none !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 15px;
     color: white !important;
 }
 
-.gftag {
+.gf {
     background-color: #FF4500;
-    padding: 0px 4px 1px 4px;
-    text-decoration: none !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 15px;
     color: white !important;
 }
 
-.betatag {
+.sesame {
+    background-color: #ffcd42;
+    color: black !important;
+}
+
+.beta {
     background-color: #0066ff;
-    padding: 0px 4px 1px 4px;
-    text-decoration: none !important;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 15px;
     color: white !important;
 }
+
+/* Tags end */
 
 .inline {
     float: right;
