@@ -1,5 +1,5 @@
 # sharples-chrome-extension
-Chrome Extension that displays a popup of Sharples' Menu
+Chrome Extension that displays a popup of the Dining Center's Menu
 
 Written by Alex Le, Class of 2024
 Omar Khan, Class of 2025
@@ -13,7 +13,9 @@ Chrome: https://tinyurl.com/sharpleschromeext
 
 Firefox: https://tinyurl.com/sharplesfirefoxext
 
-OperaGX: Coming soon
+OperaGX: Unavailable due to the fact that OperaGX has terrible reviewing 
+processes for publishing extensions (We've currently been waiting 11 days as of
+this last edit, compared to Google and Firefox's 2 days).
 
 You can copy the code and use it as you want; I don't really
 care. Credit me if you feel like it, don't credit me if you
@@ -21,7 +23,7 @@ don't feel like it.
 
 The only part of the code I do not own is jquery-3.6.1.js.
 All rights, work, etc are all reserved by the creators of
-jquery. This program only uses it as a local file in the
+JQuery. This program only uses it as a local file in the
 extension.
 
 You can access the JSON file that contains the dining hall

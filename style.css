@@ -4,6 +4,12 @@
     width: inherit;
 }
 
+span.item {
+    font-weight:500;
+    font-size: 110%;
+    text-decoration: underline;
+}
+
 body {
     width: 550px;
     margin: 0px;
@@ -58,9 +64,9 @@ h6 {
 }
 
 ul {
-    list-style-type: square;
+    list-style-type:none;
     margin-left: 0;
-    padding-left: 15px;
+    padding-left: 10px;
     width: 470px;
     overflow: hidden;
     font-size: 15px !important;
@@ -106,7 +112,7 @@ ul {
 }
 
 .soy {
-    background-color: orange;
+    background-color: rgb(255, 239, 149);
     color: black !important;
 }
 
@@ -127,6 +133,21 @@ ul {
 
 .sesame {
     background-color: #ffcd42;
+    color: black !important;
+}
+
+.alcohol {
+    background-color: #8400ff;
+    color: white !important;
+}
+
+.shellfish {
+    background-color: #ff4bf0;
+    color: black !important;
+}
+
+.peanut {
+    background-color: #ffae00;
     color: black !important;
 }
 

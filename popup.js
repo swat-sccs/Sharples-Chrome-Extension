@@ -87,6 +87,9 @@ $(document).ready(function(){
     var fish = '<abbr class="tag fish" title="Fish">f</abbr>'
     var glutenfree = '<abbr class="tag gf" title="Gluten Free">gf</abbr>'
     var sesame = '<abbr class="tag sesame" title="Sesame">ses</abbr>'
+    var alcohol = '<abbr class="tag alcohol" title="Alcohol">alc</abbr>'
+    var shellfish = '<abbr class="tag shellfish" title="Shellfish">sf</abbr>'
+    var peanut = '<abbr class="tag peanut" title="Peanut">p</abbr>'
 
     // adds HTML elements in-text for tags
     // corny/punny titles can go to hell
@@ -102,6 +105,9 @@ $(document).ready(function(){
         .replace(/::fish::/g, fish)
         .replace(/::gluten free::/g, glutenfree)
         .replace(/::sesame::/g, sesame)
+        .replace(/::alcohol::/g, alcohol)
+        .replace(/::shellfish::/g, shellfish)
+        .replace(/::peanut::/g, peanut)
         .replace(/::locally sourced::/g, "")
         .replace(/Classics/g, "Main 1")
         .replace(/World of Flavor/g, "Main 2")
