@@ -4,6 +4,22 @@
     width: inherit;
 }
 
+.collapsible {
+    margin-top: 5px;
+    margin-bottom: -10px;
+    cursor: pointer;
+}
+
+.active, .collapsible:hover {
+    text-decoration: underline;
+}
+
+.content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
 span.item {
     font-weight:500;
     font-size: 110%;
@@ -40,11 +56,6 @@ body {
 h1 {
     margin: 10px 0px 0px 0px;
     display: inline-block;
-}
-
-h2{
-    margin-top: 5px;
-    margin-bottom: -10px;
 }
 
 #dinner{
@@ -230,7 +241,7 @@ input:checked+.slider:before {
 }
 
 #link {
-    margin-top: 5px;
+    margin-top: 15px;
     padding: 0px 0px 10px 0px;
 }
 

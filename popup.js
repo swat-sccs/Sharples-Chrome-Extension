@@ -24,6 +24,23 @@ function bubbleSort(arr) {
 // main Jquery function
 $(document).ready(function(){
 
+    // need to add cookies to remember which ones are open
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+                // content.style.maxHeight = "1000px";
+                console.log("on")
+            }
+        });
+    }
+
     $('body').on('click', 'a', function () {
         chrome.tabs.create({ url: $(this).attr('href') });
         return false;
