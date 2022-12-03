@@ -23,10 +23,31 @@ function bubbleSort(arr) {
 
 // main Jquery function
 $(document).ready(function(){
+    // Variables to store and get today's date elements
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = monthNames[today.getUTCMonth()];
+    var hour = today.getHours();
+    var darkModeCookie = getCookie("dark");
 
     // need to add cookies to remember which ones are open
+    // script code for collapsibility, taken from w3schools.com
+    console.log(hour)
     var coll = document.getElementsByClassName("collapsible");
     var i;
+    if (hour < 14){
+        coll[0].classList.toggle("active");
+        var content = coll[0].nextElementSibling;
+        content.style.maxHeight = 100 + "%"
+    } else {
+        coll[1].classList.toggle("active");
+        var content = coll[1].nextElementSibling;
+        content.style.maxHeight = 100 + "%";
+    }
+
     for (i = 0; i < coll.length; i++) {
         coll[i].addEventListener("click", function () {
             this.classList.toggle("active");
@@ -35,8 +56,6 @@ $(document).ready(function(){
                 content.style.maxHeight = null;
             } else {
                 content.style.maxHeight = content.scrollHeight + "px";
-                // content.style.maxHeight = "1000px";
-                console.log("on")
             }
         });
     }
@@ -46,14 +65,7 @@ $(document).ready(function(){
         return false;
     });
 
-    // Variables to store and get today's date elements
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = monthNames[today.getUTCMonth()];
-    var darkModeCookie = getCookie("dark");
+    
 
 
     // runs the command (darkMode) when the toggle switch is changed
@@ -107,6 +119,7 @@ $(document).ready(function(){
     var alcohol = '<abbr class="tag alcohol" title="Alcohol">alc</abbr>'
     var shellfish = '<abbr class="tag shellfish" title="Shellfish">sf</abbr>'
     var peanut = '<abbr class="tag peanut" title="Peanut">p</abbr>'
+    var treenut = '<abbr class="tag treenut" title="Tree Nut">tn</abbr>'
 
     // adds HTML elements in-text for tags
     // corny/punny titles can go to hell
@@ -125,6 +138,7 @@ $(document).ready(function(){
         .replace(/::alcohol::/g, alcohol)
         .replace(/::shellfish::/g, shellfish)
         .replace(/::peanut::/g, peanut)
+        .replace(/::tree nut::/g, treenut)
         .replace(/::locally sourced::/g, "")
         .replace(/Classics/g, "Main 1")
         .replace(/World of Flavor/g, "Main 2")
@@ -169,6 +183,7 @@ $(document).ready(function(){
     $.getJSON(staticUrl, function (data) {
         // debug print, press f12 to see console (on chrome)
         console.log(data)
+
 
         // set title and date
         document.getElementById("title").textContent =
