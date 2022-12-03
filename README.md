@@ -2,6 +2,7 @@
 Chrome Extension that displays a popup of the Dining Center's Menu
 
 Written by Alex Le, Class of 2024
+
 Omar Khan, Class of 2025
 
 That's it. That's literally all it does. 
@@ -17,11 +18,10 @@ OperaGX: Unavailable due to the fact that OperaGX has terrible reviewing
 processes for publishing extensions (We've currently been waiting 11 days as of
 this last edit, compared to Google and Firefox's 2 days).
 
-You can copy the code and use it as you want; I don't really
-care. Credit me if you feel like it, don't credit me if you
-don't feel like it.
+You can copy the code and use it as you want. Credit us if you feel 
+like it, don't credit us if you don't feel like it.
 
-The only part of the code I do not own is jquery-3.6.1.js.
+The only part of the code we do not own is jquery-3.6.1.js.
 All rights, work, etc are all reserved by the creators of
 JQuery. This program only uses it as a local file in the
 extension.
@@ -62,8 +62,6 @@ corner of the screen, click the icon to see the menu.
 
 Things to add in the next versions:
  - Menus of the week/day after
- - Make menu items more concise
- - Make Lunch and Dinner menus collapse-able?
  - Add filters for dietary restrictions and allergies
  - Display lunch and dinner items ONLY before the stop time 
     - (only display lunch items before 2:00 PM, only dinner items after)
