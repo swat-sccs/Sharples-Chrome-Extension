@@ -11,6 +11,12 @@
  *
  * Date: 2022-08-26T17:52Z
  */
+
+// ********************   LINES 1334 - 1336 EXCLUDED FOR SAFETY/SECURITY ISSUES ********************
+// ********************   LINE 5043 EXCLUDED FOR SAFETY/SECURITY ISSUES ********************
+// ********************   LINES 6339 - 6359 EXCLUDED FOR SAFETY/SECURITY ISSUES ********************
+
+
 (function (global, factory) {
 
     "use strict";
@@ -1330,9 +1336,11 @@
                         // setting a boolean content attribute,
                         // since its presence should be enough
                         // https://bugs.jquery.com/ticket/12359
-                        docElem.appendChild(el).innerHTML = "<a id='" + expando + "'></a>" +
-                            "<select id='" + expando + "-\r\\' msallowcapture=''>" +
-                            "<option selected=''></option></select>";
+         // ********************   LINES 1334 - 1336 EXCLUDED FOR SAFETY/SECURITY ISSUES ********************
+                        // docElem.appendChild(el).innerHTML = "<a id='" + expando + "'></a>" +
+                        //     "<select id='" + expando + "-\r\\' msallowcapture=''>" +
+                        //     "<option selected=''></option></select>";
+         // ********************   LINES 1334 - 1336 EXCLUDED FOR SAFETY/SECURITY ISSUES ********************
 
                         // Support: IE8, Opera 11-12.16
                         // Nothing should be selected when empty strings follow ^= or $= or *=
@@ -5034,7 +5042,9 @@
                     // Deserialize a standard representation
                     tag = (rtagName.exec(elem) || ["", ""])[1].toLowerCase();
                     wrap = wrapMap[tag] || wrapMap._default;
-                    tmp.innerHTML = wrap[1] + jQuery.htmlPrefilter(elem) + wrap[2];
+         // ********************   LINE 5043 EXCLUDED FOR SAFETY/SECURITY ISSUES ********************
+                    // tmp.innerHTML = wrap[1] + jQuery.htmlPrefilter(elem) + wrap[2];
+         // ********************   LINE 5043 EXCLUDED FOR SAFETY/SECURITY ISSUES ********************
 
                     // Descend through wrappers to the right content
                     j = wrap[0];
@@ -6326,27 +6336,29 @@
                 }
 
                 // See if we can take a shortcut and just use innerHTML
-                if (typeof value === "string" && !rnoInnerhtml.test(value) &&
-                    !wrapMap[(rtagName.exec(value) || ["", ""])[1].toLowerCase()]) {
+    // ********************   LINES 6339 - 6359 EXCLUDED FOR SAFETY/SECURITY ISSUES ********************
+                // if (typeof value === "string" && !rnoInnerhtml.test(value) &&
+                //     !wrapMap[(rtagName.exec(value) || ["", ""])[1].toLowerCase()]) {
 
-                    value = jQuery.htmlPrefilter(value);
+                //     value = jQuery.htmlPrefilter(value);
 
-                    try {
-                        for (; i < l; i++) {
-                            elem = this[i] || {};
+                //     try {
+                //         for (; i < l; i++) {
+                //             elem = this[i] || {};
 
-                            // Remove element nodes and prevent memory leaks
-                            if (elem.nodeType === 1) {
-                                jQuery.cleanData(getAll(elem, false));
-                                elem.innerHTML = value;
-                            }
-                        }
+                //             // Remove element nodes and prevent memory leaks
+                //             if (elem.nodeType === 1) {
+                //                 jQuery.cleanData(getAll(elem, false));
+                //                 elem.innerHTML = value;
+                //             }
+                //         }
 
-                        elem = 0;
+                //         elem = 0;
 
-                        // If using innerHTML throws an exception, use the fallback method
-                    } catch (e) { }
-                }
+                //         // If using innerHTML throws an exception, use the fallback method
+                //     } catch (e) { }
+                // }
+    // ********************   LINES 6339 - 6359 EXCLUDED FOR SAFETY/SECURITY ISSUES ********************
 
                 if (elem) {
                     this.empty().append(value);
