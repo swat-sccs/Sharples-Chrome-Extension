@@ -62,6 +62,7 @@ corner of the screen, click the icon to see the menu.
 
 Things to add in the next versions:
  - Menus of the week/day after
+    - Show menu of tomorrow (highlighted or bolded) after dinner of today
+ - Fix spaced commas when tags are disabled
  - Add filters for dietary restrictions and allergies
- - Sort individual menu items, prioritizing proteins 
- - Transition to a new .js framework
+ - Transition to a new .js framework...? (Update 2.0)
