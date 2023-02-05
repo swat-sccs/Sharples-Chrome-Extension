@@ -47,6 +47,7 @@ function format(str) {
         .replace(/Free Zone/g, "Allergen Choice")
         .replace(/Spice</g, "Main 3<")
         .replace(/font-bold text-gray-800 dark:text-gray-200/g, "item")
+        .replace(/&/g, 'and')
 }
 
 // formats time and title into a single string for titles
@@ -134,6 +135,40 @@ $(document).ready(function(){
         }
     }
 
+    // html Get function
+    function Get(yourUrl) {
+        var Httpreq = new XMLHttpRequest(); // a new request
+        Httpreq.open("GET", yourUrl, false);
+        Httpreq.send(null);
+        return Httpreq.responseText;
+    }
+
+    // prioritzes the proteins and mains
+    // you can edit keywords to prioritize in the function
+    // takes a list, returns a sorted list
+    function sortMains(lst){
+        const keywords = ["chicken", "steak", "beef", "shrimp", "tofu", "seitan",
+            "bacon", "sausage", "pork", "meatball", "tilapia",
+            "salmon", "wing", "pizza", "fried rice"];
+
+        var newLst = []
+        for (let i = 0; i < lst.length; i++) {
+            let item = lst[i].toLowerCase()
+            for (let k = 0; k < keywords.length; k++) {
+                if (item.includes(keywords[k])) {
+                    newLst.unshift(lst[i].trim())
+                    break
+                } else {
+                    if (k == (keywords.length) - 1) {
+                        newLst.push(lst[i].trim())
+                    }
+                }
+            }
+        }
+        lst = newLst
+        return lst
+    }
+
 
     // runs the command (darkMode) when the toggle switch is changed
     document.getElementById("displayMode").addEventListener("change", darkMode);
@@ -163,23 +198,28 @@ $(document).ready(function(){
             if (content.style.maxHeight) {
                 content.style.maxHeight = null;
             } else {
-                content.style.maxHeight = content.scrollHeight + "px";
+                content.style.maxHeight = "100%";
             }
         });
     }
 
     // Construct the page
     function constructPage() {
-        // fetch the JSON from the URL
-        var data = [];
-        $.ajax({
-            url: staticUrl,
-            async: false,
-            dataType: 'json',
-            success: function (json) {
-                data = json;
-            }
-        });
+        // sets menu based on lrd (Lunch oR Dinner) value
+        // sanitizes HTML before setting
+        function setMenu(lst,lrd){
+            // set up an html script sanitizer for setHTML
+            const san = new Sanitizer();
+            document.getElementById(lrd + "main1").setHTML(lst.main1, { sanitizer: san })
+            document.getElementById(lrd + "main2").setHTML(lst.main2, { sanitizer: san })
+            document.getElementById(lrd + "main3").setHTML(lst.main3, { sanitizer: san })
+            document.getElementById(lrd + "mainv").setHTML(lst.vegan, { sanitizer: san })
+            document.getElementById(lrd + "maina").setHTML(lst.allergy, { sanitizer: san })
+            document.getElementById(lrd + "maind").setHTML(lst.dessert, { sanitizer: san })
+        }
+
+        // get and parse the JSON from the URL
+        var data = JSON.parse(Get(staticUrl));
 
         // debug print, press f12 to see console (on chrome)
         console.log(data)
@@ -206,12 +246,6 @@ $(document).ready(function(){
             }
         }
 
-        var lunchitems = ""
-        var dinneritems = ""
-        var exclusions = ["Fired Up", "Field of Greens", "Grillin' Out"]
-
-        const parser = new DOMParser();
-
         // If no data in the dining center, assume Narples is closed 
         if (jQuery.isEmptyObject(data.dining_center)) {
             document.getElementById("breakfast").textContent = "Closed for Breakfast"
@@ -221,7 +255,7 @@ $(document).ready(function(){
         }
 
         // if breakfast was not found, assume closed for breakfast
-        // else, parse and update the HTML
+        // else, parse and set the HTML
         if (b == -1) {
             document.getElementById("breakfast").textContent = "Closed for Breakfast"
         } else {
@@ -231,55 +265,105 @@ $(document).ready(function(){
         }
 
         // if lunch was not found, assume is closed for lunch
-        // else, parse and update the HTML
+        // else, parse and set the HTML
         if (l == -1) {
             document.getElementById("lunch").textContent = "Closed for Lunch"
         } else {
-            var lunchitems = data.dining_center[l].html_description
-            var parsed = parser.parseFromString(format(lunchitems), `text/html`)
-            // parses HTML tags into a usable list
-            var tags = []; for (let tag of parsed.body.children) { tags.push(tag) }
-            bubbleSort(tags)
-
             // lunch/brunch title
             document.getElementById("lunch").textContent = title(data, l)
 
-            // lunch/brunch items
-            // insert items in pairs (title, list items)
-            for (let i = 0; i < tags.length; i += 2) {
-                // if the title is in our exlusions list, don't display it
-                if (!exclusions.includes(tags[i].textContent)) {
-                    document.getElementById("lunch_items").appendChild(tags[i]);
-                    document.getElementById("lunch_items").appendChild(tags[i + 1]);
-                }
+            var menu = {
+                main1: '',
+                main2: '',
+                main3: '',
+                vegan: '',
+                allergy: '',
+                dessert: ''
             }
+
+            var text = data.dining_center[l].html_description
+            var lunchitems = '<div id="root">'+ format(text) + '</div>'
+            var doc = new DOMParser().parseFromString(lunchitems, "text/xml");
+            var elements = doc.getElementById("root").children
+
+            // turn menu into a dictionary
+            for (let i = 0; i < elements.length; i+=2){
+                let title = elements[i].textContent
+                let items = elements[i+1].firstElementChild.innerHTML
+                if (title == "Main 1") {
+                    menu.main1 = items
+                } else if (title == "Main 2"){
+                    menu.main2 = items
+                } else if (title == "Main 3") {
+                    menu.main3 = items
+                } else if (title == "Vegan Main") {
+                    menu.vegan = items
+                } else if (title == "Allergen Choice") {
+                    menu.allergy = items
+                } else if (title == "Dessert") {
+                    menu.dessert = items
+                } else {continue}
+            }
+
+            // split submenus into arrays, sort, and stringify
+            for (let i in menu) {
+                menu[i] = sortMains(menu[i].split(","))
+                menu[i] = menu[i].join(", ").trim()
+            }
+
+            // set the menu, with the lunch argument
+            setMenu(menu, 'l')
         }
 
         // if dinner was not found, assume closed for dinner
-        // else, parse and update the HTML
+        // else, parse and set the HTML
         if (d == -1) {
             document.getElementById("dinner").textContent = "Closed for Dinner"
         } else {
-            var dinneritems = data.dining_center[d].html_description
-            parsed = parser.parseFromString(format(dinneritems), `text/html`);
-            // parses HTML tags into a usable list
-            tags = []; for (let tag of parsed.body.children) { tags.push(tag) }
-            bubbleSort(tags)
-
-            // dinner title
+            // lunch/brunch title
             document.getElementById("dinner").textContent = title(data, d)
 
-            //dinner items
-            // insert items in pairs (title, list items)
-            for (let i = 0; i < tags.length; i += 2) {
-                // if the title is in our exlusions list, don't display it
-                if (!exclusions.includes(tags[i].textContent)) {
-                    // append the title
-                    document.getElementById("dinner_items").appendChild(tags[i]);
-                    // append the bullet point item(s)
-                    document.getElementById("dinner_items").appendChild(tags[i + 1]);
-                }
+            var menu = {
+                main1: '',
+                main2: '',
+                main3: '',
+                vegan: '',
+                allergy: '',
+                dessert: ''
             }
+
+            var text = data.dining_center[d].html_description
+            var dinneritems = '<div id="root">' + format(text) + '</div>'
+            var doc = new DOMParser().parseFromString(dinneritems, "text/xml");
+            var elements = doc.getElementById("root").children
+
+            // turn menu into a dictionary
+            for (let i = 0; i < elements.length; i += 2) {
+                let title = elements[i].textContent
+                let items = elements[i + 1].firstElementChild.innerHTML
+                if (title == "Main 1") {
+                    menu.main1 = items
+                } else if (title == "Main 2") {
+                    menu.main2 = items
+                } else if (title == "Main 3") {
+                    menu.main3 = items
+                } else if (title == "Vegan Main") {
+                    menu.vegan = items
+                } else if (title == "Allergen Choice") {
+                    menu.allergy = items
+                } else if (title == "Dessert") {
+                    menu.dessert = items
+                } else { continue }
+            }
+
+            // split submenus into arrays, sort, and stringify
+            for (let i in menu) {
+                menu[i] = sortMains(menu[i].split(","))
+                menu[i] = menu[i].join(", ").trim()
+            }
+
+            // set the menu, with the lunch argument
+            setMenu(menu, 'd')
         }
         
 
@@ -335,6 +419,8 @@ $(document).ready(function(){
 
     constructPage();
     setPrefs();
+
+    // PLAYGROUND START, DELETE OR IMPLEMENT CODE PAST THIS POINT
 
 });
 
