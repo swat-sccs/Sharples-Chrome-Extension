@@ -145,8 +145,6 @@ Get(staticUrl).then(data => {
             }
         }
     
-    
-    
         // prioritzes the proteins and mains
         // you can edit keywords to prioritize in the function
         // takes a list, returns a sorted list
@@ -173,13 +171,11 @@ Get(staticUrl).then(data => {
             return lst;
         }
     
-    
         // runs the command (darkMode) when the toggle switch is changed
         document.getElementById("displayMode").addEventListener("change", darkMode);
     
         // runs the command (toggleTags) when the toggle switch is changed
         document.getElementById("tagswitch").addEventListener("change", toggleTags);
-    
     
         // Handles auto-opening of menus by time of day
         var coll = document.getElementsByClassName("collapsible");
@@ -367,8 +363,6 @@ Get(staticUrl).then(data => {
                 setMenu(menu, 'd');
             }
             
-    
-    
             // if essies data is not empty, parse and display essie items
             if (!jQuery.isEmptyObject(data.essies)) {
                 var str = data.essies[0].description;
