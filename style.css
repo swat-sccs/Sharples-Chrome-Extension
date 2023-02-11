@@ -1,3 +1,8 @@
+@font-face {
+    font-family: Raleway;
+    src: url(Raleway.ttf);
+}
+
 .small {
     font-size: 15px;
     line-height: 20px;
@@ -34,18 +39,23 @@ body {
 
 }
 
+hr{
+    border: 5px solid #f46523;
+    margin: 15px -20px 0px -20px;
+}
+
 #inner {
-    font-family: system-ui,
-            -apple-system,
-            Helvetica,
-            Arial,
-            sans-serif;
+    font-family: Raleway;
     padding: 0px 20px 10px 20px;
-    background-color: #262528;
     color: #f0f0f0;
     border-radius: 10px;
     height: fit-content;
-    border: 5px solid #900
+
+    background-color: #262528;
+    border: 5px solid #900;
+
+    /* background-color: #31425f; */
+    /* border: 5px solid #31425f; */
 }
 
 .wrapper {
@@ -63,7 +73,7 @@ h1 {
 }
 
 h3 {
-    font-weight: bold;
+    font-weight: 600;
     margin: 10px 0px 0px 0px;
 }
 
@@ -91,6 +101,7 @@ ul {
 
 .tag {
     padding: 0px 5px 1px 5px;
+    margin: 0px 0px 0px 3px;
     text-decoration: none !important;
     border-radius: 5px;
     font-weight: bold;
@@ -265,11 +276,10 @@ a {
 }
 
 #essie {
-    margin-top: -10px;
+    margin-bottom: -3px;
 }
 
 .essieitem {
     font-size: 15px;
     margin: 0px 0 0 10px;
-    padding: -5px;
 }

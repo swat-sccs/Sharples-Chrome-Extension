@@ -48,6 +48,7 @@ function format(str) {
         .replace(/Spice</g, "Main 3<")
         .replace(/font-bold text-gray-800 dark:text-gray-200/g, "item")
         .replace(/&/g, 'and')
+        .replace(/ </g,"<")   // removes space between the item and tags
 }
 
 // formats time and title into a single string for titles
@@ -149,9 +150,12 @@ Get(staticUrl).then(data => {
         // you can edit keywords to prioritize in the function
         // takes a list, returns a sorted list
         function sortMains(lst){
-            const keywords = ["chicken", "steak", "beef", "shrimp", "tofu", "seitan",
+            const keywords = ["chicken", "steak", "beef", "shrimp", 
                 "bacon", "sausage", "pork", "meatball", "tilapia",
-                "salmon", "wing", "pizza", "fried rice"];
+                "salmon", "wing", "pizza", "fried rice", "vindaloo", "cod",
+                "fish", "falafel", "catfish", "turkey", "aloo gobi", 
+                "quesadilla", "pancake", "waffle", "tempeh", "curry",
+                "tofu", "seitan", "pollock", "lamb", "masala"];
     
             var newLst = [];
             for (let i = 0; i < lst.length; i++) {
