@@ -34,19 +34,19 @@ body {
 }
 
 hr {
-  border: 5px solid #f46523;
+  border: 5px solid hsl(16, 75%, 67%);
   margin: 15px -20px 0px -20px;
 }
 
 #inner {
   font-family: Raleway;
   padding: 0px 20px 10px 20px;
-  color: #fffaf2;
+  color: hsl(16, 13%, 94%);
   border-radius: 10px;
   height: fit-content;
 
-  background-color: #1d2026;
-  border: 4px solid #303640;
+  background-color: hsl(216, 25%, 13%);
+  border: 4px solid hsl(216, 33%, 25%);
 }
 
 .wrapper {
@@ -100,79 +100,79 @@ ul {
   visibility: visible;
 }
 
-.vegan {
-  background-color: #39e667;
-  color: #1d2026 !important;
-}
-
-.halal {
-  background-color: #6739e6;
-  color: #fffaf2 !important;
-}
-
-.veget {
-  background-color: #39e6a1;
-  color: #1d2026 !important;
-}
-
-.egg {
-  background-color: #e6a139;
-  color: #1d2026 !important;
-}
-
-.milk {
-  background-color: #f2ede6;
-  color: #1d2026 !important;
-}
-
-.soy {
-  background-color: #e6da39;
-  color: #1d2026 !important;
-}
-
-.wheat {
-  background-color: #e68439;
-  color: #1d2026 !important;
-}
-
-.fish {
-  background-color: #397ee6;
-  color: #1d2026 !important;
-}
-
-.gf {
-  background-color: #e66739;
-  color: #1d2026 !important;
-}
-
-.sesame {
-  background-color: #ffcd42;
-  color: #1d2026 !important;
-}
-
 .alcohol {
-  background-color: #e63939;
-  color: #fffaf2 !important;
-}
-
-.shellfish {
-  background-color: #39e6da;
-  color: #1d2026 !important;
-}
-
-.peanut {
-  background-color: #5e00b6;
-  color: #fffaf2 !important;
-}
-
-.treenut {
-  background-color: #7ee639;
-  color: #1d2026 !important;
+  background-color: hsl(196, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
 }
 
 .beta {
-  background-color: #e639b8;
-  color: #1d2026 !important;
+  background-color: hsl(216, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.egg {
+  background-color: hsl(236, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.fish {
+  background-color: hsl(256, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.gf {
+  background-color: hsl(276, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.halal {
+  background-color: hsl(0, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.milk {
+  background-color: hsl(16, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.peanut {
+  background-color: hsl(36, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.sesame {
+  background-color: hsl(56, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.shellfish {
+  background-color: hsl(76, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.soy {
+  background-color: hsl(96, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.treenut {
+  background-color: hsl(116, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.vegan {
+  background-color: hsl(136, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.veget {
+  background-color: hsl(156, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
+}
+
+.wheat {
+  background-color: hsl(176, 75%, 67%);
+  color: hsl(216, 25%, 13%) !important;
 }
 
 /* Tags end */
@@ -206,7 +206,7 @@ ul {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: hsl(216, 33%, 25%);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -218,13 +218,13 @@ ul {
   width: 10px;
   left: 3px;
   bottom: 3px;
-  background-color: white;
+  background-color: hsl(16, 13%, 94%);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #e66739;
+  background-color: hsl(16, 75%, 67%);
 }
 
 input:checked + .slider:before {
@@ -248,8 +248,8 @@ input:checked + .slider:before {
 }
 
 .dark-mode {
-  background-color: #fffefc !important;
-  color: #0d121a !important;
+  background-color: hsl(16, 13%, 94%) !important;
+  color: hsl(216, 13%, 13%) !important;
 }
 
 #link {
@@ -258,7 +258,7 @@ input:checked + .slider:before {
 }
 
 a {
-  color: #397ee6;
+  color: hsl(216, 75%, 67%);
   display: inline-block;
 }
 
