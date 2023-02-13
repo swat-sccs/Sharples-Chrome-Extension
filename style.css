@@ -41,7 +41,7 @@ hr {
 #inner {
   font-family: Raleway;
   padding: 0px 20px 10px 20px;
-  color: hsl(16, 13%, 94%);
+  color: hsl(56, 13%, 94%);
   border-radius: 10px;
   height: fit-content;
 
@@ -218,7 +218,7 @@ ul {
   width: 10px;
   left: 3px;
   bottom: 3px;
-  background-color: hsl(16, 13%, 94%);
+  background-color: hsl(56, 13%, 94%);
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -248,7 +248,7 @@ input:checked + .slider:before {
 }
 
 .dark-mode {
-  background-color: hsl(16, 13%, 94%) !important;
+  background-color: hsl(56, 13%, 94%) !important;
   color: hsl(216, 13%, 13%) !important;
 }
 
