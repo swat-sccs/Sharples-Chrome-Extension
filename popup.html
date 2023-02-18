@@ -18,22 +18,20 @@
 
     <div class="dark-mode" id="inner">
         <!-- Title, date, and dark mode switch -->
-        <div class="wrapper">
-            <h1 id ="title">Narples</h1>
-            <div class="inline" id="stack">
-                <h6>Light / Dark</h6>
-                <label class="switch" id="displayMode">
-                    <input type="checkbox" id = "mfer" checked>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="inline" id="tagswitch">
-                <h6>Tags Off/On</h6>
-                <label class="switch">
-                    <input type="checkbox" id="mfer2" checked>
-                    <span class="slider round"></span>
-                </label>
-            </div>
+        <h1 id="title">Narples</h1>
+        <div class="inline">
+            <h6>Light / Dark</h6>
+            <label class="switch" id="displayMode">
+                <input type="checkbox" id="mfer">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        <div class="inline">
+            <h6>Tags Off/On</h6>
+            <label class="switch" id="tagswitch">
+                <input type="checkbox" id="mfer2">
+                <span class="slider round"></span>
+            </label>
         </div>
 
         <h3 id="breakfast">Breakfast</h3>
@@ -44,7 +42,7 @@
         
         <!-- Lunch and Dinner items below -->
         <h2 id="lunch" class="collapsible">Loading...</h2>
-        <ul class="small content" id="lunch_items">
+        <ul class="content" id="lunch_items">
             <span class="item">Main 1</span>
             <ul><li id="lmain1"></li></ul>
             <span class="item">Main 2</span>
@@ -60,7 +58,7 @@
         </ul>
 
         <h2 id="dinner" class="collapsible">Loading...</h2>
-        <ul class="small content" id="dinner_items">
+        <ul class="content" id="dinner_items">
             <span class="item">Main 1</span>
             <ul><li id="dmain1"></li></ul>
             <span class="item">Main 2</span>
@@ -80,14 +78,14 @@
             Essie Mae's (8:00am - 7:30pm)
         </h2>
         <div class="content">
-        <h3>Today's Lunch Special</h3>
-        <p class="essieitem" id="essie_special"></p>
-        <h3>Meal Plan Selection (3:00 - 7:00 PM)</h3>
-        <p class="essieitem" id="essie_mealplan"></p>
+            <h3>Today's Lunch Special</h3>
+            <p class="essieitem" id="essie_special"></p>
+            <h3>Meal Plan Selection (3:00 - 7:00 PM)</h3>
+            <p class="essieitem" id="essie_mealplan"></p>
         </div>
 
         <!-- Contentious Orange Stripe -->
-        <!-- <hr> -->
+        <hr>
 
         <!-- Links below -->
         <div id="link">

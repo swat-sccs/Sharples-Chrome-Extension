@@ -63,6 +63,6 @@ corner of the screen, click the icon to see the menu.
 Things to add in the next versions:
  - Menus of the week/day after
     - Show menu of tomorrow (highlighted or bolded) after dinner of today
- - Change CSS style to SCCS style (In-progress)
+ - Create SASS/SCSS file
  - Add filters for dietary restrictions and allergies
  - Transition to a new .js framework...? (Update 2.0)

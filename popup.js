@@ -1,26 +1,3 @@
-// swap helper function, taken from https://www.geeksforgeeks.org/bubble-sort/
-function swap(arr, xp, yp) {
-    var temp = arr[xp];
-    arr[xp] = arr[yp];
-    arr[yp] = temp;
-}
-
-// sort helper function, adopted from https://www.geeksforgeeks.org/bubble-sort/
-function bubbleSort(arr) {
-    n = arr.length
-    var i, j;
-    const rank = ['Main 1', 'Main 2', 'Main 3', 'Vegan Main', 'Allergen Choice', 'Dessert']
-
-    for (i = 0; i < n - 2; i += 2) {
-        for (j = 0; j < n - i - 2; j += 2) {
-            if (rank.indexOf(arr[j].textContent) > rank.indexOf(arr[j + 2].textContent)) {
-                swap(arr, j, j + 2);
-                swap(arr, j+1, j + 3);
-            }
-        }
-    }
-}
-
 // adds HTML elements in-text for tags
 // corny/punny titles can go to hell
 // this might be causing some lag when popup is loading, should optimize?
@@ -51,17 +28,20 @@ function format(str) {
         .replace(/ </g,"<")   // removes space between the item and tags
 }
 
-// formats time and title into a single string for titles
-function title(data, id) {
-    return data.dining_center[id].title + " (" + data.dining_center[id].short_time + ")"
-}
-
 // get json asynchronously
 async function Get(url) {
     const response = await fetch(url);
     const data = await response.json();
     return data;
 }
+
+// Keywords to sort by for menu items in order
+const keywords = ["chicken", "steak", "beef", "shrimp", "bacon", "sausage", 
+"pork", "pot roast", "meatball", "lamb", "turkey", "tilapia", "salmon", "wing", 
+"fried rice", "curry", "aloo gobi", "pizza", "vindaloo", "cod", "fish", "pollock",
+"falafel", "catfish", "quesadilla", "pancake", "waffle", "tempeh", "tofu", 
+"seitan", "pollock", "masala", "lo mein", "chow mein", "pad thai", "pasta",
+"mahi", "bean bake", "catfish", "risotto", "meatloaf"];
 
 
 // URL to take JSON from
@@ -150,13 +130,6 @@ Get(staticUrl).then(data => {
         // you can edit keywords to prioritize in the function
         // takes a list, returns a sorted list
         function sortMains(lst){
-            const keywords = ["chicken", "steak", "beef", "shrimp", 
-                "bacon", "sausage", "pork", "meatball", "tilapia",
-                "salmon", "wing", "pizza", "fried rice", "vindaloo", "cod",
-                "fish", "falafel", "catfish", "turkey", "aloo gobi", 
-                "quesadilla", "pancake", "waffle", "tempeh", "curry",
-                "tofu", "seitan", "pollock", "lamb", "masala"];
-    
             var newLst = [];
             for (let i = 0; i < lst.length; i++) {
                 let item = lst[i].toLowerCase();
@@ -198,6 +171,9 @@ Get(staticUrl).then(data => {
         for (i = 0; i < coll.length; i++) {
             coll[i].addEventListener("click", function () {
                 this.classList.toggle("active");
+                for (let content of document.getElementsByTagName("h2")){
+                    content.nextElementSibling.style.maxHeight = null
+                }
                 var content = this.nextElementSibling;
                 if (content.style.maxHeight) {
                     content.style.maxHeight = null;
@@ -254,7 +230,12 @@ Get(staticUrl).then(data => {
                 document.getElementById("dinner").textContent = "Closed for Dinner";
                 throw '"error thrown: Dining hall information missing"';
             }
-    
+            
+            // formats time and title into a single string for titles
+            function title(data, id) {
+                return data.dining_center[id].title + " (" + data.dining_center[id].short_time + ")"
+            }
+
             // if breakfast was not found, assume closed for breakfast
             // else, parse and set the HTML
             if (b == -1) {
