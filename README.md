@@ -1,12 +1,11 @@
 # sharples-chrome-extension
 Chrome Extension that displays a popup of the Dining Center's Menu
 
+Contributors:
 Written by Alex Le, Class of 2024
+Designed by Ark Lu, Class of 2024
 
-Omar Khan, Class of 2025
-
-That's it. That's literally all it does. 
-It takes a JSON file from Swarthmore and nicely formats it
+Gets and parses a JSON file from Swarthmore and nicely formats it
 into a little popup chrome extension. You can find the 
 extension here:
 
@@ -63,6 +62,5 @@ corner of the screen, click the icon to see the menu.
 Things to add in the next versions:
  - Menus of the week/day after
     - Show menu of tomorrow (highlighted or bolded) after dinner of today
- - Create SASS/SCSS file
- - Add filters for dietary restrictions and allergies
- - Transition to a new .js framework...? (Update 2.0)
+ - Add filters for dietary restrictions and allergies (Ambitious)
+ - Transition to a new .js framework...? (Update 3.0)
