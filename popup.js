@@ -80,7 +80,6 @@ const staticUrl = 'https://dash.swarthmore.edu/dining_json';
 Get(staticUrl).then(data => {
     // main Jquery function; code below only runs if document is loaded
     $(document).ready(function(){
-    
         // Handles links
         $('body').on('click', 'a', function () {
             document.getElementById("debug").textContent = "clicked"
@@ -205,22 +204,9 @@ Get(staticUrl).then(data => {
             document.getElementById("title").textContent =
                 "Narples - " + mm + " " + dd;
     
-            var b = -1;
-            var l = -1;
-            var d = -1;
-    
-            // define the breakfast, lunch/brunch, and dinner ID values
-            for (let i = 0; i < data.dining_center.length; i++) {
-                if (data.dining_center[i].title == "Breakfast") {
-                    b = i;
-                }
-                if (data.dining_center[i].title == "Lunch" ||
-                    data.dining_center[i].title == "Brunch") {
-                    l = i;
-                }
-                if (data.dining_center[i].title == "Dinner") {
-                    d = i;
-                }
+            // formats time and title into a single string for titles
+            function title(data, id) {
+                return data.dining_center[id].title + " (" + data.dining_center[id].short_time + ")"
             }
     
             // If no data in the dining center, assume Narples is closed 
@@ -228,142 +214,166 @@ Get(staticUrl).then(data => {
                 document.getElementById("breakfast").textContent = "Closed for Breakfast";
                 document.getElementById("lunch").textContent = "Closed for Lunch";
                 document.getElementById("dinner").textContent = "Closed for Dinner";
-                throw '"error thrown: Dining hall information missing"';
-            }
-            
-            // formats time and title into a single string for titles
-            function title(data, id) {
-                return data.dining_center[id].title + " (" + data.dining_center[id].short_time + ")"
+                for(item of document.getElementsByClassName("item")){
+                    item.textContent = ""
+                }
+            } else { // else, set the menu
+                var b = -1;
+                var l = -1;
+                var d = -1;
+
+                // define the breakfast, lunch/brunch, and dinner ID values
+                for (let i = 0; i < data.dining_center.length; i++) {
+                    if (data.dining_center[i].title == "Breakfast") {
+                        b = i;
+                    }
+                    if (data.dining_center[i].title == "Lunch" ||
+                        data.dining_center[i].title == "Brunch") {
+                        l = i;
+                    }
+                    if (data.dining_center[i].title == "Dinner") {
+                        d = i;
+                    }
+                }
+
+                // if breakfast was not found, assume closed for breakfast
+                // else, parse and set the HTML
+                if (b == -1) {
+                    document.getElementById("breakfast").textContent = "Closed for Breakfast";
+                } else {
+                    document.getElementById("breakfast").textContent = ("Open for Breakfast ("
+                        + data.dining_center[b].short_time + ")");
+
+                }
+
+                // if lunch was not found, assume is closed for lunch
+                // else, parse and set the HTML
+                if (l == -1) {
+                    document.getElementById("lunch").textContent = "Closed for Lunch";
+                } else {
+                    // lunch/brunch title
+                    document.getElementById("lunch").textContent = title(data, l);
+
+                    var menu = {
+                        main1: '',
+                        main2: '',
+                        main3: '',
+                        vegan: '',
+                        allergy: '',
+                        dessert: ''
+                    };
+
+                    var text = data.dining_center[l].html_description;
+                    var lunchitems = '<div id="root">' + format(text) + '</div>';
+                    var doc = new DOMParser().parseFromString(lunchitems, "text/xml");
+                    var elements = doc.getElementById("root").children;
+
+                    // turn menu into a dictionary
+                    for (let i = 0; i < elements.length; i += 2) {
+                        let title = elements[i].textContent;
+                        let items = elements[i + 1].firstElementChild.innerHTML;
+                        if (title == "Main 1") {
+                            menu.main1 = items;
+                        } else if (title == "Main 2") {
+                            menu.main2 = items;
+                        } else if (title == "Main 3") {
+                            menu.main3 = items;
+                        } else if (title == "Vegan Main") {
+                            menu.vegan = items;
+                        } else if (title == "Allergen Choice") {
+                            menu.allergy = items;
+                        } else if (title == "Dessert") {
+                            menu.dessert = items;
+                        } else { continue; }
+                    }
+
+                    // split submenus into arrays, sort, and stringify
+                    for (let i in menu) {
+                        menu[i] = sortMains(menu[i].split(","));
+                        menu[i] = menu[i].join(", ").trim();
+                    }
+
+                    // set the menu, with the lunch argument
+                    setMenu(menu, 'l');
+                }
+
+                // if dinner was not found, assume closed for dinner
+                // else, parse and set the HTML
+                if (d == -1) {
+                    document.getElementById("dinner").textContent = "Closed for Dinner";
+                } else {
+                    // lunch/brunch title
+                    document.getElementById("dinner").textContent = title(data, d);
+
+                    var menu = {
+                        main1: '',
+                        main2: '',
+                        main3: '',
+                        vegan: '',
+                        allergy: '',
+                        dessert: ''
+                    };
+
+                    var text = data.dining_center[d].html_description;
+                    var dinneritems = '<div id="root">' + format(text) + '</div>';
+                    var doc = new DOMParser().parseFromString(dinneritems, "text/xml");
+                    var elements = doc.getElementById("root").children;
+
+                    // turn menu into a dictionary
+                    for (let i = 0; i < elements.length; i += 2) {
+                        let title = elements[i].textContent;
+                        let items = elements[i + 1].firstElementChild.innerHTML;
+                        if (title == "Main 1") {
+                            menu.main1 = items;
+                        } else if (title == "Main 2") {
+                            menu.main2 = items;
+                        } else if (title == "Main 3") {
+                            menu.main3 = items;
+                        } else if (title == "Vegan Main") {
+                            menu.vegan = items;
+                        } else if (title == "Allergen Choice") {
+                            menu.allergy = items;
+                        } else if (title == "Dessert") {
+                            menu.dessert = items;
+                        } else { continue }
+                    }
+
+                    // split submenus into arrays, sort, and stringify
+                    for (let i in menu) {
+                        menu[i] = sortMains(menu[i].split(","));
+                        menu[i] = menu[i].join(", ").trim();
+                    }
+
+                    // set the menu, with the lunch argument
+                    setMenu(menu, 'd');
+                }
             }
 
-            // if breakfast was not found, assume closed for breakfast
-            // else, parse and set the HTML
-            if (b == -1) {
-                document.getElementById("breakfast").textContent = "Closed for Breakfast";
-            } else {
-                document.getElementById("breakfast").textContent = ("Open for Breakfast ("
-                    + data.dining_center[b].short_time + ")");
-    
-            }
-    
-            // if lunch was not found, assume is closed for lunch
-            // else, parse and set the HTML
-            if (l == -1) {
-                document.getElementById("lunch").textContent = "Closed for Lunch";
-            } else {
-                // lunch/brunch title
-                document.getElementById("lunch").textContent = title(data, l);
-    
-                var menu = {
-                    main1: '',
-                    main2: '',
-                    main3: '',
-                    vegan: '',
-                    allergy: '',
-                    dessert: ''
-                };
-    
-                var text = data.dining_center[l].html_description;
-                var lunchitems = '<div id="root">'+ format(text) + '</div>';
-                var doc = new DOMParser().parseFromString(lunchitems, "text/xml");
-                var elements = doc.getElementById("root").children;
-    
-                // turn menu into a dictionary
-                for (let i = 0; i < elements.length; i+=2){
-                    let title = elements[i].textContent;
-                    let items = elements[i+1].firstElementChild.innerHTML;
-                    if (title == "Main 1") {
-                        menu.main1 = items;
-                    } else if (title == "Main 2"){
-                        menu.main2 = items;
-                    } else if (title == "Main 3") {
-                        menu.main3 = items;
-                    } else if (title == "Vegan Main") {
-                        menu.vegan = items;
-                    } else if (title == "Allergen Choice") {
-                        menu.allergy = items;
-                    } else if (title == "Dessert") {
-                        menu.dessert = items;
-                    } else {continue;}
+            // If no data in Essies, assume Essies is closed 
+            if (jQuery.isEmptyObject(data.essies)) {
+                document.getElementById("essie_special").textContent =
+                    "Closed for the day"
+                document.getElementById("essie_mealplan").textContent =
+                    "Closed for the day"
+                for (item of document.getElementsByClassName("essieitem")) {
+                    item.textContent = ""
                 }
-    
-                // split submenus into arrays, sort, and stringify
-                for (let i in menu) {
-                    menu[i] = sortMains(menu[i].split(","));
-                    menu[i] = menu[i].join(", ").trim();
-                }
-    
-                // set the menu, with the lunch argument
-                setMenu(menu, 'l');
-            }
-    
-            // if dinner was not found, assume closed for dinner
-            // else, parse and set the HTML
-            if (d == -1) {
-                document.getElementById("dinner").textContent = "Closed for Dinner";
-            } else {
-                // lunch/brunch title
-                document.getElementById("dinner").textContent = title(data, d);
-    
-                var menu = {
-                    main1: '',
-                    main2: '',
-                    main3: '',
-                    vegan: '',
-                    allergy: '',
-                    dessert: ''
-                };
-    
-                var text = data.dining_center[d].html_description;
-                var dinneritems = '<div id="root">' + format(text) + '</div>';
-                var doc = new DOMParser().parseFromString(dinneritems, "text/xml");
-                var elements = doc.getElementById("root").children;
-    
-                // turn menu into a dictionary
-                for (let i = 0; i < elements.length; i += 2) {
-                    let title = elements[i].textContent;
-                    let items = elements[i + 1].firstElementChild.innerHTML;
-                    if (title == "Main 1") {
-                        menu.main1 = items;
-                    } else if (title == "Main 2") {
-                        menu.main2 = items;
-                    } else if (title == "Main 3") {
-                        menu.main3 = items;
-                    } else if (title == "Vegan Main") {
-                        menu.vegan = items;
-                    } else if (title == "Allergen Choice") {
-                        menu.allergy = items;
-                    } else if (title == "Dessert") {
-                        menu.dessert = items;
-                    } else { continue }
-                }
-    
-                // split submenus into arrays, sort, and stringify
-                for (let i in menu) {
-                    menu[i] = sortMains(menu[i].split(","));
-                    menu[i] = menu[i].join(", ").trim();
-                }
-    
-                // set the menu, with the lunch argument
-                setMenu(menu, 'd');
-            }
-            
-            // if essies data is not empty, parse and display essie items
-            if (!jQuery.isEmptyObject(data.essies)) {
+            } else { // else, set the menu
                 var str = data.essies[0].description;
-                var special = str.substring(
-                    str.indexOf("Special") + 7,
-                    str.lastIndexOf(". A meal")
-                );
-                var meal = str.substring(
-                    str.indexOf("food vendor will be") + 19,
-                    str.lastIndexOf(". Please be aware")
-                );
-    
+                var special = str.split('Today\'s Lunch Special ').pop().split('.')[0]
+                var vendors = ['Yangzi from Media', 'Dos Gringo\'s from Media',
+                           'Aston from Plum Pit Catering'];
+                var meal = 'No meal plan available';
+                for(let vendor of vendors){
+                    if(str.includes(vendor)){
+                        meal = vendor;
+                    }
+                }
+
                 // If the string description has "substantial" information (not missing
                 // menu item information), then update the menu.
                 // Else, assume Essie Mae's is closed and update.
-                if (str.length > 192) {
+                if (str.length > 180) {
                     document.getElementById("essie_special").textContent = special;
                     document.getElementById("essie_mealplan").textContent = meal;
                 } else {
@@ -371,15 +381,10 @@ Get(staticUrl).then(data => {
                         "Closed for the day";
                     document.getElementById("essie_mealplan").textContent =
                         "Closed for the day";
-                }
-            } else { // if essies information is not available, assume is closed
-                document.getElementById("essie_special").textContent =
-                    "Closed for the day"
-                document.getElementById("essie_mealplan").textContent =
-                    "Closed for the day"
+                } 
             }
         }
-    
+
         // Set user preferences
         function setPrefs() {
             if (localStorage.getItem("dark") == "false") {
@@ -396,7 +401,7 @@ Get(staticUrl).then(data => {
                 document.getElementById("mfer2").checked = true;
             }
         }
-    
+
         constructPage();
         setPrefs();
     
