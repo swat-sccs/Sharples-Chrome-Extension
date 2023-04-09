@@ -7,10 +7,11 @@
     <title>Sharples Menu</title>
     <link rel="stylesheet" href="style.css">
     <script src="jquery-3.6.1.js"></script>
-    <script src="popup.js"></script>
+    <script src="popup.js" type="module"></script>
+    <script src="DiningObject.js" type="module"></script>
 </head>
 
-<body class="test">
+<body>
     <!-- Beta Tag copy is below -->
     <!-- <abbr title="This feature is currently being tested!" class="beta tag">
         Beta
@@ -43,33 +44,33 @@
         <!-- Lunch and Dinner items below -->
         <h2 id="lunch" class="collapsible">Loading...</h2>
         <ul class="content" id="lunch_items">
-            <span class="item">Main 1</span>
+            <span class="lunch item">Main 1</span>
             <ul><li id="lmain1"></li></ul>
-            <span class="item">Main 2</span>
+            <span class="lunch item">Main 2</span>
             <ul><li id="lmain2"></li></ul>
-            <span class="item">Main 3</span>
+            <span class="lunch item">Main 3</span>
             <ul><li id="lmain3"></li></ul>
-            <span class="item">Vegan Main</span>
+            <span class="lunch item">Vegan Main</span>
             <ul><li id="lmainv"></li></ul>
-            <span class="item">Allergen Choice</span>
+            <span class="lunch item">Allergen Choice</span>
             <ul><li id="lmaina"></li></ul>
-            <span class="item">Dessert</span>
+            <span class="lunch item">Dessert</span>
             <ul><li id="lmaind"></li></ul>
         </ul>
 
         <h2 id="dinner" class="collapsible">Loading...</h2>
         <ul class="content" id="dinner_items">
-            <span class="item">Main 1</span>
+            <span class="dinner item">Main 1</span>
             <ul><li id="dmain1"></li></ul>
-            <span class="item">Main 2</span>
+            <span class="dinner item">Main 2</span>
             <ul><li id="dmain2"></li></ul>
-            <span class="item">Main 3</span>
+            <span class="dinner item">Main 3</span>
             <ul><li id="dmain3"></li></ul>
-            <span class="item">Vegan Main</span>
+            <span class="dinner item">Vegan Main</span>
             <ul><li id="dmainv"></li></ul>
-            <span class="item">Allergen Choice</span>
+            <span class="dinner item">Allergen Choice</span>
             <ul><li id="dmaina"></li></ul>
-            <span class="item">Dessert</span>
+            <span class="dinner item">Dessert</span>
             <ul><li id="dmaind"></li></ul>
         </ul>
 
@@ -78,25 +79,42 @@
             Essie Mae's (8:00am - 7:30pm)
         </h2>
         <div class="content">
-            <h3>Today's Lunch Special</h3>
-            <p class="essieitem" id="essie_special"></p>
-            <h3>Meal Plan Selection (3:00 - 7:00 PM)</h3>
-            <p class="essieitem" id="essie_mealplan"></p>
+            <h3 class="essie item">Today's Soup</h3>
+            <p class="essie" id="essie_soup"></p>
+            <h3 class="essie item">Today's Lunch Special</h3>
+            <p class="essie" id="essie_special"></p>
+            <h3 class="essie item">Meal Plan Selection (3:00 - 7:00 PM)</h3>
+            <p class="essie" id="essie_mealplan"></p>
+            <p id="essie_closed"></p>
         </div>
 
-        <!-- Contentious Orange Stripe -->
-        <hr>
-
-        <!-- Links below -->
-        <div id="link">
-            <a href="https://dash.swarthmore.edu/" id="dashlink">
-                More information on the Dash
-            </a>
-            <a href="https://forms.gle/5fS8ieox4cXbwzLZ6">
-                Have a suggestion or bug?
-            </a>
+        <div id="bottom">
+            <!-- Contentious Orange Stripe -->
+            <hr id="bar">
+    
+            <!-- Links below -->
+            <div id="links">
+                <a href="https://dash.swarthmore.edu/" id="dashlink">
+                    More info on the Dash
+                </a>
+                <a href="https://forms.gle/5fS8ieox4cXbwzLZ6">
+                    Suggestions/bugs?
+                </a>
+                <p id="button">
+                    Edit Tags
+                </p>
+            </div>
         </div>
         
+    </div>
+    <div id="tagMenu" class="overlay">
+        <p class="closebtn">&times;</p>
+        <div class="overlay-content">
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+            <p>test</p>
+        </div>
     </div>
 </body>
 

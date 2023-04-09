@@ -1,39 +1,4 @@
-// adds HTML elements in-text for tags
-// corny/punny titles can go to hell
-// this might be causing some lag when popup is loading, should optimize?
-function format(str) {
-    return str.replace(/::vegan::/g, vegan)
-        .replace(/::halal::/g, halal)
-        .replace(/::vegetarian::/g, veget)
-        .replace(/::egg::/g, egg)
-        .replace(/::milk::/g, milk)
-        .replace(/::soy::/g, soy)
-        .replace(/::wheat::/g, wheat)
-        .replace(/::fish::/g, fish)
-        .replace(/::gluten free::/g, glutenfree)
-        .replace(/::sesame::/g, sesame)
-        .replace(/::alcohol::/g, alcohol)
-        .replace(/::shellfish::/g, shellfish)
-        .replace(/::peanut::/g, peanut)
-        .replace(/::tree nut::/g, treenut)
-        .replace(/::locally sourced::/g, "")
-        .replace(/Classics/g, "Main 1")
-        .replace(/World of Flavor/g, "Main 2")
-        .replace(/Verdant & Vegan/g, "Vegan Main")
-        .replace(/Daily Kneads/g, "Dessert")
-        .replace(/Free Zone/g, "Allergen Choice")
-        .replace(/Spice</g, "Main 3<")
-        .replace(/font-bold text-gray-800 dark:text-gray-200/g, "item")
-        .replace(/&/g, 'and')
-        .replace(/ </g,"<")   // removes space between the item and tags
-}
-
-// get json asynchronously
-async function Get(url) {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
-}
+import { DiningObject } from "./DiningObject.js";
 
 // Keywords to sort by for menu items in order
 const keywords = ["chicken", "steak", "beef", "shrimp", "bacon", "sausage", 
@@ -43,27 +8,23 @@ const keywords = ["chicken", "steak", "beef", "shrimp", "bacon", "sausage",
 "seitan", "pollock", "masala", "lo mein", "chow mein", "pad thai", "pasta",
 "mahi", "bean bake", "catfish", "risotto", "meatloaf"];
 
-
-// URL to take JSON from
-const staticUrl = 'https://dash.swarthmore.edu/dining_json';
-
-// definition of the HTML dietary tags
-{
-    var vegan = '<abbr class="tag vegan" title="Vegan">v</abbr>'
-    var halal = '<abbr class="tag halal" title="Halal">h</abbr>'
-    var veget = '<abbr class="tag veget" title="Vegetarian">vg</abbr>'
-    var egg = '<abbr class="tag egg" title="Egg">e</abbr>'
-    var milk = '<abbr class="tag milk" title="Milk">m</abbr>'
-    var soy = '<abbr class="tag soy" title="Soy">s</abbr>'
-    var wheat = '<abbr class="tag wheat" title="Wheat">w</abbr>'
-    var fish = '<abbr class="tag fish" title="Fish">f</abbr>'
-    var glutenfree = '<abbr class="tag gf" title="Gluten Free">gf</abbr>'
-    var sesame = '<abbr class="tag sesame" title="Sesame">ses</abbr>'
-    var alcohol = '<abbr class="tag alcohol" title="Alcohol">alc</abbr>'
-    var shellfish = '<abbr class="tag shellfish" title="Shellfish">sf</abbr>'
-    var peanut = '<abbr class="tag peanut" title="Peanut">p</abbr>'
-    var treenut = '<abbr class="tag treenut" title="Tree Nut">tn</abbr>'
-}
+// dictionary of the HTML dietary tags
+const tags = {
+    vegan: '<abbr class="tag vegan" title="Vegan">v</abbr>',
+    halal: '<abbr class="tag halal" title="Halal">h</abbr>',
+    vegetarian: '<abbr class="tag veget" title="Vegetarian">vg</abbr>',
+    egg: '<abbr class="tag egg" title="Egg">e</abbr>',
+    milk: '<abbr class="tag milk" title="Milk">m</abbr>',
+    soy: '<abbr class="tag soy" title="Soy">s</abbr>',
+    wheat: '<abbr class="tag wheat" title="Wheat">w</abbr>',
+    fish: '<abbr class="tag fish" title="Fish">f</abbr>',
+    glutenfree: '<abbr class="tag gf" title="Gluten Free">gf</abbr>',
+    sesame: '<abbr class="tag sesame" title="Sesame">ses</abbr>',
+    alcohol: '<abbr class="tag alcohol" title="Alcohol">alc</abbr>',
+    shellfish: '<abbr class="tag shellfish" title="Shellfish">sf</abbr>',
+    peanut: '<abbr class="tag peanut" title="Peanut">p</abbr>',
+    treenut: '<abbr class="tag treenut" title="Tree Nut">tn</abbr>'
+};
 
 // Variables to store and get today's date elements
 {
@@ -76,338 +37,217 @@ const staticUrl = 'https://dash.swarthmore.edu/dining_json';
     var hour = today.getHours();
 }
 
-// get data asyncronously, and THEN start loading the page
-Get(staticUrl).then(data => {
-    // main Jquery function; code below only runs if document is loaded
-    $(document).ready(function(){
-        // Handles links
-        $('body').on('click', 'a', function () {
-            document.getElementById("debug").textContent = "clicked"
-            chrome.tabs.create({ url: $(this).attr('href') });
-            return false;
-        });
-        
-        // Handles dark mode and tag visibility toggles
-        function darkMode() {
-            // toggles dark mode
-            document.getElementById("inner").classList.toggle("dark-mode");
-            // updates based on stage
-            if (typeof (Storage) !== "undefined") {
-                if (localStorage.getItem("dark") == "false") { // turn on  dark mode
-                    localStorage.setItem("dark", "true");
-                    document.getElementById("mfer").checked = true;
-                } else {                          // turn off dark mode
-                    localStorage.setItem("dark", "false");
-                    document.getElementById("mfer").checked = false;
-                }
-            } else {
-                document.getElementById("debug").textContent = "If you see this message, email ale3@swarthmore.edu. Error Code: 12a";
-            }
-        }
+// main Jquery function; code below only runs if document is loaded
+$(document).ready(async function(){
+    // toggles tag menu
+    $('body').on('click', '#button', function () {
+        $('#tagMenu').toggle();
+    });
+    $('body').on('click', '.closebtn', function () {
+        $('#tagMenu').toggle();
+    });
+
+    // Handles links
+    $('body').on('click', 'a', function () {
+        document.getElementById("debug").textContent = "DEBUG PRINT:clicked, remove line 45";
+        chrome.tabs.create({ url: $(this).attr('href') });
+        return false;
+    });
     
-        function toggleTags() {
-            // toggles tags
-            // $('.tag').toggle();
-            // updates based on stage
-            if (typeof (Storage) !== "undefined") {
-                if (localStorage.getItem("tags") == "false") {  // turn on  tag visibility
-                    localStorage.setItem("tags", "true");
-                    document.getElementById("mfer2").checked = true;
-                    $('.tag').show();
-                } else {                         // turn off tag visibility
-                    localStorage.setItem("tags", "false");
-                    document.getElementById("mfer2").checked = false;
-                    $('.tag').hide();
-                }
-            } else {
-                document.getElementById("debug").textContent = 
-                "If you see this message, email ale3@swarthmore.edu. Error Code: 12b";
-            }
-        }
-    
-        // prioritzes the proteins and mains
-        // you can edit keywords to prioritize in the function
-        // takes a list, returns a sorted list
-        function sortMains(lst){
-            var newLst = [];
-            for (let i = 0; i < lst.length; i++) {
-                let item = lst[i].toLowerCase();
-                for (let k = 0; k < keywords.length; k++) {
-                    if (item.includes(keywords[k])) {
-                        newLst.unshift(lst[i].trim());
-                        break;
-                    } else {
-                        if (k == (keywords.length) - 1) {
-                            newLst.push(lst[i].trim());
-                        }
-                    }
-                }
-            }
-            lst = newLst;
-            return lst;
-        }
-    
-        // runs the command (darkMode) when the toggle switch is changed
-        document.getElementById("displayMode").addEventListener("change", darkMode);
-    
-        // runs the command (toggleTags) when the toggle switch is changed
-        document.getElementById("tagswitch").addEventListener("change", toggleTags);
-    
-        // Handles auto-opening of menus by time of day
-        var coll = document.getElementsByClassName("collapsible");
-        var i;
-        if (hour < 14) {
-            coll[0].classList.toggle("active");
-            var content = coll[0].nextElementSibling;
-            content.style.maxHeight = 100 + "%";
-        } else {
-            coll[1].classList.toggle("active");
-            var content = coll[1].nextElementSibling;
-            content.style.maxHeight = 100 + "%";
-        }
-    
-        // Handles collapsability of the menus
-        for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                for (let content of document.getElementsByTagName("h2")){
-                    content.nextElementSibling.style.maxHeight = null
-                }
-                var content = this.nextElementSibling;
-                if (content.style.maxHeight) {
-                    content.style.maxHeight = null;
-                } else {
-                    content.style.maxHeight = "100%";
-                }
-            });
-        }
-    
-        // Construct the page
-        function constructPage() {
-            // sets menu based on lrd (Lunch oR Dinner) value
-            // sanitizes HTML before setting
-            function setMenu(lst,lrd){
-                // set up an html script sanitizer for setHTML
-                const san = new Sanitizer();
-                document.getElementById(lrd + "main1").setHTML(lst.main1, { sanitizer: san })
-                document.getElementById(lrd + "main2").setHTML(lst.main2, { sanitizer: san })
-                document.getElementById(lrd + "main3").setHTML(lst.main3, { sanitizer: san })
-                document.getElementById(lrd + "mainv").setHTML(lst.vegan, { sanitizer: san })
-                document.getElementById(lrd + "maina").setHTML(lst.allergy, { sanitizer: san })
-                document.getElementById(lrd + "maind").setHTML(lst.dessert, { sanitizer: san })
-            }
-    
-            // debug print, press f12 to see console (on chrome)
-            console.log(data);
-    
-            // set title and date
-            document.getElementById("title").textContent =
-                "Narples - " + mm + " " + dd;
-    
-            // formats time and title into a single string for titles
-            function title(data, id) {
-                return data.dining_center[id].title + " (" + data.dining_center[id].short_time + ")"
-            }
-    
-            // If no data in the dining center, assume Narples is closed 
-            if (jQuery.isEmptyObject(data.dining_center)) {
-                document.getElementById("breakfast").textContent = "Closed for Breakfast";
-                document.getElementById("lunch").textContent = "Closed for Lunch";
-                document.getElementById("dinner").textContent = "Closed for Dinner";
-                for(item of document.getElementsByClassName("item")){
-                    item.textContent = ""
-                }
-            } else { // else, set the menu
-                var b = -1;
-                var l = -1;
-                var d = -1;
-
-                // define the breakfast, lunch/brunch, and dinner ID values
-                for (let i = 0; i < data.dining_center.length; i++) {
-                    if (data.dining_center[i].title == "Breakfast") {
-                        b = i;
-                    }
-                    if (data.dining_center[i].title == "Lunch" ||
-                        data.dining_center[i].title == "Brunch") {
-                        l = i;
-                    }
-                    if (data.dining_center[i].title == "Dinner") {
-                        d = i;
-                    }
-                }
-
-                // if breakfast was not found, assume closed for breakfast
-                // else, parse and set the HTML
-                if (b == -1) {
-                    document.getElementById("breakfast").textContent = "Closed for Breakfast";
-                } else {
-                    document.getElementById("breakfast").textContent = ("Open for Breakfast ("
-                        + data.dining_center[b].short_time + ")");
-
-                }
-
-                // if lunch was not found, assume is closed for lunch
-                // else, parse and set the HTML
-                if (l == -1) {
-                    document.getElementById("lunch").textContent = "Closed for Lunch";
-                } else {
-                    // lunch/brunch title
-                    document.getElementById("lunch").textContent = title(data, l);
-
-                    var menu = {
-                        main1: '',
-                        main2: '',
-                        main3: '',
-                        vegan: '',
-                        allergy: '',
-                        dessert: ''
-                    };
-
-                    var text = data.dining_center[l].html_description;
-                    var lunchitems = '<div id="root">' + format(text) + '</div>';
-                    var doc = new DOMParser().parseFromString(lunchitems, "text/xml");
-                    var elements = doc.getElementById("root").children;
-
-                    // turn menu into a dictionary
-                    for (let i = 0; i < elements.length; i += 2) {
-                        let title = elements[i].textContent;
-                        let items = elements[i + 1].firstElementChild.innerHTML;
-                        if (title == "Main 1") {
-                            menu.main1 = items;
-                        } else if (title == "Main 2") {
-                            menu.main2 = items;
-                        } else if (title == "Main 3") {
-                            menu.main3 = items;
-                        } else if (title == "Vegan Main") {
-                            menu.vegan = items;
-                        } else if (title == "Allergen Choice") {
-                            menu.allergy = items;
-                        } else if (title == "Dessert") {
-                            menu.dessert = items;
-                        } else { continue; }
-                    }
-
-                    // split submenus into arrays, sort, and stringify
-                    for (let i in menu) {
-                        menu[i] = sortMains(menu[i].split(","));
-                        menu[i] = menu[i].join(", ").trim();
-                    }
-
-                    // set the menu, with the lunch argument
-                    setMenu(menu, 'l');
-                }
-
-                // if dinner was not found, assume closed for dinner
-                // else, parse and set the HTML
-                if (d == -1) {
-                    document.getElementById("dinner").textContent = "Closed for Dinner";
-                } else {
-                    // lunch/brunch title
-                    document.getElementById("dinner").textContent = title(data, d);
-
-                    var menu = {
-                        main1: '',
-                        main2: '',
-                        main3: '',
-                        vegan: '',
-                        allergy: '',
-                        dessert: ''
-                    };
-
-                    var text = data.dining_center[d].html_description;
-                    var dinneritems = '<div id="root">' + format(text) + '</div>';
-                    var doc = new DOMParser().parseFromString(dinneritems, "text/xml");
-                    var elements = doc.getElementById("root").children;
-
-                    // turn menu into a dictionary
-                    for (let i = 0; i < elements.length; i += 2) {
-                        let title = elements[i].textContent;
-                        let items = elements[i + 1].firstElementChild.innerHTML;
-                        if (title == "Main 1") {
-                            menu.main1 = items;
-                        } else if (title == "Main 2") {
-                            menu.main2 = items;
-                        } else if (title == "Main 3") {
-                            menu.main3 = items;
-                        } else if (title == "Vegan Main") {
-                            menu.vegan = items;
-                        } else if (title == "Allergen Choice") {
-                            menu.allergy = items;
-                        } else if (title == "Dessert") {
-                            menu.dessert = items;
-                        } else { continue }
-                    }
-
-                    // split submenus into arrays, sort, and stringify
-                    for (let i in menu) {
-                        menu[i] = sortMains(menu[i].split(","));
-                        menu[i] = menu[i].join(", ").trim();
-                    }
-
-                    // set the menu, with the lunch argument
-                    setMenu(menu, 'd');
-                }
-            }
-
-            // If no data in Essies, assume Essies is closed 
-            if (jQuery.isEmptyObject(data.essies)) {
-                document.getElementById("essie_special").textContent =
-                    "Closed for the day"
-                document.getElementById("essie_mealplan").textContent =
-                    "Closed for the day"
-                for (item of document.getElementsByClassName("essieitem")) {
-                    item.textContent = ""
-                }
-            } else { // else, set the menu
-                var str = data.essies[0].description;
-                var special = str.split('Today\'s Lunch Special ').pop().split('.')[0]
-                var vendors = ['Yangzi from Media', 'Dos Gringo\'s from Media',
-                           'Aston from Plum Pit Catering'];
-                var meal = 'No meal plan available';
-                for(let vendor of vendors){
-                    if(str.includes(vendor)){
-                        meal = vendor;
-                    }
-                }
-
-                // If the string description has "substantial" information (not missing
-                // menu item information), then update the menu.
-                // Else, assume Essie Mae's is closed and update.
-                if (str.length > 180) {
-                    document.getElementById("essie_special").textContent = special;
-                    document.getElementById("essie_mealplan").textContent = meal;
-                } else {
-                    document.getElementById("essie_special").textContent =
-                        "Closed for the day";
-                    document.getElementById("essie_mealplan").textContent =
-                        "Closed for the day";
-                } 
-            }
-        }
-
-        // Set user preferences
-        function setPrefs() {
-            if (localStorage.getItem("dark") == "false") {
-                document.getElementById("mfer").checked = false;
-            } else {
+    // Handles dark mode and tag visibility toggles
+    function darkMode() {
+        // toggles dark mode
+        document.getElementById("inner").classList.toggle("dark-mode");
+        // updates based on stage
+        if (typeof (Storage) !== "undefined") {
+            if (localStorage.getItem("dark") == "false") { // turn on  dark mode
+                localStorage.setItem("dark", "true");
                 document.getElementById("mfer").checked = true;
-                document.getElementById("inner").classList.toggle("dark-mode");
+            } else {                          // turn off dark mode
+                localStorage.setItem("dark", "false");
+                document.getElementById("mfer").checked = false;
             }
-    
-            if (localStorage.getItem("tags") == "false") {
+        } else {
+            document.getElementById("debug").textContent = "If you see this message, email ale3@swarthmore.edu. Error Code: 12a";
+        }
+    }
+
+    function toggleTags() {
+        // toggles tags
+        // $('.tag').toggle();
+        // updates based on stage
+        if (typeof (Storage) !== "undefined") {
+            if (localStorage.getItem("tags") == "false") {  // turn on  tag visibility
+                localStorage.setItem("tags", "true");
+                document.getElementById("mfer2").checked = true;
+                $('.tag').show();
+            } else {                         // turn off tag visibility
+                localStorage.setItem("tags", "false");
                 document.getElementById("mfer2").checked = false;
                 $('.tag').hide();
-            } else {
-                document.getElementById("mfer2").checked = true;
             }
+        } else {
+            document.getElementById("debug").textContent = 
+            "If you see this message, email ale3@swarthmore.edu. Error Code: 12b";
+        }
+    }
+
+    // runs the command (darkMode) when the toggle switch is changed
+    document.getElementById("displayMode").addEventListener("change", darkMode);
+
+    // runs the command (toggleTags) when the toggle switch is changed
+    document.getElementById("tagswitch").addEventListener("change", toggleTags);
+
+    // Handles auto-opening of menus by time of day
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    if (hour < 14) {
+        coll[0].classList.toggle("active");
+        var content = coll[0].nextElementSibling;
+        content.style.maxHeight = 100 + "%";
+    } else {
+        coll[1].classList.toggle("active");
+        var content = coll[1].nextElementSibling;
+        content.style.maxHeight = 100 + "%";
+    }
+
+    // Handles collapsability of the menus
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            for (let content of document.getElementsByTagName("h2")){
+                content.nextElementSibling.style.maxHeight = null
+            }
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = "100%";
+            }
+        });
+    }
+
+    // Construct the page
+    function constructPage() {
+
+        // turns objectified menu into a parsed string, returned string 
+        // MUST BE SANITIZED.
+        function formatMenu(items,activeTags){
+            for(let i = 0; i < items.length; i++){
+                var string = items[i].item;
+                for (let prop of items[i].properties){
+                    if(activeTags.includes(prop)){
+                        string += tags[prop];
+                    };
+                };
+                items[i] = string;
+            };
+            return items.join(', ');
+        };
+
+        // set title and date
+        document.getElementById("title").textContent = "Narples - " + mm + " " + dd;
+
+        // if breakfast was not found, assume closed for breakfast
+        // else, parse, sanitize,and set the HTML
+        try {
+            var subtree = obj['Dining Center'].breakfast;
+            document.getElementById("breakfast").textContent = ("Open for Breakfast (" + subtree.start + ' - ' + subtree.end + ")");
+        } catch (error) {
+            console.log(error)
+            document.getElementById("breakfast").textContent = "Closed for Breakfast";
         }
 
-        constructPage();
-        setPrefs();
-    
-        // PLAYGROUND START, DELETE OR IMPLEMENT CODE PAST THIS POINT
-    
-    });
+        // set an HTML sanitizer for the menu items
+        const san = new Sanitizer();
+
+        var activeTags = ['vegan', 'vegetarian', 'peanut', 'egg', 'wheat']
+
+        // if lunch was not found, assume is closed for lunch
+        // else, parse, sanitize, and set the HTML
+        try {
+            subtree = obj['Dining Center'].lunch;
+            document.getElementById("lunch").textContent = "Lunch (" + subtree.start + ' - ' + subtree.end + ")";
+            document.getElementById('lmain1').setHTML(formatMenu(subtree['Classics'], activeTags), { sanitizer: san });
+            document.getElementById('lmain2').setHTML(formatMenu(subtree['World of Flavor'], activeTags), {sanitizer: san});
+            document.getElementById('lmain3').setHTML(formatMenu(subtree['Spice'], activeTags), {sanitizer: san});
+            document.getElementById('lmainv').setHTML(formatMenu(subtree['Verdant & Vegan'], activeTags), {sanitizer: san});
+            document.getElementById('lmaina').setHTML(formatMenu(subtree['Free Zone'], activeTags), {sanitizer: san});
+            // document.getElementById('lmaind').setHTML(formatMenu(subtree['Daily Kneads'], activeTags), { sanitizer: san });
+        } catch (error) {
+            console.log(error)
+            document.getElementById("lunch").textContent = "Closed for Lunch";
+            $('.lunch').toggle();
+        }
+
+        // if dinner was not found, assume closed for dinner
+        // else, parse, sanitize, and set the HTML
+        try {
+            subtree = obj['Dining Center'].dinner;
+            document.getElementById("dinner").textContent = "Dinner (" + subtree.start + ' - ' + subtree.end + ")";
+            document.getElementById('dmain1').setHTML(formatMenu(subtree['Classics'], activeTags), { sanitizer: san });
+            document.getElementById('dmain2').setHTML(formatMenu(subtree['World of Flavor'], activeTags), { sanitizer: san });
+            document.getElementById('dmain3').setHTML(formatMenu(subtree['Spice'], activeTags), { sanitizer: san });
+            document.getElementById('dmainv').setHTML(formatMenu(subtree['Verdant & Vegan'], activeTags), { sanitizer: san });
+            document.getElementById('dmaina').setHTML(formatMenu(subtree['Free Zone'], activeTags), { sanitizer: san });
+            document.getElementById('dmaind').textContent = subtree['Daily Kneads'];
+        } catch (error) {
+            console.log(error)
+            document.getElementById("dinner").textContent = "Closed for Dinner";
+            $('.dinner').toggle();
+        }
+
+        // If no data in Essies, assume Essies is closed 
+        try {
+            document.getElementById('essies_soup') = obj.Essies.soup;
+            document.getElementById('essies_special') = obj.Essies.lunch;
+            document.getElementById('essies_mealplan') = obj.Essies.meal;
+        } catch (error) {
+            console.log(error)
+            $('.essie').toggle();
+            document.getElementById('essie_closed').textContent = "Closed for the day";
+        }
+    }
+
+    // Set user preferences
+    function setPrefs() {
+        if (localStorage.getItem("dark") == "false") {
+            document.getElementById("mfer").checked = false;
+        } else {
+            document.getElementById("mfer").checked = true;
+            document.getElementById("inner").classList.toggle("dark-mode");
+        }
+
+        if (localStorage.getItem("tags") == "false") {
+            document.getElementById("mfer2").checked = false;
+            $('.tag').hide();
+        } else {
+            document.getElementById("mfer2").checked = true;
+        }
+    }
+
+    // Store the object under an alias, if you'd like
+    const obj = DiningObject();
+
+    // Wait for the object to fill in
+    await new Promise(r => setTimeout(r, 150));
+
+    console.log(obj);
+
+    constructPage();
+    setPrefs();
+
+    // PLAYGROUND START, DELETE OR IMPLEMENT CODE PAST THIS POINT
+
+    /**
+     * Notes to self: 
+     * So basically, make a popup menu for users to manage their 
+     * dietary tag visibility. When the user finishes and exits the screen,
+     * run the constructPage() command again to refresh the menus.
+     * 
+     * Make the setHTML into a forloop with nested try-catch statements?
+     */
+
 });
 
 

@@ -5,6 +5,7 @@
 /* Elements */
 body {
   width: 550px;
+  height: 600px;
   margin: 0px;
   background: none;
   background-color: none;
@@ -41,19 +42,21 @@ hr {
   margin: 15px -25px 0px -25px;
 }
 
-a {
+a, #button {
   font-weight: 500;
   color: inherit;
   display: inline-block;
-  margin: 12px 12px 0px 0px;
+  margin: 12px 12px 12px 0px;
   padding: 5px 5px;
   border-radius: 3px;
+  text-decoration: underline;
   transition: 0.5s;
 }
 
-a:hover {
+a:hover, #button:hover {
   transition: 0.5s;
   background-color: hsl(16, 75%, 67%);
+  cursor: pointer;
 }
 
 .item { /* Menu section titles */
@@ -68,9 +71,26 @@ a:hover {
   padding: 0px 20px 10px 20px;
   color: hsl(56, 6%, 94%);
   border-radius: 10px;
-  height: fit-content;
+  height: 582px;
   background-color: hsl(216, 13%, 13%);
   border: 4px solid hsl(216, 13%, 13%);
+}
+
+#essie_closed {
+  font-size: 15px !important;
+  margin: 15px 0 0 10px !important;
+}
+
+#links {
+  margin: 0 0 0 15px;
+}
+
+#bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: auto;
+  width: 100%;
 }
 
 /* Elements by Classes */
@@ -96,9 +116,9 @@ a:hover {
   padding: 0px 7px;
 }
 
-.essieitem {
-  font-size: 15px;
-  margin: 0 0 0 10px;
+.essie {
+  font-size: 15px !important;
+  margin: 0 0 0 10px !important;
 }
 
 .dark-mode {
@@ -202,7 +222,6 @@ a:hover {
   right: 0;
   bottom: 0;
   background-color: hsl(216, 33%, 25%);
-  -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
@@ -214,7 +233,6 @@ a:hover {
   left: 3px;
   bottom: 3px;
   background-color: hsl(56, 6%, 94%);
-  -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
@@ -223,14 +241,10 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(14px);
-  -ms-transform: translateX(14px);
   transform: translateX(14px);
 }
 
 .slider::after {
-  -webkit-transform: translateX(14px);
-  -ms-transform: translateX(14px);
   transform: translateX(14px);
 }
 
@@ -243,5 +257,43 @@ input:checked + .slider:before {
 }
 
 /* Sliders End */
+.overlay {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 1;
+  display: none;
+  top: 0;
+  left: 0;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.9);
+  overflow-x: hidden;
+}
 
-/*# sourceMappingURL=style.css.map */
+.overlay-content {
+  width: 100%;
+  text-align: left;
+  margin: 12% 0 0 0;
+}
+
+.overlay p {
+  margin: 0 0 0 5%;
+  text-decoration: none;
+  font-size: 24px;
+  color: hsl(56, 6%, 94%);
+  display: block;
+}
+
+.overlay p:hover,
+.overlay p:focus {
+  color: #f1f1f1;
+  cursor: pointer;
+}
+
+.overlay .closebtn {
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  font-size: 40px;
+  background-color: red;
+}/*# sourceMappingURL=style.css.map */
