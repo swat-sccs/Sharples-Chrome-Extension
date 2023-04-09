@@ -24,7 +24,7 @@ h1 {
 }
 
 h3 {
-    font-weight: 600;
+    font-weight: 700;
     margin: 10px 0px 0px 0px;
 }
 
@@ -315,17 +315,16 @@ input:checked+.slider:before {
     display: block;
 }
 
-.overlay p:hover,
-.overlay p:focus {
-    color: #f1f1f1;
-    cursor: pointer;
-}
-
 .overlay .closebtn {
     position: absolute;
     top: 0px;
     right: 20px;
     font-size: 40px;
     background-color: red;
+    cursor: pointer;
+}
+
+.overlay .closebtn:hover {
+    color:$orange;
 }
 

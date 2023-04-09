@@ -154,14 +154,14 @@ $(document).ready(async function(){
             var subtree = obj['Dining Center'].breakfast;
             document.getElementById("breakfast").textContent = ("Open for Breakfast (" + subtree.start + ' - ' + subtree.end + ")");
         } catch (error) {
-            console.log(error)
+            console.log("Breakfast not found.")
             document.getElementById("breakfast").textContent = "Closed for Breakfast";
         }
 
         // set an HTML sanitizer for the menu items
         const san = new Sanitizer();
 
-        var activeTags = ['vegan', 'vegetarian', 'peanut', 'egg', 'wheat']
+        var activeTags = ['vegan', 'vegetarian', 'halal', 'peanut', 'egg', 'wheat']
 
         // if lunch was not found, assume is closed for lunch
         // else, parse, sanitize, and set the HTML
@@ -169,15 +169,26 @@ $(document).ready(async function(){
             subtree = obj['Dining Center'].lunch;
             document.getElementById("lunch").textContent = "Lunch (" + subtree.start + ' - ' + subtree.end + ")";
             document.getElementById('lmain1').setHTML(formatMenu(subtree['Classics'], activeTags), { sanitizer: san });
-            document.getElementById('lmain2').setHTML(formatMenu(subtree['World of Flavor'], activeTags), {sanitizer: san});
-            document.getElementById('lmain3').setHTML(formatMenu(subtree['Spice'], activeTags), {sanitizer: san});
-            document.getElementById('lmainv').setHTML(formatMenu(subtree['Verdant & Vegan'], activeTags), {sanitizer: san});
-            document.getElementById('lmaina').setHTML(formatMenu(subtree['Free Zone'], activeTags), {sanitizer: san});
-            // document.getElementById('lmaind').setHTML(formatMenu(subtree['Daily Kneads'], activeTags), { sanitizer: san });
+            document.getElementById('lmain2').setHTML(formatMenu(subtree['World of Flavor'], activeTags), { sanitizer: san });
+            document.getElementById('lmain3').setHTML(formatMenu(subtree['Spice'], activeTags), { sanitizer: san });
+            document.getElementById('lmainv').setHTML(formatMenu(subtree['Verdant & Vegan'], activeTags), { sanitizer: san });
+            document.getElementById('lmaina').setHTML(formatMenu(subtree['Free Zone'], activeTags), { sanitizer: san });
+            document.getElementById('lmaind').setHTML(formatMenu(subtree['Daily Kneads'], activeTags), { sanitizer: san });
         } catch (error) {
-            console.log(error)
-            document.getElementById("lunch").textContent = "Closed for Lunch";
-            $('.lunch').toggle();
+            try {
+                subtree = obj['Dining Center'].brunch;
+                document.getElementById("lunch").textContent = "Lunch (" + subtree.start + ' - ' + subtree.end + ")";
+                document.getElementById('lmain1').setHTML(formatMenu(subtree['Classics'], activeTags), { sanitizer: san });
+                document.getElementById('lmain2').setHTML(formatMenu(subtree['World of Flavor'], activeTags), { sanitizer: san });
+                document.getElementById('lmain3').setHTML(formatMenu(subtree['Spice'], activeTags), { sanitizer: san });
+                document.getElementById('lmainv').setHTML(formatMenu(subtree['Verdant & Vegan'], activeTags), { sanitizer: san });
+                document.getElementById('lmaina').setHTML(formatMenu(subtree['Free Zone'], activeTags), { sanitizer: san });
+                document.getElementById('lmaind').setHTML(formatMenu(subtree['Daily Kneads'], activeTags), { sanitizer: san });
+            } catch (error) {
+                console.log(error)
+                document.getElementById("lunch").textContent = "Closed for Lunch";
+                $('.lunch').toggle();
+            }
         }
 
         // if dinner was not found, assume closed for dinner
@@ -190,7 +201,7 @@ $(document).ready(async function(){
             document.getElementById('dmain3').setHTML(formatMenu(subtree['Spice'], activeTags), { sanitizer: san });
             document.getElementById('dmainv').setHTML(formatMenu(subtree['Verdant & Vegan'], activeTags), { sanitizer: san });
             document.getElementById('dmaina').setHTML(formatMenu(subtree['Free Zone'], activeTags), { sanitizer: san });
-            document.getElementById('dmaind').textContent = subtree['Daily Kneads'];
+            document.getElementById('dmaind').setHTML(formatMenu(subtree['Daily Kneads'], activeTags), { sanitizer: san });
         } catch (error) {
             console.log(error)
             document.getElementById("dinner").textContent = "Closed for Dinner";
@@ -198,12 +209,17 @@ $(document).ready(async function(){
         }
 
         // If no data in Essies, assume Essies is closed 
-        try {
-            document.getElementById('essies_soup') = obj.Essies.soup;
-            document.getElementById('essies_special') = obj.Essies.lunch;
-            document.getElementById('essies_mealplan') = obj.Essies.meal;
-        } catch (error) {
-            console.log(error)
+        subtree = obj.Essies;
+        if (!$.isEmptyObject(subtree)){
+            for(let item in subtree){
+                document.getElementById('essies_'+item).textContent = subtree[item];
+            }
+            for (let child of document.getElementById('essiesBlock').getElementsByTagName('h3')){
+                if(!child.nextElementSibling.textContent){
+                    $(child).toggle();
+                }
+            }
+        } else {
             $('.essie').toggle();
             document.getElementById('essie_closed').textContent = "Closed for the day";
         }
@@ -227,10 +243,7 @@ $(document).ready(async function(){
     }
 
     // Store the object under an alias, if you'd like
-    const obj = DiningObject();
-
-    // Wait for the object to fill in
-    await new Promise(r => setTimeout(r, 150));
+    const obj = await DiningObject();
 
     console.log(obj);
 
