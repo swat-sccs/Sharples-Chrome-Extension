@@ -1,7 +1,7 @@
 # sharples-chrome-extension
 Chrome Extension that displays a popup of the Dining Center's Menu
 
-Contributors:
+## Contributors: ##
 
 - Written by Alex Le, Class of 2024
 - Designed by Ark Lu, Class of 2024
@@ -36,7 +36,7 @@ developer mode
 5) Choose the folder that you downloaded 
 6) Viola, extension is loaded.
 
-IF YOU ARE INSTALLING FOR CHROME:
+## IF YOU ARE INSTALLING FOR CHROME: ##
 1) Click on the "Extensions" icon at the top right corner of 
 the browser (puzzle piece icon, to the right of the URL bar).
 2) Find "Sharples Menu" under the newly opened list
@@ -44,7 +44,7 @@ the browser (puzzle piece icon, to the right of the URL bar).
 4) In the newly appeared icon next to the "Extensions" icon 
 you clicked on in step 1, click on the icon to see the menu.
 
-IF YOU ARE INSTALLING FOR FIREFOX:
+## IF YOU ARE INSTALLING FOR FIREFOX: ##
 1) Delete "manifest.json"
 2) Rename "manifest-firefox.json" to "manifest.json"
 3) Open Firefox
@@ -56,7 +56,7 @@ IF YOU ARE INSTALLING FOR FIREFOX:
 corner of the screen, click the icon to see the menu.
 
 
-Things to add in the next versions:
+## Things to add in the next versions: ##
  - Menus of the week/day after
     - Show menu of tomorrow (highlighted or bolded) after dinner of today
  - Transition to a new .js framework...? (Update 4.0)
