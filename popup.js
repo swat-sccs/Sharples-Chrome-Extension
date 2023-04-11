@@ -58,6 +58,7 @@ $(document).ready(async function(){
     function darkMode() {
         // toggles dark mode
         document.getElementById("inner").classList.toggle("dark-mode");
+        document.getElementById("content").classList.toggle("content-dark-mode");
         // updates based on stage
         if (typeof (Storage) !== "undefined") {
             if (localStorage.getItem("dark") == "false") { // turn on  dark mode
@@ -232,6 +233,7 @@ $(document).ready(async function(){
         } else {
             document.getElementById("mfer").checked = true;
             document.getElementById("inner").classList.toggle("dark-mode");
+            document.getElementById("content").classList.toggle("content-dark-mode");
         }
 
         if (localStorage.getItem("tags") == "false") {
@@ -259,7 +261,23 @@ $(document).ready(async function(){
      * run the constructPage() command again to refresh the menus.
      * 
      * Make the setHTML into a forloop with nested try-catch statements?
+     * 
+     * 
      */
+    const konami = "ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightbaEnter";
+    const node = document.getElementById("node");
+    node.volume = 0.05;
+    var keyStrokes = '';
+    document.onkeydown = function (data) {
+        // const newSound = node.cloneNode();
+        // newSound.volume = 0.05;
+        // newSound.play();
+        keyStrokes += data.key;
+        if (keyStrokes.includes(konami)){
+            keyStrokes = '';
+            node.play();
+        };
+    };
 
 });
 

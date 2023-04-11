@@ -71,10 +71,11 @@ function objectifier(venue, html) {
             const KBSoup = KBSoupMatch ? KBSoupMatch[1].trim() : null;
             ret['soup'] = KBSoup;
 
-            const menuMatch = html.match(/<u><\/u>(.+?)<u><\/u>/g);
+            // const menuMatch = html.match(/<u><\/u>(.+?)<u><\/u>/g); //(old)
+            const menuMatch = html.match(/menu\s+<\/b>(.+)/gi);
+            // console.log(menuMatch)
             if (menuMatch) {
-                const items = menuMatch[1].split('<br>').map(item => item.trim());
-
+                const items = menuMatch[0].split('<br>').map(item => item.trim());
                 const menuItems = items.slice(1).map(item => {
                     const propertiesRegex = /(?:\(([^)]+)\))/g;
                     const propertiesMatch = item.match(propertiesRegex);
