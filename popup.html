@@ -12,83 +12,101 @@
 </head>
 
 <body>
+    <audio id="node" src="node.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
     <!-- Beta Tag copy is below -->
     <!-- <abbr title="This feature is currently being tested!" class="beta tag">
         Beta
     </abbr> -->
 
     <div class="dark-mode" id="inner">
-        <!-- Title, date, and dark mode switch -->
-        <h1 id="title">Narples</h1>
-        <div class="inline">
-            <h6>Light / Dark</h6>
-            <label class="switch" id="displayMode">
-                <input type="checkbox" id="mfer">
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <div class="inline">
-            <h6>Tags Off/On</h6>
-            <label class="switch" id="tagswitch">
-                <input type="checkbox" id="mfer2">
-                <span class="slider round"></span>
-            </label>
-        </div>
 
-        <h3 id="breakfast">Breakfast</h3>
+        <div id="headers">
+            <!-- Title, date, and dark mode switch -->
+            <h1 id="title">Narples</h1>
+            <div class="inline">
+                <h6>Light / Dark</h6>
+                <label class="switch" id="displayMode">
+                    <input type="checkbox" id="mfer">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <div class="inline">
+                <h6>Tags Off/On</h6>
+                <label class="switch" id="tagswitch">
+                    <input type="checkbox" id="mfer2">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
 
         <!-- Debug print element; user should never see this element -->
         <h3 id="debug"></h3>
 
+        <div id="main">
+            <div id="navigation">
+                <!-- titles go here -->
+                <button class="tab" id="breakfastTab">Breakfast</button>
+                <button class="tab" id="lunchTab">Lunch</button>
+                <button class="tab" id="dinnerTab">Dinner</button>
+                <button class="tab" id="EssiesTab">Essie's</button>
+                <button class="tab" id="KohlbergTab">Kohlberg</button>
+            </div>
+            <div class="content-dark-mode" id="content">
+                <!-- menu content goes here -->
+                <h3 id="breakfast">Breakfast</h3>
+                
+                <!-- Lunch and Dinner items below -->
+                <h2 id="lunch" class="collapsible">Loading...</h2>
+                <ul class="content" id="lunch_items">
+                    <span class="lunch item">Main 1</span>
+                    <p id="lmain1"></p>
+                    <span class="lunch item">Main 2</span>
+                    <p id="lmain2"></p>
+                    <span class="lunch item">Main 3</span>
+                    <p id="lmain3"></p>
+                    <span class="lunch item">Vegan Main</span>
+                    <p id="lmainv"></p>
+                    <span class="lunch item">Allergen Choice</span>
+                    <p id="lmaina"></p>
+                    <span class="lunch item">Dessert</span>
+                    <p id="lmaind"></p>
+                </ul>
         
-        <!-- Lunch and Dinner items below -->
-        <h2 id="lunch" class="collapsible">Loading...</h2>
-        <ul class="content" id="lunch_items">
-            <span class="lunch item">Main 1</span>
-            <ul><li id="lmain1"></li></ul>
-            <span class="lunch item">Main 2</span>
-            <ul><li id="lmain2"></li></ul>
-            <span class="lunch item">Main 3</span>
-            <ul><li id="lmain3"></li></ul>
-            <span class="lunch item">Vegan Main</span>
-            <ul><li id="lmainv"></li></ul>
-            <span class="lunch item">Allergen Choice</span>
-            <ul><li id="lmaina"></li></ul>
-            <span class="lunch item">Dessert</span>
-            <ul><li id="lmaind"></li></ul>
-        </ul>
-
-        <h2 id="dinner" class="collapsible">Loading...</h2>
-        <ul class="content" id="dinner_items">
-            <span class="dinner item">Main 1</span>
-            <ul><li id="dmain1"></li></ul>
-            <span class="dinner item">Main 2</span>
-            <ul><li id="dmain2"></li></ul>
-            <span class="dinner item">Main 3</span>
-            <ul><li id="dmain3"></li></ul>
-            <span class="dinner item">Vegan Main</span>
-            <ul><li id="dmainv"></li></ul>
-            <span class="dinner item">Allergen Choice</span>
-            <ul><li id="dmaina"></li></ul>
-            <span class="dinner item">Dessert</span>
-            <ul><li id="dmaind"></li></ul>
-        </ul>
-
-        <!-- Essie Maes Menu Here -->
-        <h2 id="essie" class="collapsible">
-            Essie Mae's (8:00am - 7:30pm)
-        </h2>
-        <div class="content" id="essiesBlock">
-            <h3 class="essie item">Today's Soup</h3>
-            <p class="essie" id="essies_soup"></p>
-            <h3 class="essie item">Today's Lunch Special</h3>
-            <p class="essie" id="essies_lunch"></p>
-            <h3 class="essie item">Meal Plan Selection (3:00 - 7:00 PM)</h3>
-            <p class="essie" id="essies_meal"></p>
-            <p id="essie_closed"></p>
+                <h2 id="dinner" class="collapsible">Loading...</h2>
+                <ul class="content" id="dinner_items">
+                    <span class="dinner item">Main 1</span>
+                    <p id="dmain1"></p>
+                    <span class="dinner item">Main 2</span>
+                    <p id="dmain2"></p>
+                    <span class="dinner item">Main 3</span>
+                    <p id="dmain3"></p>
+                    <span class="dinner item">Vegan Main</span>
+                    <p id="dmainv"></p>
+                    <span class="dinner item">Allergen Choice</span>
+                    <p id="dmaina"></p>
+                    <span class="dinner item">Dessert</span>
+                    <p id="dmaind"></p>
+                </ul>
+        
+                <!-- Essie Maes Menu Here -->
+                <h2 id="essie" class="collapsible">
+                    Essie Mae's (8:00am - 7:30pm)
+                </h2>
+                <div class="content" id="essiesBlock">
+                    <h3 class="item essie">Today's Soup</h3>
+                    <p class="essie" id="essies_soup"></p>
+                    <h3 class="item essie">Today's Lunch Special</h3>
+                    <p class="essie" id="essies_special"></p>
+                    <h3 class="item essie">Meal Plan Selection (3:00 - 7:00 PM)</h3>
+                    <p class="essie" id="essies_meal"></p>
+                    <p id="essie_closed"></p>
+                </div>
+            </div>
         </div>
 
-        <div id="bottom">
+        <div id="footer">
             <!-- Contentious Orange Stripe -->
             <hr id="bar">
     
