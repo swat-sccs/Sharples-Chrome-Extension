@@ -6,9 +6,8 @@ Chrome Extension that displays a popup of the Dining Center's Menu
 - Written and Designed by Alex Le, Class of 2024
 - Co-designed by Ark Lu, Class of 2024
 
-Gets and parses a JSON file from Swarthmore and nicely formats it
-into a little popup chrome extension. You can find the 
-extension here:
+Displays the Swarthmore College Dining options in a nice
+little popup chrome extension. You can find the extension here:
 
 Chrome: https://tinyurl.com/sharpleschromeext
 
@@ -21,6 +20,11 @@ The only part of the code we do not own is jquery-3.6.1.js.
 All rights, work, etc are all reserved by the creators of
 JQuery. This program only uses it as a local file in the
 extension.
+
+DiningObject.js is a library developed Alex Le '24 at SCCS
+that turns the dining.json given by the dash to a properly
+and completely objectified menu, complete with properties,
+times, sections, and dietary information.
 
 You can access the JSON file that contains the dining hall
 menu information at the link:
