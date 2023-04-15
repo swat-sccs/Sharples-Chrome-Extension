@@ -3,8 +3,8 @@ Chrome Extension that displays a popup of the Dining Center's Menu
 
 ## Contributors: ##
 
-- Written by Alex Le, Class of 2024
-- Designed by Ark Lu, Class of 2024
+- Written and Designed by Alex Le, Class of 2024
+- Co-designed by Ark Lu, Class of 2024
 
 Gets and parses a JSON file from Swarthmore and nicely formats it
 into a little popup chrome extension. You can find the 
