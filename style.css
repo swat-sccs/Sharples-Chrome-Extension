@@ -16,36 +16,46 @@ h1 {
   display: inline-block;
 }
 
+h2 {
+  margin-block: 0;
+}
+
 h3 {
   font-weight: 700;
   margin: 0px 0px 0px 0px;
 }
 
-ul {
-  list-style-type: none;
-  margin: 15px 0 0 0;
-  padding-left: 10px;
-  width: auto;
-  overflow: hidden;
-  font-size: 15px !important;
-}
-
 p {
   margin: 0 0 10px 15px;
+  font-size: initial;
 }
 
-.item { /* Menu section titles */
-  font-weight: 500;
-  font-size: 125%;
-  padding-top: 10px;
+table {
+  font-family: inherit;
+  font-size: large;
+  background-color: hsl(216, 13%, 10%);
+  color: white;
+  border: 2px solid hsl(56, 6%, 94%);
+  border-collapse: collapse;
+  margin: auto;
 }
 
-/* Elements by Ids */
+td {
+  padding: 0 15px;
+}
+
+th {
+  border: 2px solid hsl(56, 6%, 94%);
+  padding: 5px 15px;
+}
+
+/* Elements by Sections */
 #inner {
   font-family: Raleway;
   padding: 0px 10px 0px 10px;
   color: hsl(56, 6%, 94%);
   height: 600px;
+  width: 630px;
   position: relative;
   background-color: hsl(216, 13%, 10%);
 }
@@ -64,57 +74,12 @@ p {
   width: 60px;
   margin: 0 0 5px 0;
 }
-#headers .switch {
-  position: relative;
-  display: inline-block;
-  width: 30px;
-  height: 16px;
-}
-#headers .switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-#headers .slider {
-  cursor: pointer;
-  position: absolute;
-  top: 0px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: hsl(216, 33%, 22%);
-  transition: 0.4s;
-}
-#headers .slider:before {
-  position: absolute;
-  content: "";
-  height: 10px;
-  width: 10px;
-  left: 3px;
-  bottom: 3px;
-  background-color: hsl(56, 6%, 94%);
-  transition: 0.4s;
-}
-#headers input:checked + .slider {
-  background-color: hsl(16, 75%, 67%);
-}
-#headers input:checked + .slider:before {
-  transform: translateX(14px);
-}
-#headers .slider::after {
-  transform: translateX(14px);
-}
-#headers .slider.round {
-  border-radius: 16px;
-}
-#headers .slider.round:before {
-  border-radius: 50%;
-}
 
 #main {
   position: relative;
   margin-top: 10px;
-  height: 445px;
+  height: 500px;
+  width: inherit;
   color: inherit;
   box-shadow: 0px 0px 8px 4px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -122,6 +87,8 @@ p {
   /* Tags end */
 }
 #main #navigation {
+  position: absolute;
+  top: 0;
   display: flex;
   width: 100%;
 }
@@ -130,7 +97,7 @@ p {
   font-size: 18px;
   font-weight: 600;
   margin: 0;
-  background-color: hsl(216, 33%, 18%);
+  background-color: hsl(216, 33%, 16%);
   color: hsl(56, 6%, 94%);
   transition-duration: 0.3s;
   border: 0;
@@ -140,18 +107,20 @@ p {
   border-top-left-radius: 5px;
 }
 #main #navigation .tab:hover {
-  background-color: hsl(216, 33%, 22%);
+  background-color: hsl(216, 33%, 35%);
   transition-duration: 0.3s;
   cursor: pointer;
 }
 #main #content {
-  background-color: hsl(216, 33%, 26%);
-  border: 5px solid hsl(216, 33%, 22%);
+  position: absolute;
+  top: 33px;
+  background-color: hsl(216, 33%, 30%);
+  border: 5px solid hsl(216, 33%, 25%);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  margin: 0;
   padding: 5px;
-  height: inherit;
+  height: 447px;
+  width: 610px;
   overflow-y: scroll;
   color: inherit;
 }
@@ -236,6 +205,7 @@ p {
 #footer a,
 #footer #button {
   font-weight: 500;
+  font-size: inherit;
   color: inherit;
   display: inline-block;
   margin: 5px 5px;
@@ -252,33 +222,7 @@ p {
   box-shadow: 2px 4px 4px -1px rgba(0, 0, 0, 0.2);
 }
 
-#essie_closed {
-  font-size: 15px !important;
-  margin: 15px 0 0 10px !important;
-}
-
 /* Elements by Classes */
-.content {
-  line-height: 20px;
-  width: inherit;
-  overflow: hidden;
-  max-height: 0;
-}
-
-.collapsible:hover {
-  text-decoration: underline;
-}
-
-.collapsible {
-  margin-top: -5px;
-  margin-bottom: -10px;
-  cursor: pointer;
-}
-
-.essie {
-  margin: 5px 0 0 10px !important;
-}
-
 .dark-mode {
   background-color: hsl(56, 6%, 94%) !important;
   color: hsl(216, 13%, 10%) !important;
@@ -289,12 +233,74 @@ p {
   color: hsl(216, 13%, 10%) !important;
 }
 
+.switch, .tagswitch {
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  height: 16px;
+  margin-top: 7px;
+}
+
+#darkSwitch, #toggleTags {
+  margin-top: 0;
+}
+
+.switch input, .tagswitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: hsl(216, 33%, 25%);
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 10px;
+  width: 10px;
+  left: 3px;
+  bottom: 3px;
+  background-color: hsl(56, 6%, 94%);
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: hsl(16, 75%, 67%);
+}
+
+input:checked + .slider:before {
+  transform: translateX(14px);
+}
+
+.slider::after {
+  transform: translateX(14px);
+}
+
+.slider.round {
+  border-radius: 16px;
+  height: 16px;
+  width: 30px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
 .overlay {
   height: 100%;
   width: 100%;
   position: fixed;
   z-index: 1;
-  display: none;
+  text-align: center;
   top: 0;
   left: 0;
   background-color: rgb(0, 0, 0);
@@ -303,9 +309,11 @@ p {
 }
 
 .overlay-content {
-  width: 100%;
-  text-align: left;
-  margin: 12% 0 0 0;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .overlay p {
@@ -321,7 +329,6 @@ p {
   top: 0px;
   right: 20px;
   font-size: 40px;
-  background-color: red;
   cursor: pointer;
 }
 

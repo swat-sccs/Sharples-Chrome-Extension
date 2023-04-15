@@ -1,12 +1,12 @@
 import { DiningObject } from "./DiningObject.js";
 
-// Keywords to sort by for menu items in order
-const keywords = ["chicken", "steak", "beef", "shrimp", "bacon", "sausage", 
-"pork", "pot roast", "meatball", "lamb", "turkey", "tilapia", "salmon", "wing", 
-"fried rice", "curry", "aloo gobi", "pizza", "vindaloo", "cod", "fish", "pollock",
-"falafel", "catfish", "quesadilla", "pancake", "waffle", "tempeh", "tofu", 
-"seitan", "pollock", "masala", "lo mein", "chow mein", "pad thai", "pasta",
-"mahi", "bean bake", "catfish", "risotto", "meatloaf"];
+// // Keywords to sort by for menu items in order
+// const keywords = ["chicken", "steak", "beef", "shrimp", "bacon", "sausage", 
+// "pork", "pot roast", "meatball", "lamb", "turkey", "tilapia", "salmon", "wing", 
+// "fried rice", "curry", "aloo gobi", "pizza", "vindaloo", "cod", "fish", "pollock",
+// "falafel", "catfish", "quesadilla", "pancake", "waffle", "tempeh", "tofu", 
+// "seitan", "pollock", "masala", "lo mein", "chow mein", "pad thai", "pasta",
+// "mahi", "bean bake", "catfish", "risotto", "meatloaf"];
 
 // dictionary of the HTML dietary tags
 const tags = {
@@ -39,6 +39,8 @@ const tags = {
 
 // main Jquery function; code below only runs if document is loaded
 $(document).ready(async function(){
+    const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
+
     // toggles tag menu
     $('body').on('click', '#button', function () {
         $('#tagMenu').toggle();
@@ -94,46 +96,56 @@ $(document).ready(async function(){
     }
 
     // runs the command (darkMode) when the toggle switch is changed
-    document.getElementById("displayMode").addEventListener("change", darkMode);
+    document.getElementById("darkSwitch").addEventListener("change", darkMode);
 
     // runs the command (toggleTags) when the toggle switch is changed
-    document.getElementById("tagswitch").addEventListener("change", toggleTags);
+    document.getElementById("toggleTags").addEventListener("change", toggleTags);
 
-    // Handles auto-opening of menus by time of day
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
-    if (hour < 14) {
-        coll[0].classList.toggle("active");
-        var content = coll[0].nextElementSibling;
-        content.style.maxHeight = 100 + "%";
-    } else {
-        coll[1].classList.toggle("active");
-        var content = coll[1].nextElementSibling;
-        content.style.maxHeight = 100 + "%";
-    }
+    const toggles = document.getElementsByClassName("tagswitch");
 
-    // Handles collapsability of the menus
-    for (i = 0; i < coll.length; i++) {
-        coll[i].addEventListener("click", function () {
-            this.classList.toggle("active");
-            for (let content of document.getElementsByTagName("h2")){
-                content.nextElementSibling.style.maxHeight = null
-            }
-            var content = this.nextElementSibling;
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-            } else {
-                content.style.maxHeight = "100%";
-            }
-        });
+    Array.from(toggles).forEach(function (toggle) {
+        console.log(toggle.id + "event listener added")
+        // toggle.addEventListener('change', myFunction(toggle.id));
+    });
+
+    // set the active tab's css style
+    function setActiveTab (activeTabID){
+        for (let tab of $('.tab')) {
+            tab.style = ""
+        }
+        document.getElementById(activeTabID).style["backgroundColor"] = "hsl(216, 33%, 25%)"
     }
 
     // Construct the page
     function constructPage() {
+        $('body').on('click', '#breakfastTab', function () {
+            setMenu(obj['Dining Center'].breakfast, "Dining Center");
+            setActiveTab("breakfastTab");
+        });
+        $('body').on('click', '#lunchTab', function () {
+            setMenu(obj['Dining Center'].lunch, "Dining Center");
+            setActiveTab("lunchTab");
+        });
+        $('body').on('click', '#dinnerTab', function () {
+            setMenu(obj['Dining Center'].dinner, "Dining Center");
+            setActiveTab("dinnerTab");
+        });
+        $('body').on('click', '#EssiesTab', function () {
+            setMenu(obj.Essies, "Essies");
+            setActiveTab("EssiesTab");
+        });
+        $('body').on('click', '#KohlbergTab', function () {
+            setMenu(obj.Kohlberg, "Kholberg");
+            setActiveTab("KohlbergTab");
+        });
+
+        // set title and date
+        document.getElementById("title").textContent = "Narples - " + mm + " " + dd;
 
         // turns objectified menu into a parsed string, returned string 
         // MUST BE SANITIZED.
         function formatMenu(items,activeTags){
+            var newLst = [];
             for(let i = 0; i < items.length; i++){
                 var string = items[i].item;
                 for (let prop of items[i].properties){
@@ -141,90 +153,164 @@ $(document).ready(async function(){
                         string += tags[prop];
                     };
                 };
-                items[i] = string;
+                newLst.push(string);
             };
-            return items.join(', ');
+            return newLst.join(', ');
         };
 
-        // set title and date
-        document.getElementById("title").textContent = "Narples - " + mm + " " + dd;
+        // unpuns the menu names
+        function unpun(title){
+            return title
+                .replace("Classics", "Menu 1")
+                .replace("World of Flavor", "Menu 2")
+                .replace("Spice", "Menu 3")
+                .replace("Verdant & Vegan", "Vegan")
+                .replace("Free Zone", "Allergen Choice")
+                .replace("Daily Kneads", "Dessert")
+                .replace("Field of Greens", "Salad")
+                .replace("Meal", "Meal Plan Selection")
+                .replace("Special", "Lunch Special")
+                .replace("Soup", "Daily Soup")
+        };
 
-        // if breakfast was not found, assume closed for breakfast
-        // else, parse, sanitize,and set the HTML
-        try {
-            var subtree = obj['Dining Center'].breakfast;
-            document.getElementById("breakfast").textContent = ("Open for Breakfast (" + subtree.start + ' - ' + subtree.end + ")");
+        function setMenu(subtree, venue){
+            // clear menu board first
+            const board = document.getElementById("menu");
+            while (board.firstChild) {
+                board.removeChild(board.firstChild);
+            };
+
+            // if given data empty, display a closed message
+            if (!Object.keys(subtree).length) {
+                console.log("Selected menu contains no data.");
+                const close = document.createElement("h2");
+                const bar = document.createElement("hr");
+                close.textContent = "Venue is closed";
+                document.getElementById("menu").appendChild(close);
+                document.getElementById("menu").appendChild(bar);
+                return;
+            };
+
+            // set an HTML sanitizer for the menu items
+            const san = new Sanitizer();
+
+            // temporarily set list of Tags that we want to display
+            // and discretely define what sections are allowed
+            var activeTags = ['vegan', 'vegetarian', 'halal', 'peanut', 'egg', 'wheat'];
+            const inclusions = [
+                "Classics",
+                "World of Flavor",
+                "Spice",
+                "Verdant & Vegan",
+                "Free Zone",
+                "Field of Greens",
+                "Daily Kneads",
+                "soup",
+                "lunch",
+                "special",
+                "menu",
+                "meal"
+            ];
+
+            // set the menu time
+            const timeElement = document.createElement('h2');
+            const timeText = subtree.start + ' - ' + subtree.end;
+            timeElement.textContent = "Hours: " + timeText;
+            document.getElementById("menu").appendChild(timeElement);
+            const bar = document.createElement('hr');
+            document.getElementById("menu").appendChild(bar);
+
+            switch (venue){
+                case 'Dining Center':
+                    var errors = [];
+
+                    // set the menu contents
+                    for (let menu of inclusions) {
+                        if (subtree[menu]) {
+                            const titleElement = document.createElement('h2');
+                            const titleText = menu;
+                            titleElement.textContent = unpun(titleText);
+                            document.getElementById("menu").appendChild(titleElement);
+
+                            const menuElement = document.createElement('p');
+                            const menuText = formatMenu(subtree[menu], activeTags);
+                            menuElement.setHTML(menuText, { sanitizer: san });
+                            document.getElementById("menu").appendChild(menuElement);
+                        } else {
+                            errors.push(menu);
+                        };
+                    };
+                    console.log("Menus not found: " + errors.join(", "));
+                    break;
+                case 'Essies':
+                    var errors = [];
+
+                    // set the menu contents
+                    for (let menu of inclusions) {
+                        if (subtree[menu]) {
+                            const titleElement = document.createElement('h2');
+                            const titleText = capitalize(menu);
+                            titleElement.textContent = unpun(titleText);
+                            document.getElementById("menu").appendChild(titleElement);
+
+                            const menuElement = document.createElement('p');
+                            const menuText = subtree[menu];
+                            menuElement.setHTML(menuText, { sanitizer: san });
+                            document.getElementById("menu").appendChild(menuElement);
+                        } else {
+                            errors.push(menu);
+                        };
+                    };
+                    console.log("Menus not found: " + errors.join(", "));
+                    break;
+                case 'Kholberg':
+                    var errors = [];
+
+                    // set the menu contents
+                    for (let menu of inclusions) {
+                        if (subtree[menu]) {
+                            const titleElement = document.createElement('h2');
+                            const titleText = capitalize(menu);
+                            titleElement.textContent = unpun(titleText);
+                            document.getElementById("menu").appendChild(titleElement);
+
+                            const menuElement = document.createElement('p');
+                            var menuText = '';
+                            try{
+                                menuText = formatMenu(subtree[menu], activeTags);
+                            } catch (error) {
+                                menuText = subtree[menu];
+                            }
+                            menuElement.setHTML(menuText, { sanitizer: san });
+                            document.getElementById("menu").appendChild(menuElement);
+                        } else {
+                            errors.push(menu);
+                        };
+                    };
+                    console.log("Menus not found: " + errors.join(", "));
+                    break;
+            };
+        };
+
+        try{
+            const subtree = obj['Dining Center'];
+            if(hour < 10){
+                setMenu(subtree.breakfast, 'Dining Center');
+                setActiveTab("breakfastTab");
+            } else if(hour < 14){
+                setMenu(subtree.lunch, 'Dining Center');
+                setActiveTab("lunchTab");
+            } else {
+                setMenu(subtree.dinner, 'Dining Center');
+                setActiveTab("dinnerTab");
+            };
         } catch (error) {
-            console.log("Breakfast not found.")
-            document.getElementById("breakfast").textContent = "Closed for Breakfast";
-        }
-
-        // set an HTML sanitizer for the menu items
-        const san = new Sanitizer();
-
-        var activeTags = ['vegan', 'vegetarian', 'halal', 'peanut', 'egg', 'wheat']
-
-        // if lunch was not found, assume is closed for lunch
-        // else, parse, sanitize, and set the HTML
-        try {
-            subtree = obj['Dining Center'].lunch;
-            document.getElementById("lunch").textContent = "Lunch (" + subtree.start + ' - ' + subtree.end + ")";
-            document.getElementById('lmain1').setHTML(formatMenu(subtree['Classics'], activeTags), { sanitizer: san });
-            document.getElementById('lmain2').setHTML(formatMenu(subtree['World of Flavor'], activeTags), { sanitizer: san });
-            document.getElementById('lmain3').setHTML(formatMenu(subtree['Spice'], activeTags), { sanitizer: san });
-            document.getElementById('lmainv').setHTML(formatMenu(subtree['Verdant & Vegan'], activeTags), { sanitizer: san });
-            document.getElementById('lmaina').setHTML(formatMenu(subtree['Free Zone'], activeTags), { sanitizer: san });
-            document.getElementById('lmaind').setHTML(formatMenu(subtree['Daily Kneads'], activeTags), { sanitizer: san });
-        } catch (error) {
-            try {
-                subtree = obj['Dining Center'].brunch;
-                document.getElementById("lunch").textContent = "Lunch (" + subtree.start + ' - ' + subtree.end + ")";
-                document.getElementById('lmain1').setHTML(formatMenu(subtree['Classics'], activeTags), { sanitizer: san });
-                document.getElementById('lmain2').setHTML(formatMenu(subtree['World of Flavor'], activeTags), { sanitizer: san });
-                document.getElementById('lmain3').setHTML(formatMenu(subtree['Spice'], activeTags), { sanitizer: san });
-                document.getElementById('lmainv').setHTML(formatMenu(subtree['Verdant & Vegan'], activeTags), { sanitizer: san });
-                document.getElementById('lmaina').setHTML(formatMenu(subtree['Free Zone'], activeTags), { sanitizer: san });
-                document.getElementById('lmaind').setHTML(formatMenu(subtree['Daily Kneads'], activeTags), { sanitizer: san });
-            } catch (error) {
-                console.log(error)
-                document.getElementById("lunch").textContent = "Closed for Lunch";
-                $('.lunch').toggle();
-            }
-        }
-
-        // if dinner was not found, assume closed for dinner
-        // else, parse, sanitize, and set the HTML
-        try {
-            subtree = obj['Dining Center'].dinner;
-            document.getElementById("dinner").textContent = "Dinner (" + subtree.start + ' - ' + subtree.end + ")";
-            document.getElementById('dmain1').setHTML(formatMenu(subtree['Classics'], activeTags), { sanitizer: san });
-            document.getElementById('dmain2').setHTML(formatMenu(subtree['World of Flavor'], activeTags), { sanitizer: san });
-            document.getElementById('dmain3').setHTML(formatMenu(subtree['Spice'], activeTags), { sanitizer: san });
-            document.getElementById('dmainv').setHTML(formatMenu(subtree['Verdant & Vegan'], activeTags), { sanitizer: san });
-            document.getElementById('dmaina').setHTML(formatMenu(subtree['Free Zone'], activeTags), { sanitizer: san });
-            document.getElementById('dmaind').setHTML(formatMenu(subtree['Daily Kneads'], activeTags), { sanitizer: san });
-        } catch (error) {
-            console.log(error)
-            document.getElementById("dinner").textContent = "Closed for Dinner";
-            $('.dinner').toggle();
-        }
-
-        // If no data in Essies, assume Essies is closed 
-        subtree = obj.Essies;
-        if (!$.isEmptyObject(subtree)){
-            for(let item in subtree){
-                document.getElementById('essies_'+item).textContent = subtree[item];
-            }
-            for (let child of document.getElementById('essiesBlock').getElementsByTagName('h3')){
-                if(!child.nextElementSibling.textContent){
-                    $(child).toggle();
-                }
-            }
-        } else {
-            $('.essie').toggle();
-            document.getElementById('essie_closed').textContent = "Closed for the day";
-        }
-    }
+            console.log(error);
+            const closeElement = document.createElement('h2');
+            closeElement.textContent = "Dining Center is closed";
+            document.getElementById("menu").appendChild(closeElement);
+        };
+    };
 
     // Set user preferences
     function setPrefs() {
@@ -242,7 +328,7 @@ $(document).ready(async function(){
         } else {
             document.getElementById("mfer2").checked = true;
         }
-    }
+    };
 
     // Store the object under an alias, if you'd like
     const obj = await DiningObject();

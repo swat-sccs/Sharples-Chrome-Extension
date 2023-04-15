@@ -27,14 +27,14 @@
             <h1 id="title">Narples</h1>
             <div class="inline">
                 <h6>Light / Dark</h6>
-                <label class="switch" id="displayMode">
+                <label class="switch" id="darkSwitch">
                     <input type="checkbox" id="mfer">
                     <span class="slider round"></span>
                 </label>
             </div>
             <div class="inline">
                 <h6>Tags Off/On</h6>
-                <label class="switch" id="tagswitch">
+                <label class="switch" id="toggleTags">
                     <input type="checkbox" id="mfer2">
                     <span class="slider round"></span>
                 </label>
@@ -54,55 +54,8 @@
                 <button class="tab" id="KohlbergTab">Kohlberg</button>
             </div>
             <div class="content-dark-mode" id="content">
-                <!-- menu content goes here -->
-                <h3 id="breakfast">Breakfast</h3>
-                
-                <!-- Lunch and Dinner items below -->
-                <h2 id="lunch" class="collapsible">Loading...</h2>
-                <ul class="content" id="lunch_items">
-                    <span class="lunch item">Main 1</span>
-                    <p id="lmain1"></p>
-                    <span class="lunch item">Main 2</span>
-                    <p id="lmain2"></p>
-                    <span class="lunch item">Main 3</span>
-                    <p id="lmain3"></p>
-                    <span class="lunch item">Vegan Main</span>
-                    <p id="lmainv"></p>
-                    <span class="lunch item">Allergen Choice</span>
-                    <p id="lmaina"></p>
-                    <span class="lunch item">Dessert</span>
-                    <p id="lmaind"></p>
-                </ul>
-        
-                <h2 id="dinner" class="collapsible">Loading...</h2>
-                <ul class="content" id="dinner_items">
-                    <span class="dinner item">Main 1</span>
-                    <p id="dmain1"></p>
-                    <span class="dinner item">Main 2</span>
-                    <p id="dmain2"></p>
-                    <span class="dinner item">Main 3</span>
-                    <p id="dmain3"></p>
-                    <span class="dinner item">Vegan Main</span>
-                    <p id="dmainv"></p>
-                    <span class="dinner item">Allergen Choice</span>
-                    <p id="dmaina"></p>
-                    <span class="dinner item">Dessert</span>
-                    <p id="dmaind"></p>
-                </ul>
-        
-                <!-- Essie Maes Menu Here -->
-                <h2 id="essie" class="collapsible">
-                    Essie Mae's (8:00am - 7:30pm)
-                </h2>
-                <div class="content" id="essiesBlock">
-                    <h3 class="item essie">Today's Soup</h3>
-                    <p class="essie" id="essies_soup"></p>
-                    <h3 class="item essie">Today's Lunch Special</h3>
-                    <p class="essie" id="essies_special"></p>
-                    <h3 class="item essie">Meal Plan Selection (3:00 - 7:00 PM)</h3>
-                    <p class="essie" id="essies_meal"></p>
-                    <p id="essie_closed"></p>
-                </div>
+                <!-- Menu contents below -->
+                <div id="menu"></div>
             </div>
         </div>
 
@@ -125,13 +78,115 @@
         </div>
         
     </div>
+
+    <!-- Overlay section -->
     <div id="tagMenu" class="overlay">
         <p class="closebtn">&times;</p>
         <div class="overlay-content">
-            <p>Vegan</p>
-            <p>Vegetarian</p>
-            <p>Halal</p>
-            <p>Soy</p>
+            <table>
+                <tr>
+                    <th>Tag</th>
+                    <th>Visbility</th>
+                </tr>
+                <tr>
+                    <td>Vegan</td>
+                    <td><label class="tagswitch" id="veganSwitch">
+                        <input type="checkbox" id="mfer">
+                        <span class="slider round"></span>
+                    </label></td>
+                </tr>
+                <tr>
+                    <td>Vegetarian</td>
+                    <td><label class="tagswitch" id="vegetarianSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Halal</td>
+                    <td><label class="tagswitch" id="halalSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Gluten Free</td>
+                    <td><label class="tagswitch" id="glutenfreeSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Alcohol</td>
+                    <td><label class="tagswitch" id="alcoholSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Egg</td>
+                    <td><label class="tagswitch" id="eggSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Fish</td>
+                    <td><label class="tagswitch" id="fishSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Milk</td>
+                    <td><label class="tagswitch" id="milkSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Peanut</td>
+                    <td><label class="tagswitch" id="peanutSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Sesame</td>
+                    <td><label class="tagswitch" id="sesameSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Shellfish</td>
+                    <td><label class="tagswitch" id="shellfishSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Soy</td>
+                    <td><label class="tagswitch" id="soySwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Tree Nut</td>
+                    <td><label class="tagswitch" id="treenutSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Wheat</td>
+                    <td><label class="tagswitch" id="wheatSwitch">
+                            <input type="checkbox" id="mfer">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+            </table>
         </div>
     </div>
 </body>
