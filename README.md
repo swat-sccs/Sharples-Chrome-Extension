@@ -1,5 +1,5 @@
-# sharples-chrome-extension
-Chrome Extension that displays a popup of the Dining Center's Menu
+# Swarthmore Dining Menu Extension
+Browser Extension that displays a popup of the Swarthmore Dining Menu Options
 
 ## Contributors: ##
 
