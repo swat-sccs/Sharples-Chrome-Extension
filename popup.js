@@ -11,19 +11,19 @@ import { DiningObject } from "./DiningObject.js";
 // dictionary of the HTML dietary tags
 const tags = {
     vegan: '<abbr class="tag vegan" title="Vegan">v</abbr>',
+    vegetarian: '<abbr class="tag vegetarian" title="Vegetarian">vg</abbr>',
     halal: '<abbr class="tag halal" title="Halal">h</abbr>',
-    vegetarian: '<abbr class="tag veget" title="Vegetarian">vg</abbr>',
-    egg: '<abbr class="tag egg" title="Egg">e</abbr>',
-    milk: '<abbr class="tag milk" title="Milk">m</abbr>',
-    soy: '<abbr class="tag soy" title="Soy">s</abbr>',
-    wheat: '<abbr class="tag wheat" title="Wheat">w</abbr>',
-    fish: '<abbr class="tag fish" title="Fish">f</abbr>',
     glutenfree: '<abbr class="tag gf" title="Gluten Free">gf</abbr>',
-    sesame: '<abbr class="tag sesame" title="Sesame">ses</abbr>',
     alcohol: '<abbr class="tag alcohol" title="Alcohol">alc</abbr>',
-    shellfish: '<abbr class="tag shellfish" title="Shellfish">sf</abbr>',
+    egg: '<abbr class="tag egg" title="Egg">e</abbr>',
+    fish: '<abbr class="tag fish" title="Fish">f</abbr>',
+    milk: '<abbr class="tag milk" title="Milk">m</abbr>',
     peanut: '<abbr class="tag peanut" title="Peanut">p</abbr>',
-    treenut: '<abbr class="tag treenut" title="Tree Nut">tn</abbr>'
+    sesame: '<abbr class="tag sesame" title="Sesame">ses</abbr>',
+    shellfish: '<abbr class="tag shellfish" title="Shellfish">sf</abbr>',
+    soy: '<abbr class="tag soy" title="Soy">s</abbr>',
+    treenut: '<abbr class="tag treenut" title="Tree Nut">tn</abbr>',
+    wheat: '<abbr class="tag wheat" title="Wheat">w</abbr>'
 };
 
 // Variables to store and get today's date elements
@@ -76,8 +76,6 @@ $(document).ready(async function(){
     }
 
     function toggleTags() {
-        // toggles tags
-        // $('.tag').toggle();
         // updates based on stage
         if (typeof (Storage) !== "undefined") {
             if (localStorage.getItem("tags") == "false") {  // turn on  tag visibility
@@ -101,11 +99,32 @@ $(document).ready(async function(){
     // runs the command (toggleTags) when the toggle switch is changed
     document.getElementById("toggleTags").addEventListener("change", toggleTags);
 
-    const toggles = document.getElementsByClassName("tagswitch");
+    const tagToggles = document.getElementsByClassName("tagswitch");
 
-    Array.from(toggles).forEach(function (toggle) {
-        console.log(toggle.id + "event listener added")
-        // toggle.addEventListener('change', myFunction(toggle.id));
+    Array.from(tagToggles).forEach(function (toggle) {
+        console.log(toggle.id + " event listener added")
+        toggle.addEventListener("change", (event) => {
+            let id = toggle.id.slice(0, -6);
+            if (typeof (Storage) !== "undefined") {
+                if (localStorage.getItem(id) == "false") {
+                    localStorage.setItem(id, "true");
+                    document.getElementById(id).checked = true;
+                    $('.' + id).show();
+                    if(id == "beta"){
+                        $("#coords").show();
+                    }
+                } else {
+                    localStorage.setItem(id, "false");
+                    document.getElementById(id).checked = false;
+                    $('.' + id).hide();
+                    if (id == "beta") {
+                        $("#coords").hide();
+                    }
+                }
+            } else {
+                document.getElementById("debug").textContent = "If you see this message, email ale3@swarthmore.edu. Error Code: 13a";
+            }
+        }); 
     });
 
     // set the active tab's css style
@@ -180,8 +199,9 @@ $(document).ready(async function(){
                 board.removeChild(board.firstChild);
             };
 
-            // if given data empty, display a closed message
-            if (!Object.keys(subtree).length) {
+            // if given data is null or empty, display a closed message
+            // and terminate function
+            if (!subtree || Object.keys(subtree).length === 0) {
                 console.log("Selected menu contains no data.");
                 const close = document.createElement("h2");
                 const bar = document.createElement("hr");
@@ -190,6 +210,7 @@ $(document).ready(async function(){
                 document.getElementById("menu").appendChild(bar);
                 return;
             };
+
 
             // set an HTML sanitizer for the menu items
             const san = new Sanitizer();
@@ -327,6 +348,26 @@ $(document).ready(async function(){
             $('.tag').hide();
         } else {
             document.getElementById("mfer2").checked = true;
+        }
+
+        const tagsIDs = ["vegan", "vegetarian", "halal", 
+        "glutenfree", "alcohol", "egg", "fish", "milk", 
+        "peanut", "sesame", "shellfish", "soy", "treenut", 
+        "wheat", "beta"];
+
+        for(let tag of tagsIDs) {
+            if (localStorage.getItem(tag) == "false") {
+                document.getElementById(tag).checked = false;
+                $('.' + tag).hide();
+                if (tag == "beta") {
+                    $("#coords").hide();
+                }
+            } else {
+                document.getElementById(tag).checked = true;
+                if (tag == "beta") {
+                    $("#coords").show();
+                }
+            }
         }
     };
 

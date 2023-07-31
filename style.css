@@ -30,6 +30,13 @@ p {
   font-size: initial;
 }
 
+img {
+  background-size: auto;
+  width: auto;
+  height: 25px;
+  display: none;
+}
+
 table {
   font-family: inherit;
   font-size: large;
@@ -155,7 +162,7 @@ th {
 #main .fish {
   background-color: hsl(256, 75%, 67%);
 }
-#main .gf {
+#main .glutenfree {
   background-color: hsl(276, 75%, 67%);
 }
 #main .halal {
@@ -182,7 +189,7 @@ th {
 #main .vegan {
   background-color: hsl(108, 75%, 67%);
 }
-#main .veget {
+#main .vegetarian {
   background-color: hsl(98, 75%, 67%);
 }
 #main .wheat {
@@ -259,6 +266,7 @@ th {
   right: 0;
   bottom: 0;
   background-color: hsl(216, 33%, 25%);
+  -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
@@ -270,6 +278,7 @@ th {
   left: 3px;
   bottom: 3px;
   background-color: hsl(56, 6%, 94%);
+  -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
@@ -278,10 +287,14 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
+  -webkit-transform: translateX(14px);
+  -ms-transform: translateX(14px);
   transform: translateX(14px);
 }
 
 .slider::after {
+  -webkit-transform: translateX(14px);
+  -ms-transform: translateX(14px);
   transform: translateX(14px);
 }
 
@@ -300,6 +313,7 @@ input:checked + .slider:before {
   width: 100%;
   position: fixed;
   z-index: 1;
+  display: none;
   text-align: center;
   top: 0;
   left: 0;
@@ -334,4 +348,6 @@ input:checked + .slider:before {
 
 .overlay .closebtn:hover {
   color: hsl(16, 75%, 67%);
-}/*# sourceMappingURL=style.css.map */
+}
+
+/*# sourceMappingURL=style.css.map */

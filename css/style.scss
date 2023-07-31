@@ -40,6 +40,13 @@ p {
     font-size: initial;
 }
 
+img {
+    background-size: auto;
+    width: auto;
+    height: 25px;
+    display: none;
+}
+
 table {
         font-family: inherit;
         font-size: large;
@@ -179,7 +186,7 @@ table {
         background-color: hsl(256, 75%, 67%);
     }
 
-    .gf {
+    .glutenfree {
         background-color: hsl(276, 75%, 67%);
     }
 
@@ -215,7 +222,7 @@ table {
         background-color: hsl(108, 75%, 67%);
     }
 
-    .veget {
+    .vegetarian {
         background-color: hsl(98, 75%, 67%);
     }
 
@@ -352,7 +359,7 @@ input:checked+.slider:before {
     width: 100%;
     position: fixed;
     z-index: 1;
-    // display: none;
+    display: none;
     text-align: center;
     top: 0;
     left: 0;
