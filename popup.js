@@ -26,6 +26,11 @@ const tags = {
     wheat: '<abbr class="tag wheat" title="Wheat">w</abbr>'
 };
 
+const tagsIDs = ["vegan", "vegetarian", "halal",
+    "glutenfree", "alcohol", "egg", "fish", "milk",
+    "peanut", "sesame", "shellfish", "soy", "treenut",
+    "wheat", "beta"];
+
 // Variables to store and get today's date elements
 {
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -76,12 +81,18 @@ $(document).ready(async function(){
     }
 
     function toggleTags() {
-        // updates based on stage
         if (typeof (Storage) !== "undefined") {
             if (localStorage.getItem("tags") == "false") {  // turn on  tag visibility
                 localStorage.setItem("tags", "true");
                 document.getElementById("mfer2").checked = true;
-                $('.tag').show();
+                for (let tag of tagsIDs) {
+                    if (localStorage.getItem(tag) == "true") {
+                        $("."+tag).show();
+                        if (tag == "beta") {
+                            $("#coords").show();
+                        }
+                    };
+                };
             } else {                         // turn off tag visibility
                 localStorage.setItem("tags", "false");
                 document.getElementById("mfer2").checked = false;
@@ -106,20 +117,20 @@ $(document).ready(async function(){
         toggle.addEventListener("change", (event) => {
             let id = toggle.id.slice(0, -6);
             if (typeof (Storage) !== "undefined") {
-                if (localStorage.getItem(id) == "false") {
-                    localStorage.setItem(id, "true");
-                    document.getElementById(id).checked = true;
-                    $('.' + id).show();
-                    if(id == "beta"){
-                        $("#coords").show();
-                    }
-                } else {
+                if (localStorage.getItem(id) == "true") {
                     localStorage.setItem(id, "false");
                     document.getElementById(id).checked = false;
                     $('.' + id).hide();
                     if (id == "beta") {
                         $("#coords").hide();
                     }
+                } else {
+                    localStorage.setItem(id, "true");
+                    document.getElementById(id).checked = true;
+                    $('.' + id).show();
+                    if (id == "beta") {
+                        $("#coords").show();
+                    } 
                 }
             } else {
                 document.getElementById("debug").textContent = "If you see this message, email ale3@swarthmore.edu. Error Code: 13a";
@@ -132,8 +143,22 @@ $(document).ready(async function(){
         for (let tab of $('.tab')) {
             tab.style = ""
         }
-        document.getElementById(activeTabID).style["backgroundColor"] = "hsl(216, 33%, 25%)"
-    }
+        document.getElementById(activeTabID).style["backgroundColor"] = "hsl(216, 33%, 25%)";
+        for (let tag of tagsIDs) {
+            if (localStorage.getItem(tag) == "true") {
+                document.getElementById(tag).checked = true;
+                if (tag == "beta") {
+                    $("#coords").show();
+                }
+            } else {
+                document.getElementById(tag).checked = false;
+                $('.' + tag).hide();
+                if (tag == "beta") {
+                    $("#coords").hide();
+                };
+            };
+        };
+    };
 
     // Construct the page
     function constructPage() {
@@ -205,7 +230,9 @@ $(document).ready(async function(){
                 console.log("Selected menu contains no data.");
                 const close = document.createElement("h2");
                 const bar = document.createElement("hr");
-                close.textContent = "Venue is closed";
+                close.textContent = (venue == "Kholberg") ? 
+                    "Venue (aka Kholberg) is closed" : "Venue is closed";
+
                 document.getElementById("menu").appendChild(close);
                 document.getElementById("menu").appendChild(bar);
                 return;
@@ -236,7 +263,8 @@ $(document).ready(async function(){
             // set the menu time
             const timeElement = document.createElement('h2');
             const timeText = subtree.start + ' - ' + subtree.end;
-            timeElement.textContent = "Hours: " + timeText;
+            timeElement.textContent = (venue == "Kohlberg") ?
+             "(aka Kolhberg)  Hours: " + timeText : "Hours: " + timeText;
             document.getElementById("menu").appendChild(timeElement);
             const bar = document.createElement('hr');
             document.getElementById("menu").appendChild(bar);
@@ -350,22 +378,18 @@ $(document).ready(async function(){
             document.getElementById("mfer2").checked = true;
         }
 
-        const tagsIDs = ["vegan", "vegetarian", "halal", 
-        "glutenfree", "alcohol", "egg", "fish", "milk", 
-        "peanut", "sesame", "shellfish", "soy", "treenut", 
-        "wheat", "beta"];
 
         for(let tag of tagsIDs) {
-            if (localStorage.getItem(tag) == "false") {
+            if (localStorage.getItem(tag) == "true") {
+                document.getElementById(tag).checked = true;
+                if (tag == "beta") {
+                    $("#coords").show();
+                }  
+            } else {
                 document.getElementById(tag).checked = false;
                 $('.' + tag).hide();
                 if (tag == "beta") {
                     $("#coords").hide();
-                }
-            } else {
-                document.getElementById(tag).checked = true;
-                if (tag == "beta") {
-                    $("#coords").show();
                 }
             }
         }
