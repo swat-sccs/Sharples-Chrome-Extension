@@ -13,7 +13,7 @@ const tags = {
     vegan: '<abbr class="tag vegan" title="Vegan">v</abbr>',
     vegetarian: '<abbr class="tag vegetarian" title="Vegetarian">vg</abbr>',
     halal: '<abbr class="tag halal" title="Halal">h</abbr>',
-    glutenfree: '<abbr class="tag gf" title="Gluten Free">gf</abbr>',
+    glutenfree: '<abbr class="tag glutenfree" title="Gluten Free">gf</abbr>',
     alcohol: '<abbr class="tag alcohol" title="Alcohol">alc</abbr>',
     egg: '<abbr class="tag egg" title="Egg">e</abbr>',
     fish: '<abbr class="tag fish" title="Fish">f</abbr>',
@@ -25,6 +25,8 @@ const tags = {
     treenut: '<abbr class="tag treenut" title="Tree Nut">tn</abbr>',
     wheat: '<abbr class="tag wheat" title="Wheat">w</abbr>'
 };
+
+//add locallysourced tag? (currently undefined)
 
 const tagsIDs = ["vegan", "vegetarian", "halal",
     "glutenfree", "alcohol", "egg", "fish", "milk",
@@ -80,84 +82,120 @@ $(document).ready(async function(){
         }
     }
 
+    // toggles visibility of all tags
     function toggleTags() {
         if (typeof (Storage) !== "undefined") {
-            if (localStorage.getItem("tags") == "false") {  // turn on  tag visibility
+            if (localStorage.getItem("tags") == "false") {
+
                 localStorage.setItem("tags", "true");
                 document.getElementById("mfer2").checked = true;
-                for (let tag of tagsIDs) {
-                    if (localStorage.getItem(tag) == "true") {
-                        $("."+tag).show();
-                        if (tag == "beta") {
-                            $("#coords").show();
-                        }
-                    };
-                };
-            } else {                         // turn off tag visibility
+                for (let tag of tagsIDs) { showTag(tag) };
+
+            } else {
+
                 localStorage.setItem("tags", "false");
                 document.getElementById("mfer2").checked = false;
-                $('.tag').hide();
+                for (let tag of tagsIDs) { hideTag(tag) };
+
             }
         } else {
-            document.getElementById("debug").textContent = 
-            "If you see this message, email ale3@swarthmore.edu. Error Code: 12b";
+            document.getElementById("debug").textContent =
+                "If you see this message, email ale3@swarthmore.edu. Error Code: 12b";
         }
     }
 
-    // runs the command (darkMode) when the toggle switch is changed
+    // refreshes page with tag preferences
+    function refreshTags() {
+        for (let tag of tagsIDs) {
+            if (localStorage.getItem("tags") == "true"){ //if tags allowed
+                if (localStorage.getItem(tag) == "true") {
+                    document.getElementById(tag).checked = true;
+                    showTag(tag);
+                } else {
+                    document.getElementById(tag).checked = false;
+                    hideTag(tag);
+                }
+            } else {
+                hideTag(tag);
+            }
+        }
+    }
+
+    // tag local storage and checked status set to off
+    function switchOffTag(tag) {
+        localStorage.setItem(tag, "false");
+        document.getElementById(tag).checked = false;
+    }
+
+    // tag local storage and checked status set to on
+    function switchOnTag(tag) {
+        localStorage.setItem(tag, "true");
+        document.getElementById(tag).checked = true;
+    }
+
+    // disables visibility of tag, does NOT update local storage or switch
+    function hideTag(tag){
+        $("." + tag).hide();
+        if (tag == "beta") {
+            $("#coords").hide();
+        }
+    }
+    // enables visibility of tag, does NOT update local storage or switch
+    function showTag(tag) {
+        if (document.getElementById(tag).checked == true){
+            // show it
+            $("." + tag).show();
+            if (tag == "beta") {
+                $("#coords").show();
+            }
+        }
+    }
+
+    
+    // runs the command (darkMode) when the dark mode toggle switch is changed
     document.getElementById("darkSwitch").addEventListener("change", darkMode);
 
-    // runs the command (toggleTags) when the toggle switch is changed
+    // runs the command (toggleTags) when the main tag toggle switch is changed
     document.getElementById("toggleTags").addEventListener("change", toggleTags);
 
+    // handles tag menu toggles
     const tagToggles = document.getElementsByClassName("tagswitch");
 
     Array.from(tagToggles).forEach(function (toggle) {
-        console.log(toggle.id + " event listener added")
         toggle.addEventListener("change", (event) => {
-            let id = toggle.id.slice(0, -6);
+            let tag = toggle.id.slice(0, -6);
             if (typeof (Storage) !== "undefined") {
-                if (localStorage.getItem(id) == "true") {
-                    localStorage.setItem(id, "false");
-                    document.getElementById(id).checked = false;
-                    $('.' + id).hide();
-                    if (id == "beta") {
-                        $("#coords").hide();
-                    }
-                } else {
-                    localStorage.setItem(id, "true");
-                    document.getElementById(id).checked = true;
-                    $('.' + id).show();
-                    if (id == "beta") {
-                        $("#coords").show();
-                    } 
-                }
+                if (localStorage.getItem("tags") == "true"){ // if tags allowed
+                    // turning tag off
+                    if (localStorage.getItem(tag) == "true") {
+                        switchOffTag(tag);
+                        hideTag(tag);
+                    } else {
+                    // turning on tag
+                        switchOnTag(tag);
+                        showTag(tag);
+                    };
+                } else { // tags not allowed (not disabling)
+                    // turning tag off
+                    if (localStorage.getItem(tag) == "true") {
+                        switchOffTag(tag);
+                    } else {
+                        // turning on tag
+                        switchOnTag(tag);
+                    };
+                };             
             } else {
-                document.getElementById("debug").textContent = "If you see this message, email ale3@swarthmore.edu. Error Code: 13a";
+                document.getElementById("debug").textContent = 
+                "If you see this message, email ale3@swarthmore.edu. Error Code: 13a";
             }
         }); 
     });
 
     // set the active tab's css style
     function setActiveTab (activeTabID){
-        for (let tab of $('.tab')) {
-            tab.style = ""
-        }
+        for (let tab of $('.tab')) { tab.style = "" }
         document.getElementById(activeTabID).style["backgroundColor"] = "hsl(216, 33%, 25%)";
-        for (let tag of tagsIDs) {
-            if (localStorage.getItem(tag) == "true") {
-                document.getElementById(tag).checked = true;
-                if (tag == "beta") {
-                    $("#coords").show();
-                }
-            } else {
-                document.getElementById(tag).checked = false;
-                $('.' + tag).hide();
-                if (tag == "beta") {
-                    $("#coords").hide();
-                };
-            };
-        };
+        refreshTags();
     };
 
     // Construct the page
@@ -188,14 +226,12 @@ $(document).ready(async function(){
 
         // turns objectified menu into a parsed string, returned string 
         // MUST BE SANITIZED.
-        function formatMenu(items,activeTags){
+        function formatMenu(items){
             var newLst = [];
             for(let i = 0; i < items.length; i++){
                 var string = items[i].item;
                 for (let prop of items[i].properties){
-                    if(activeTags.includes(prop)){
-                        string += tags[prop];
-                    };
+                    string += tags[prop];
                 };
                 newLst.push(string);
             };
@@ -244,7 +280,6 @@ $(document).ready(async function(){
 
             // temporarily set list of Tags that we want to display
             // and discretely define what sections are allowed
-            var activeTags = ['vegan', 'vegetarian', 'halal', 'peanut', 'egg', 'wheat'];
             const inclusions = [
                 "Classics",
                 "World of Flavor",
@@ -282,14 +317,14 @@ $(document).ready(async function(){
                             document.getElementById("menu").appendChild(titleElement);
 
                             const menuElement = document.createElement('p');
-                            const menuText = formatMenu(subtree[menu], activeTags);
+                            const menuText = formatMenu(subtree[menu]);
                             menuElement.setHTML(menuText, { sanitizer: san });
                             document.getElementById("menu").appendChild(menuElement);
                         } else {
                             errors.push(menu);
                         };
                     };
-                    console.log("Menus not found: " + errors.join(", "));
+                    console.log("Dining Center menus not found: " + errors.join(", "));
                     break;
                 case 'Essies':
                     var errors = [];
@@ -310,7 +345,7 @@ $(document).ready(async function(){
                             errors.push(menu);
                         };
                     };
-                    console.log("Menus not found: " + errors.join(", "));
+                    console.log("Essies menus not found: " + errors.join(", "));
                     break;
                 case 'Kholberg':
                     var errors = [];
@@ -326,7 +361,7 @@ $(document).ready(async function(){
                             const menuElement = document.createElement('p');
                             var menuText = '';
                             try{
-                                menuText = formatMenu(subtree[menu], activeTags);
+                                menuText = formatMenu(subtree[menu]);
                             } catch (error) {
                                 menuText = subtree[menu];
                             }
@@ -336,7 +371,7 @@ $(document).ready(async function(){
                             errors.push(menu);
                         };
                     };
-                    console.log("Menus not found: " + errors.join(", "));
+                    console.log("Brandy's Bar menus not found: " + errors.join(", "));
                     break;
             };
         };
@@ -378,21 +413,7 @@ $(document).ready(async function(){
             document.getElementById("mfer2").checked = true;
         }
 
-
-        for(let tag of tagsIDs) {
-            if (localStorage.getItem(tag) == "true") {
-                document.getElementById(tag).checked = true;
-                if (tag == "beta") {
-                    $("#coords").show();
-                }  
-            } else {
-                document.getElementById(tag).checked = false;
-                $('.' + tag).hide();
-                if (tag == "beta") {
-                    $("#coords").hide();
-                }
-            }
-        }
+        refreshTags();
     };
 
     // Store the object under an alias, if you'd like
