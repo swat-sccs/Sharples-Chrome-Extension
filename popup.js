@@ -158,7 +158,7 @@ $(document).ready(async function(){
     // runs the command (toggleTags) when the main tag toggle switch is changed
     document.getElementById("toggleTags").addEventListener("change", toggleTags);
 
-    // handles tag menu toggles
+    // handles tag toggling menu, tag visibility, and local storage
     const tagToggles = document.getElementsByClassName("tagswitch");
 
     Array.from(tagToggles).forEach(function (toggle) {
@@ -400,17 +400,21 @@ $(document).ready(async function(){
     function setPrefs() {
         if (localStorage.getItem("dark") == "false") {
             document.getElementById("mfer").checked = false;
+            localStorage.setItem("dark", "false");
         } else {
             document.getElementById("mfer").checked = true;
             document.getElementById("inner").classList.toggle("dark-mode");
             document.getElementById("content").classList.toggle("content-dark-mode");
+            localStorage.setItem("dark", "true");
         }
 
         if (localStorage.getItem("tags") == "false") {
             document.getElementById("mfer2").checked = false;
+            localStorage.setItem("tags", "false");
             $('.tag').hide();
         } else {
             document.getElementById("mfer2").checked = true;
+            localStorage.setItem("tags", "true");
         }
 
         refreshTags();
