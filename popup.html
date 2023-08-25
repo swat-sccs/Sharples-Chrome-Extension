@@ -21,11 +21,14 @@
         Beta
     </abbr> -->
 
-    <div class="dark-mode" id="inner">
+    <div class="root" id="inner">
 
         <div id="headers">
             <!-- Title, date, and dark mode switch -->
             <h1 id="title">Narples</h1>
+            <div class="inline" id="gearDiv">
+                <img src="./img/gear.png" id="gear">
+            </div>
             <div class="inline">
                 <h6>Light / Dark</h6>
                 <label class="switch" id="darkSwitch">
@@ -45,7 +48,7 @@
         <!-- Debug print element; user should never see this element -->
         <h3 id="debug"></h3>
 
-        <img src="/img/coords.png" alt="" id="coords">
+        <img src="/img/coords.png" id="coords">
 
         <div id="main">
             <div id="navigation">
@@ -56,7 +59,7 @@
                 <button class="tab" id="EssiesTab">Essie's</button>
                 <button class="tab" id="KohlbergTab">Brandy's Bar</button>
             </div>
-            <div class="content-dark-mode" id="content">
+            <div class="menu-content" id="content">
                 <!-- Menu contents below -->
                 <div id="menu"></div>
 
@@ -98,6 +101,10 @@
                 <p id="button">
                     Edit Tags
                 </p>
+                
+                <!-- <p id="button">
+                    ⚙️
+                </p> -->
             </div>
         </div>
         

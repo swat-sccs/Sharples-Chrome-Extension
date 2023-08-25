@@ -2,11 +2,25 @@
   font-family: Raleway;
   src: url(Raleway.ttf);
 }
+:root[data-applied-mode=light] {
+  color-scheme: light;
+  --text: hsl(216, 13%, 10%);
+  --background: hsl(56, 6%, 94%);
+  --background2: hsl(56, 6%, 94%);
+}
+
+:root[data-applied-mode=dark] {
+  color-scheme: dark;
+  --text: hsl(56, 6%, 94%);
+  --background: hsl(216, 13%, 13%);
+  --background2: hsl(216, 33%, 35%);
+}
+
 /* Elements */
 body {
   width: 650px;
   height: 600px;
-  margin: 0px;
+  margin: 0;
   background: none;
   background-color: none;
 }
@@ -34,7 +48,6 @@ img {
   background-size: auto;
   width: auto;
   height: 25px;
-  display: none;
 }
 
 table {
@@ -60,11 +73,11 @@ th {
 #inner {
   font-family: Raleway;
   padding: 0px 10px 0px 10px;
-  color: hsl(56, 6%, 94%);
   height: 600px;
   width: 630px;
   position: relative;
-  background-color: hsl(216, 13%, 10%);
+  color: var(--text);
+  background-color: var(--background);
 }
 
 #headers {
@@ -73,8 +86,33 @@ th {
 #headers .inline {
   float: right;
   width: auto;
-  margin: 10px 5px;
+  margin: 9px 0px;
   text-align: center;
+}
+#headers #gearDiv:hover {
+  transition: 0.5s;
+  background-color: hsl(16, 75%, 67%);
+  cursor: pointer;
+  box-shadow: 2px 4px 4px -1px rgba(0, 0, 0, 0.2);
+}
+#headers #gearDiv {
+  transition: 0.5s;
+  background-color: hsl(216, 33%, 25%);
+  height: 32px;
+  width: 32px;
+  border-radius: 3px;
+}
+#headers #gear:hover {
+  transition: 0.5s;
+  transform: rotate(90deg);
+  filter: invert(0);
+}
+#headers #gear {
+  filter: invert(1);
+  height: 28px;
+  padding: 2px;
+  width: auto;
+  transition: 0.5s;
 }
 #headers h6 {
   font-size: 10px;
@@ -87,7 +125,8 @@ th {
   margin-top: 10px;
   height: 500px;
   width: inherit;
-  color: inherit;
+  color: var(--text);
+  background-color: var(--background);
   box-shadow: 0px 0px 8px 4px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   /* Tags */
@@ -121,7 +160,8 @@ th {
 #main #content {
   position: absolute;
   top: 33px;
-  background-color: hsl(216, 33%, 30%);
+  color: var(--text);
+  background-color: var(--background2);
   border: 5px solid hsl(216, 33%, 25%);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
@@ -129,7 +169,6 @@ th {
   height: 447px;
   width: 610px;
   overflow-y: scroll;
-  color: inherit;
 }
 #main #content::-webkit-scrollbar {
   width: 14px;
@@ -209,6 +248,9 @@ th {
   border: 3px solid hsl(16, 75%, 67%);
   margin: 0;
 }
+#footer #links {
+  height: 34px;
+}
 #footer a,
 #footer #button {
   font-weight: 500;
@@ -230,14 +272,14 @@ th {
 }
 
 /* Elements by Classes */
-.dark-mode {
-  background-color: hsl(56, 6%, 94%) !important;
-  color: hsl(216, 13%, 10%) !important;
+.root {
+  color: var(--text);
+  background-color: var(--background);
 }
 
-.content-dark-mode {
-  background-color: hsl(56, 6%, 94%) !important;
-  color: hsl(216, 13%, 10%) !important;
+.menu-content {
+  color: var(--text);
+  background-color: var(--background2);
 }
 
 .switch, .tagswitch {
@@ -340,8 +382,8 @@ input:checked + .slider:before {
 
 .overlay .closebtn {
   position: absolute;
-  top: 0px;
-  right: 20px;
+  top: -7px;
+  right: 12px;
   font-size: 40px;
   cursor: pointer;
 }

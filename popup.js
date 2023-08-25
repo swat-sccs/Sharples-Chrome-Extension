@@ -44,14 +44,33 @@ const tagsIDs = ["vegan", "vegetarian", "halal",
     var hour = today.getHours();
 }
 
+function getThemeSetting() {
+    return localStorage.getItem('dark');
+}
+function setThemeSetting(setting) {
+    localStorage.setItem('dark', setting);
+}
+
+function setTheme(mode) {
+    document.documentElement.dataset.appliedMode = mode;
+}
+
+let darkMode = getThemeSetting();
+setTheme(darkMode);
+
 // main Jquery function; code below only runs if document is loaded
 $(document).ready(async function(){
     const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
 
     // toggles tag menu
+    $('body').on('click', '#gear', function () {
+        $('#tagMenu').toggle();
+    });
+
     $('body').on('click', '#button', function () {
         $('#tagMenu').toggle();
     });
+
     $('body').on('click', '.closebtn', function () {
         $('#tagMenu').toggle();
     });
@@ -64,21 +83,14 @@ $(document).ready(async function(){
     });
     
     // Handles dark mode and tag visibility toggles
-    function darkMode() {
-        // toggles dark mode
-        document.getElementById("inner").classList.toggle("dark-mode");
-        document.getElementById("content").classList.toggle("content-dark-mode");
+    function toggleTheme() {
         // updates based on stage
-        if (typeof (Storage) !== "undefined") {
-            if (localStorage.getItem("dark") == "false") { // turn on  dark mode
-                localStorage.setItem("dark", "true");
-                document.getElementById("mfer").checked = true;
-            } else {                          // turn off dark mode
-                localStorage.setItem("dark", "false");
-                document.getElementById("mfer").checked = false;
-            }
-        } else {
-            document.getElementById("debug").textContent = "If you see this message, email ale3@swarthmore.edu. Error Code: 12a";
+        if (getThemeSetting() == "light") { // turn off dark mode
+            setThemeSetting("dark");
+            setTheme(getThemeSetting());
+        } else {                          // turn off dark mode
+            setThemeSetting("light");
+            setTheme(getThemeSetting());
         }
     }
 
@@ -109,13 +121,18 @@ $(document).ready(async function(){
         for (let tag of tagsIDs) {
             if (localStorage.getItem("tags") == "true"){ //if tags allowed
                 if (localStorage.getItem(tag) == "true") {
-                    document.getElementById(tag).checked = true;
+                    switchOnTag(tag);
                     showTag(tag);
                 } else {
-                    document.getElementById(tag).checked = false;
+                    switchOffTag(tag);
                     hideTag(tag);
                 }
             } else {
+                if (localStorage.getItem(tag) == "true") {
+                    switchOnTag(tag);
+                } else {
+                    switchOffTag(tag);
+                }
                 hideTag(tag);
             }
         }
@@ -153,7 +170,7 @@ $(document).ready(async function(){
 
     
     // runs the command (darkMode) when the dark mode toggle switch is changed
-    document.getElementById("darkSwitch").addEventListener("change", darkMode);
+    document.getElementById("darkSwitch").addEventListener("change", toggleTheme);
 
     // runs the command (toggleTags) when the main tag toggle switch is changed
     document.getElementById("toggleTags").addEventListener("change", toggleTags);
@@ -164,30 +181,29 @@ $(document).ready(async function(){
     Array.from(tagToggles).forEach(function (toggle) {
         toggle.addEventListener("change", (event) => {
             let tag = toggle.id.slice(0, -6);
-            if (typeof (Storage) !== "undefined") {
-                if (localStorage.getItem("tags") == "true"){ // if tags allowed
-                    // turning tag off
-                    if (localStorage.getItem(tag) == "true") {
-                        switchOffTag(tag);
-                        hideTag(tag);
-                    } else {
+            if (localStorage.getItem("tags") == "true"){ // if tags allowed
+                // turning tag off
+                if (localStorage.getItem(tag) == "true") {
+                    console.log("allowed, toggling off")
+                    switchOffTag(tag);
+                    hideTag(tag);
+                } else {
                     // turning on tag
-                        switchOnTag(tag);
-                        showTag(tag);
-                    };
-                } else { // tags not allowed (not disabling)
-                    // turning tag off
-                    if (localStorage.getItem(tag) == "true") {
-                        switchOffTag(tag);
-                    } else {
-                        // turning on tag
-                        switchOnTag(tag);
-                    };
-                };             
-            } else {
-                document.getElementById("debug").textContent = 
-                "If you see this message, email ale3@swarthmore.edu. Error Code: 13a";
-            }
+                    console.log("allowed, toggling on")
+                    switchOnTag(tag);
+                    showTag(tag);
+                };
+            } else { // tags not allowed (not disabling)
+                // turning tag off
+                if (localStorage.getItem(tag) == "true") {
+                    console.log("not allowed, toggling off")
+                    switchOffTag(tag);
+                } else {
+                    // turning on tag
+                    console.log("not allowed, toggling on")
+                    switchOnTag(tag);
+                };
+            };             
         }); 
     });
 
@@ -398,22 +414,22 @@ $(document).ready(async function(){
 
     // Set user preferences
     function setPrefs() {
-        if (localStorage.getItem("dark") == "false") {
-            document.getElementById("mfer").checked = false;
-            localStorage.setItem("dark", "false");
+        const darkModeSwitch = document.getElementById("mfer");
+        if (localStorage.getItem("dark") == "light") {
+            darkModeSwitch.checked = false;
+            setThemeSetting("light");
         } else {
-            document.getElementById("mfer").checked = true;
-            document.getElementById("inner").classList.toggle("dark-mode");
-            document.getElementById("content").classList.toggle("content-dark-mode");
-            localStorage.setItem("dark", "true");
+            darkModeSwitch.checked = true;
+            setThemeSetting("dark");
         }
 
+        const tagVisSwitch = document.getElementById("mfer2");
         if (localStorage.getItem("tags") == "false") {
-            document.getElementById("mfer2").checked = false;
+            tagVisSwitch.checked = false;
             localStorage.setItem("tags", "false");
             $('.tag').hide();
         } else {
-            document.getElementById("mfer2").checked = true;
+            tagVisSwitch.checked = true;
             localStorage.setItem("tags", "true");
         }
 
