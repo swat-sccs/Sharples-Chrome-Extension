@@ -1,4 +1,4 @@
-import { DiningObject } from "./DiningObject.js";
+import { DiningObject } from "./lib/DiningObject.js";
 
 // // Keywords to sort by for menu items in order
 // const keywords = ["chicken", "steak", "beef", "shrimp", "bacon", "sausage", 
@@ -68,7 +68,13 @@ $(document).ready(async function(){
     });
 
     $('body').on('click', '#button', function () {
-        $('#tagMenu').toggle();
+        alert("Brandy was a dog that worked at ITS with Oliver, \
+one of our hardware specialists. \nShe was a frequent visitor to \
+Kohlberg Coffee Bar and was beloved to the staff. Unfortunately, she \
+was diagnosed with a terminal bone cancer and was only given weeks to live. \
+She fought and lasted 8 more months before the difficult decision \
+was made by Oliver to relieve her of her pain. \nWe honor Brandy by \
+referring to Kohlberg Coffee Bar as Brandy's Bar.");
     });
 
     $('body').on('click', '.closebtn', function () {

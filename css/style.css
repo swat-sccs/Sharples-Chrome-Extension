@@ -267,6 +267,7 @@ th {
 #footer #button:hover {
   transition: 0.5s;
   background-color: hsl(16, 75%, 67%);
+  color: hsl(216, 13%, 13%);
   cursor: pointer;
   box-shadow: 2px 4px 4px -1px rgba(0, 0, 0, 0.2);
 }
