@@ -185,10 +185,14 @@ table {
         border: 5px solid $navy-blue;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
-        padding: 5px;
-        height: 447px;
-        width: 610px;
+        padding: 5px 0px 0px 10px;
+        height: -webkit-fill-available;
+        width: -webkit-fill-available;
         overflow-y: scroll;
+
+        #menu {
+            width: -webkit-fill-available;
+        }
     }
 
     #content::-webkit-scrollbar {
@@ -504,3 +508,40 @@ input:checked+.slider:before {
     color:$orange;
 }
 
+
+
+
+#brandyTextDiv {
+    height: 70%;
+    width: 80%;
+    border: 5px solid $navy-blue;
+    border-radius: 5px;
+    background-color: $baby-blue;
+}
+
+#brandyHeader {
+    margin: 10px 15px 0 15px;
+}
+
+.brandyText {
+    margin: 8px 15px !important;
+    font-size: large !important;
+    line-height: 1.5em; 
+    text-align: justify;
+}
+
+#brandyInnerDiv {
+    display: flex;
+
+    #brandyNestedText {
+        width: 57%;
+        margin-top: 15px;
+    }
+
+    #brandyImage {
+        height: 170px;
+        width: auto;
+        border-radius: 5px;
+        border: 5px solid $navy-blue;
+    }
+}

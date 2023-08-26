@@ -166,10 +166,13 @@ th {
   border: 5px solid hsl(216, 33%, 25%);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  padding: 5px;
-  height: 447px;
-  width: 610px;
+  padding: 5px 0px 0px 10px;
+  height: -webkit-fill-available;
+  width: -webkit-fill-available;
   overflow-y: scroll;
+}
+#main #content #menu {
+  width: -webkit-fill-available;
 }
 #main #content::-webkit-scrollbar {
   width: 14px;
@@ -445,6 +448,39 @@ input:checked + .slider:before {
 
 .overlay-parent .closebtn:hover {
   color: hsl(16, 75%, 67%);
+}
+
+#brandyTextDiv {
+  height: 70%;
+  width: 80%;
+  border: 5px solid hsl(216, 33%, 25%);
+  border-radius: 5px;
+  background-color: hsl(216, 33%, 35%);
+}
+
+#brandyHeader {
+  margin: 10px 15px 0 15px;
+}
+
+.brandyText {
+  margin: 8px 15px !important;
+  font-size: large !important;
+  line-height: 1.5em;
+  text-align: justify;
+}
+
+#brandyInnerDiv {
+  display: flex;
+}
+#brandyInnerDiv #brandyNestedText {
+  width: 57%;
+  margin-top: 15px;
+}
+#brandyInnerDiv #brandyImage {
+  height: 170px;
+  width: auto;
+  border-radius: 5px;
+  border: 5px solid hsl(216, 33%, 25%);
 }
 
 /*# sourceMappingURL=style.css.map */

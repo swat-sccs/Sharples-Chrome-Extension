@@ -63,30 +63,27 @@ setTheme(darkMode);
 $(document).ready(async function(){
     const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
 
-    $('body').on('click', '#button', function () {
-        alert("Brandy was a dog that worked at ITS with Oliver, \
-one of our hardware specialists. \nShe was a frequent visitor to \
-Kohlberg Coffee Bar and was beloved to the staff. Unfortunately, she \
-was diagnosed with a terminal bone cancer and was only given weeks to live. \
-She fought and lasted 8 more months before the difficult decision \
-was made by Oliver to relieve her of her pain. \nWe honor Brandy by \
-referring to Kohlberg Coffee Bar as Brandy's Bar.");
+    // preferences menu/brandy info event handlers
+    $('body').on('click', '#gear', function () {
+        $('#prefMenu').css('display', 'flex');
     });
 
-
-    // preferences menu event handlers
-    $('body').on('click', '#gear', function () {
-        $('#modal').css('display', 'flex');
+    $('body').on('click', '#button', function () {
+        $('#brandyInfo').css('display', 'flex');
     });
 
     $('body').on('click', '.closebtn', function () {
-        $('#modal').hide();
+        $('#prefMenu').hide();
+        $('#brandyInfo').hide();
     });
 
-    const modal = document.getElementById("modal");
+    const modal = document.getElementById("prefMenu");
+    const brandy = document.getElementById("brandyInfo");
     window.onclick = function (event) {
         if (event.target == modal) {
-            $('#modal').hide();
+            $('#prefMenu').hide();
+        } else if (event.target == brandy) {
+            $('#brandyInfo').hide();
         }
     }
 
