@@ -420,9 +420,11 @@ referring to Kohlberg Coffee Bar as Brandy's Bar.");
         if (localStorage.getItem("dark") == "light") {
             darkModeSwitch.checked = false;
             setThemeSetting("light");
+            setTheme("light");
         } else {
             darkModeSwitch.checked = true;
             setThemeSetting("dark");
+            setTheme("dark");
         }
 
         const tagVisSwitch = document.getElementById("mfer2");
