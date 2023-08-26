@@ -438,9 +438,10 @@ input:checked + .slider:before {
 
 .overlay-root .closebtn {
   position: absolute;
-  top: -7px;
+  top: 8px;
   right: 12px;
-  font-size: 40px;
+  font-size: 60px;
+  line-height: 40%;
   cursor: pointer;
 }
 
