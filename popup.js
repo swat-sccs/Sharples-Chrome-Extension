@@ -1,4 +1,5 @@
 import { DiningObject } from "./lib/DiningObject.js";
+import manifest from './manifest.json' assert { type: 'json' };
 
 // // Keywords to sort by for menu items in order
 // const keywords = ["chicken", "steak", "beef", "shrimp", "bacon", "sausage", 
@@ -159,18 +160,12 @@ referring to Kohlberg Coffee Bar as Brandy's Bar.");
     // disables visibility of tag, does NOT update local storage or switch
     function hideTag(tag){
         $("." + tag).hide();
-        if (tag == "beta") {
-            $("#coords").hide();
-        }
     }
+
     // enables visibility of tag, does NOT update local storage or switch
     function showTag(tag) {
         if (document.getElementById(tag).checked == true){
-            // show it
             $("." + tag).show();
-            if (tag == "beta") {
-                $("#coords").show();
-            }
         }
     }
 
@@ -244,7 +239,8 @@ referring to Kohlberg Coffee Bar as Brandy's Bar.");
         });
 
         // set title and date
-        document.getElementById("title").textContent = "Narples - " + mm + " " + dd;
+        const title = document.getElementById("title");
+        title.textContent = "Narples - " + mm + " " + dd;
 
         // turns objectified menu into a parsed string, returned string 
         // MUST BE SANITIZED.
@@ -440,6 +436,10 @@ referring to Kohlberg Coffee Bar as Brandy's Bar.");
         }
 
         refreshTags();
+
+        // set version number in preferences menu
+        const versionControl = document.getElementById("version");
+        versionControl.textContent = "Running on v" + manifest.version;
     };
 
     // Store the object under an alias, if you'd like

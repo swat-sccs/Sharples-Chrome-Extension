@@ -9,9 +9,11 @@ Browser Extension that displays a popup of the Swarthmore Dining Menu Options
 Displays the Swarthmore College Dining options in a nice
 little popup chrome extension. You can find the extension here:
 
-Chrome: https://tinyurl.com/sharpleschromeext
+Chrome\Edge\OperaGX: https://tinyurl.com/sharpleschromeext
 
-Firefox: https://tinyurl.com/sharplesfirefoxext
+Firefox: Email staff@sccs.swarthmore.edu for a copy 
+         (Firefox is not Chromium-based :( )
+
 
 You can copy the code and use it as you want. Credit us if you feel 
 like it, don't credit us if you don't feel like it.
@@ -63,4 +65,6 @@ corner of the screen, click the icon to see the menu.
 ## Things to add in the next versions: ##
  - Menus of the week/day after
     - Show menu of tomorrow (highlighted or bolded) after dinner of today
- - Transition to a new .js framework...? (Update 4.0)
+ - Add ability to turn on/off certain menus
+ - Weather...?
+ - Transition to a new .js framework...? (Update 5.0)

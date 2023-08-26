@@ -63,20 +63,26 @@ img {
 table {
         font-family: inherit;
         font-size: large;
-        background-color: $blacker;
+        background-color: $baby-blue;
         color: white;
-        border: 2px solid $white;
-        border-collapse: collapse;
-        margin: auto;
+        border: 5px solid $navy-blue;
+        border-collapse: separate;
+        border-radius: 5px;
+        border-spacing: 0;
     }
 
     td {
         padding: 0 15px;
+        margin: 0;
+    }
+
+    .line {
+        height: 5px;
+        background-color: $navy-blue;
     }
 
     th {
-        border: 2px solid $white;
-        padding: 5px 15px;
+        padding: 8px 15px;
     }
 
 
@@ -94,14 +100,6 @@ table {
 }
 
 #headers {
-    margin: 0;
-    .inline {
-        float: right;
-        width: auto;
-        margin: 9px 0px;
-        text-align: center;
-    }
-
     #gearDiv:hover {
         transition: 0.5s;
         background-color: $orange;
@@ -110,6 +108,10 @@ table {
     }
 
     #gearDiv {
+        float: right;
+        width: auto;
+        margin: 9px 0px;
+        text-align: center;
         transition: 0.5s;
         background-color: $navy-blue;
         height: 32px;
@@ -402,29 +404,86 @@ input:checked+.slider:before {
 
 
 
-.overlay {
+.overlay-root {
+    font-family: Raleway;
     height: 100%;
     width: 100%;
+
     position: fixed;
-    z-index: 1;
-    display: none;
-    text-align: center;
     top: 0;
     left: 0;
+    z-index: 1;
+
+    // display: none;
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.9);
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
-.overlay-content {
+.overlay-parent {
+    text-align: center;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    
+}
+
+.overlay-child {
+    height: 472px;
+    width: 241px;
     margin: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    background-color: $dark-navy-blue;
+    align-items: center;
+    justify-content: center;
+    border: 5px solid $dark-navy-blue;;
 }
 
-.overlay p {
+.sole-switch {
+    margin: 0px 0px 5px 0;
+    padding: 8px 0;
+    font-size: large;
+    background-color: $baby-blue;
+    border: 5px solid $navy-blue;
+    border-radius: 5px;
+    color: white;
+    border-collapse: collapse;
+}
+
+#right-column-switches {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 0 !important;
+    width: 180px !important;
+    position: relative;
+}
+
+#left-column-grid {
+    display: flex;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#version {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 174px;
+    margin: 0;
+    padding: 3px 0 5px 0;
+    font-size: small;
+    background-color: $baby-blue;
+    border: 3px solid $navy-blue;
+    border-radius: 3px;
+    color: white;
+    border-collapse: collapse;
+}
+
+.switch-title {
+    margin: 8px 0;
+}
+
+.overlay-root p {
     margin: 0 0 0 5%;
     text-decoration: none;
     font-size: 24px;
@@ -432,7 +491,7 @@ input:checked+.slider:before {
     display: block;
 }
 
-.overlay .closebtn {
+.overlay-root .closebtn {
     position: absolute;
     top: -7px;
     right: 12px;
@@ -440,7 +499,7 @@ input:checked+.slider:before {
     cursor: pointer;
 }
 
-.overlay .closebtn:hover {
+.overlay-root .closebtn:hover {
     color:$orange;
 }
 
