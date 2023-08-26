@@ -34,7 +34,7 @@
         <!-- Debug print element; user should never see this element -->
         <h3 id="debug"></h3>
 
-        <img src="/img/coords.png" class="beta">
+        <img src="/img/coords.png" class="beta" style="display:none">
 
         <div id="main">
             <div id="navigation">
@@ -97,140 +97,138 @@
     </div>
 
     <!-- Overlay section -->
-    <div id="tagMenu" class="overlay-root">
+    <div class="overlay-parent" id="modal">
         <p class="closebtn">&times;</p>
-        <div class="overlay-parent">
-            <div class="overlay-child" id="left-column-grid">
-                <table>
-                    <tr>
-                        <th>Tag</th>
-                        <th>Visibility</th>
-                    </tr>
-                    <td class="line"></td><td class="line"></td>
-                    <tr>
-                        <td>Vegan</td>
-                        <td><label class="tagswitch" id="veganSwitch">
-                            <input type="checkbox" id="vegan">
+        <div class="overlay-child" id="left-column-grid">
+            <table>
+                <tr>
+                    <th>Tag</th>
+                    <th>Visibility</th>
+                </tr>
+                <td class="line"></td><td class="line"></td>
+                <tr>
+                    <td>Vegan</td>
+                    <td><label class="tagswitch" id="veganSwitch">
+                        <input type="checkbox" id="vegan">
+                        <span class="slider round"></span>
+                    </label></td>
+                </tr>
+                <tr>
+                    <td>Vegetarian</td>
+                    <td><label class="tagswitch" id="vegetarianSwitch">
+                            <input type="checkbox" id="vegetarian">
                             <span class="slider round"></span>
                         </label></td>
-                    </tr>
-                    <tr>
-                        <td>Vegetarian</td>
-                        <td><label class="tagswitch" id="vegetarianSwitch">
-                                <input type="checkbox" id="vegetarian">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Halal</td>
-                        <td><label class="tagswitch" id="halalSwitch">
-                                <input type="checkbox" id="halal">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Gluten Free</td>
-                        <td><label class="tagswitch" id="glutenfreeSwitch">
-                                <input type="checkbox" id="glutenfree">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Alcohol</td>
-                        <td><label class="tagswitch" id="alcoholSwitch">
-                                <input type="checkbox" id="alcohol">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Egg</td>
-                        <td><label class="tagswitch" id="eggSwitch">
-                                <input type="checkbox" id="egg">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Fish</td>
-                        <td><label class="tagswitch" id="fishSwitch">
-                                <input type="checkbox" id="fish">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Milk</td>
-                        <td><label class="tagswitch" id="milkSwitch">
-                                <input type="checkbox" id="milk">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Peanut</td>
-                        <td><label class="tagswitch" id="peanutSwitch">
-                                <input type="checkbox" id="peanut">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Sesame</td>
-                        <td><label class="tagswitch" id="sesameSwitch">
-                                <input type="checkbox" id="sesame">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Shellfish</td>
-                        <td><label class="tagswitch" id="shellfishSwitch">
-                                <input type="checkbox" id="shellfish">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Soy</td>
-                        <td><label class="tagswitch" id="soySwitch">
-                                <input type="checkbox" id="soy">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Tree Nut</td>
-                        <td><label class="tagswitch" id="treenutSwitch">
-                                <input type="checkbox"id="treenut">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Wheat</td>
-                        <td><label class="tagswitch" id="wheatSwitch">
-                                <input type="checkbox" id="wheat">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                    <tr>
-                        <td>Beta</td>
-                        <td><label class="tagswitch" id="betaSwitch">
-                                <input type="checkbox" id="beta">
-                                <span class="slider round"></span>
-                            </label></td>
-                    </tr>
-                </table>
+                </tr>
+                <tr>
+                    <td>Halal</td>
+                    <td><label class="tagswitch" id="halalSwitch">
+                            <input type="checkbox" id="halal">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Gluten Free</td>
+                    <td><label class="tagswitch" id="glutenfreeSwitch">
+                            <input type="checkbox" id="glutenfree">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Alcohol</td>
+                    <td><label class="tagswitch" id="alcoholSwitch">
+                            <input type="checkbox" id="alcohol">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Egg</td>
+                    <td><label class="tagswitch" id="eggSwitch">
+                            <input type="checkbox" id="egg">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Fish</td>
+                    <td><label class="tagswitch" id="fishSwitch">
+                            <input type="checkbox" id="fish">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Milk</td>
+                    <td><label class="tagswitch" id="milkSwitch">
+                            <input type="checkbox" id="milk">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Peanut</td>
+                    <td><label class="tagswitch" id="peanutSwitch">
+                            <input type="checkbox" id="peanut">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Sesame</td>
+                    <td><label class="tagswitch" id="sesameSwitch">
+                            <input type="checkbox" id="sesame">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Shellfish</td>
+                    <td><label class="tagswitch" id="shellfishSwitch">
+                            <input type="checkbox" id="shellfish">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Soy</td>
+                    <td><label class="tagswitch" id="soySwitch">
+                            <input type="checkbox" id="soy">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Tree Nut</td>
+                    <td><label class="tagswitch" id="treenutSwitch">
+                            <input type="checkbox"id="treenut">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Wheat</td>
+                    <td><label class="tagswitch" id="wheatSwitch">
+                            <input type="checkbox" id="wheat">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+                <tr>
+                    <td>Beta</td>
+                    <td><label class="tagswitch" id="betaSwitch">
+                            <input type="checkbox" id="beta">
+                            <span class="slider round"></span>
+                        </label></td>
+                </tr>
+            </table>
+        </div>
+        <div class="overlay-child" id="right-column-switches">
+            <div class="sole-switch" id="TagVis">
+                <h4 class="switch-title">All Tag Visibility</h4>
+                <label class="switch" id="toggleTags">
+                    <input type="checkbox" id="mfer2">
+                    <span class="slider round"></span>
+                </label>
             </div>
-            <div class="overlay-child" id="right-column-switches">
-                <div class="sole-switch" id="TagVis">
-                    <h4 class="switch-title">All Tag Visibility</h4>
-                    <label class="switch" id="toggleTags">
-                        <input type="checkbox" id="mfer2">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div class="sole-switch" id="Theme">
-                    <h4 class="switch-title">Light / Dark</h4>
-                    <label class="switch" id="darkSwitch">
-                        <input type="checkbox" id="mfer">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <p id="version">I like Cashews :D</p>
+            <div class="sole-switch" id="Theme">
+                <h4 class="switch-title">Light / Dark</h4>
+                <label class="switch" id="darkSwitch">
+                    <input type="checkbox" id="mfer">
+                    <span class="slider round"></span>
+                </label>
             </div>
+            <p id="version">I like Cashews :D</p>
         </div>
     </div>
 </body>

@@ -63,11 +63,6 @@ setTheme(darkMode);
 $(document).ready(async function(){
     const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
 
-    // toggles tag menu
-    $('body').on('click', '#gear', function () {
-        $('#tagMenu').toggle();
-    });
-
     $('body').on('click', '#button', function () {
         alert("Brandy was a dog that worked at ITS with Oliver, \
 one of our hardware specialists. \nShe was a frequent visitor to \
@@ -78,9 +73,22 @@ was made by Oliver to relieve her of her pain. \nWe honor Brandy by \
 referring to Kohlberg Coffee Bar as Brandy's Bar.");
     });
 
-    $('body').on('click', '.closebtn', function () {
-        $('#tagMenu').toggle();
+
+    // preferences menu event handlers
+    $('body').on('click', '#gear', function () {
+        $('#modal').css('display', 'flex');
     });
+
+    $('body').on('click', '.closebtn', function () {
+        $('#modal').hide();
+    });
+
+    const modal = document.getElementById("modal");
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            $('#modal').hide();
+        }
+    }
 
     // Handles links
     $('body').on('click', 'a', function () {
