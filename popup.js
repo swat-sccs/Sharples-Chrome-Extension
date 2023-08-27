@@ -227,7 +227,9 @@ $(document).ready(async function(){
             setActiveTab("breakfastTab");
         });
         $('body').on('click', '#lunchTab', function () {
-            setMenu(obj['Dining Center'].lunch, "Dining Center");
+            if(setMenu(obj['Dining Center'].lunch, "Dining Center")){
+                setMenu(obj['Dining Center'].brunch, "Dining Center")
+            };
             setActiveTab("lunchTab");
         });
         $('body').on('click', '#dinnerTab', function () {
@@ -294,7 +296,7 @@ $(document).ready(async function(){
 
                 document.getElementById("menu").appendChild(close);
                 document.getElementById("menu").appendChild(bar);
-                return;
+                return 1;
             };
 
 
@@ -397,6 +399,7 @@ $(document).ready(async function(){
                     console.log("Brandy's Bar menus not found: " + errors.join(", "));
                     break;
             };
+            return 0;
         };
 
         try{
@@ -405,7 +408,9 @@ $(document).ready(async function(){
                 setMenu(subtree.breakfast, 'Dining Center');
                 setActiveTab("breakfastTab");
             } else if(hour < 14){
-                setMenu(subtree.lunch, 'Dining Center');
+                if (setMenu(obj['Dining Center'].lunch, "Dining Center")) {
+                    setMenu(obj['Dining Center'].brunch, "Dining Center")
+                };
                 setActiveTab("lunchTab");
             } else {
                 setMenu(subtree.dinner, 'Dining Center');
