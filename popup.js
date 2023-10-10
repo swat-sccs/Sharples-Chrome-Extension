@@ -32,7 +32,7 @@ const tags = {
 const tagsIDs = ["vegan", "vegetarian", "halal",
     "glutenfree", "alcohol", "egg", "fish", "milk",
     "peanut", "sesame", "shellfish", "soy", "treenut",
-    "wheat", "beta"];
+    "wheat"];
 
 // Variables to store and get today's date elements
 {
@@ -60,7 +60,7 @@ let darkMode = getThemeSetting();
 setTheme(darkMode);
 
 // main Jquery function; code below only runs if document is loaded
-$(document).ready(async function(){
+$(document).ready(async function () {
     const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
 
     // preferences menu/brandy info event handlers
@@ -93,7 +93,7 @@ $(document).ready(async function(){
         chrome.tabs.create({ url: $(this).attr('href') });
         return false;
     });
-    
+
     // Handles dark mode and tag visibility toggles
     function toggleTheme() {
         // updates based on stage
@@ -131,7 +131,7 @@ $(document).ready(async function(){
     // refreshes page with tag preferences
     function refreshTags() {
         for (let tag of tagsIDs) {
-            if (localStorage.getItem("tags") == "true"){ //if tags allowed
+            if (localStorage.getItem("tags") == "true") { //if tags allowed
                 if (localStorage.getItem(tag) == "true") {
                     switchOnTag(tag);
                     showTag(tag);
@@ -163,18 +163,18 @@ $(document).ready(async function(){
     }
 
     // disables visibility of tag, does NOT update local storage or switch
-    function hideTag(tag){
+    function hideTag(tag) {
         $("." + tag).hide();
     }
 
     // enables visibility of tag, does NOT update local storage or switch
     function showTag(tag) {
-        if (document.getElementById(tag).checked == true){
+        if (document.getElementById(tag).checked == true) {
             $("." + tag).show();
         }
     }
 
-    
+
     // runs the command (darkMode) when the dark mode toggle switch is changed
     document.getElementById("darkSwitch").addEventListener("change", toggleTheme);
 
@@ -187,7 +187,7 @@ $(document).ready(async function(){
     Array.from(tagToggles).forEach(function (toggle) {
         toggle.addEventListener("change", (event) => {
             let tag = toggle.id.slice(0, -6);
-            if (localStorage.getItem("tags") == "true"){ // if tags allowed
+            if (localStorage.getItem("tags") == "true") { // if tags allowed
                 // turning tag off
                 if (localStorage.getItem(tag) == "true") {
                     console.log("allowed, toggling off")
@@ -209,12 +209,12 @@ $(document).ready(async function(){
                     console.log("not allowed, toggling on")
                     switchOnTag(tag);
                 };
-            };             
-        }); 
+            };
+        });
     });
 
     // set the active tab's css style
-    function setActiveTab (activeTabID){
+    function setActiveTab(activeTabID) {
         for (let tab of $('.tab')) { tab.style = "" }
         document.getElementById(activeTabID).style["backgroundColor"] = "hsl(216, 33%, 25%)";
         refreshTags();
@@ -227,7 +227,7 @@ $(document).ready(async function(){
             setActiveTab("breakfastTab");
         });
         $('body').on('click', '#lunchTab', function () {
-            if(setMenu(obj['Dining Center'].lunch, "Dining Center")){
+            if (setMenu(obj['Dining Center'].lunch, "Dining Center")) {
                 setMenu(obj['Dining Center'].brunch, "Dining Center")
             };
             setActiveTab("lunchTab");
@@ -251,20 +251,27 @@ $(document).ready(async function(){
 
         // turns objectified menu into a parsed string, returned string 
         // MUST BE SANITIZED.
-        function formatMenu(items){
+        function formatMenu(items, delim) {
             var newLst = [];
-            for(let i = 0; i < items.length; i++){
-                var string = items[i].item;
-                for (let prop of items[i].properties){
-                    string += tags[prop];
+            if (typeof (items) == "string") {
+                return [items];
+            }
+
+            for (let item of items) {
+                var string = item.item;
+                if (item.properties != null) {
+                    for (let prop of item.properties) {
+                        string += tags[prop];
+                    };
                 };
                 newLst.push(string);
             };
-            return newLst.join(', ');
+
+            return newLst.join(delim);
         };
 
         // unpuns the menu names
-        function unpun(title){
+        function unpun(title) {
             return title
                 .replace("Classics", "Menu 1")
                 .replace("World of Flavor", "Menu 2")
@@ -278,7 +285,7 @@ $(document).ready(async function(){
                 .replace("Soup", "Daily Soup")
         };
 
-        function setMenu(subtree, venue){
+        function setMenu(subtree, venue) {
             // clear menu board first
             const board = document.getElementById("menu");
             while (board.firstChild) {
@@ -291,7 +298,7 @@ $(document).ready(async function(){
                 console.log("Selected menu contains no data.");
                 const close = document.createElement("h2");
                 const bar = document.createElement("hr");
-                close.textContent = (venue == "Kholberg") ? 
+                close.textContent = (venue == "Kholberg") ?
                     "Venue (aka Kholberg) is closed" : "Venue is closed";
 
                 document.getElementById("menu").appendChild(close);
@@ -322,14 +329,16 @@ $(document).ready(async function(){
 
             // set the menu time
             const timeElement = document.createElement('h2');
-            const timeText = subtree.start + ' - ' + subtree.end;
+            const timeText = subtree.time
+
             timeElement.textContent = (venue == "Kohlberg") ?
-             "(aka Kolhberg)  Hours: " + timeText : "Hours: " + timeText;
+                "(aka Kolhberg)  Hours: " + timeText : "Hours: " + timeText;
+
             document.getElementById("menu").appendChild(timeElement);
             const bar = document.createElement('hr');
             document.getElementById("menu").appendChild(bar);
 
-            switch (venue){
+            switch (venue) {
                 case 'Dining Center':
                     var errors = [];
 
@@ -342,7 +351,7 @@ $(document).ready(async function(){
                             document.getElementById("menu").appendChild(titleElement);
 
                             const menuElement = document.createElement('p');
-                            const menuText = formatMenu(subtree[menu]);
+                            const menuText = formatMenu(subtree[menu], ', ');
                             menuElement.setHTML(menuText, { sanitizer: san });
                             document.getElementById("menu").appendChild(menuElement);
                         } else {
@@ -384,12 +393,8 @@ $(document).ready(async function(){
                             document.getElementById("menu").appendChild(titleElement);
 
                             const menuElement = document.createElement('p');
-                            var menuText = '';
-                            try{
-                                menuText = formatMenu(subtree[menu]);
-                            } catch (error) {
-                                menuText = subtree[menu];
-                            }
+                            var menuText = formatMenu(subtree[menu], '<br>');
+
                             menuElement.setHTML(menuText, { sanitizer: san });
                             document.getElementById("menu").appendChild(menuElement);
                         } else {
@@ -402,12 +407,12 @@ $(document).ready(async function(){
             return 0;
         };
 
-        try{
+        try {
             const subtree = obj['Dining Center'];
-            if(hour < 10){
+            if (hour < 10) {
                 setMenu(subtree.breakfast, 'Dining Center');
                 setActiveTab("breakfastTab");
-            } else if(hour < 14){
+            } else if (hour < 14) {
                 if (setMenu(obj['Dining Center'].lunch, "Dining Center")) {
                     setMenu(obj['Dining Center'].brunch, "Dining Center")
                 };
@@ -464,30 +469,6 @@ $(document).ready(async function(){
 
     // PLAYGROUND START, DELETE OR IMPLEMENT CODE PAST THIS POINT
 
-    /**
-     * Notes to self: 
-     * So basically, make a popup menu for users to manage their 
-     * dietary tag visibility. When the user finishes and exits the screen,
-     * run the constructPage() command again to refresh the menus.
-     * 
-     * Make the setHTML into a forloop with nested try-catch statements?
-     * 
-     * 
-     */
-    const konami = "ArrowUpArrowUpArrowDownArrowDownArrowLeftArrowRightArrowLeftArrowRightbaEnter";
-    const node = document.getElementById("node");
-    node.volume = 0.05;
-    var keyStrokes = '';
-    document.onkeydown = function (data) {
-        // const newSound = node.cloneNode();
-        // newSound.volume = 0.05;
-        // newSound.play();
-        keyStrokes += data.key;
-        if (keyStrokes.includes(konami)){
-            keyStrokes = '';
-            node.play();
-        };
-    };
 
 });
 
