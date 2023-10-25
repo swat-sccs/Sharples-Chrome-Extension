@@ -1,4 +1,3 @@
-import { DiningObject } from "./lib/DiningObject.js";
 import manifest from './manifest.json' assert { type: 'json' };
 
 // // Keywords to sort by for menu items in order
@@ -54,6 +53,13 @@ function setThemeSetting(setting) {
 
 function setTheme(mode) {
     document.documentElement.dataset.appliedMode = mode;
+}
+
+async function getMenus() {
+	const response = await fetch('http://dining.sccs.swarthmore.edu/api')
+		.catch(error => console.error('Error:', error));
+	const data = await response.json();
+	return data;
 }
 
 let darkMode = getThemeSetting();
@@ -458,11 +464,14 @@ $(document).ready(async function () {
         const versionControl = document.getElementById("version");
         versionControl.textContent = "Running on v" + manifest.version;
     };
+	
 
-    // Store the object under an alias, if you'd like
-    const obj = await DiningObject();
 
-    console.log(obj);
+	const obj = await getMenus();
+
+	console.log("vvv Formatted API data vvv")
+	console.log(obj)
+
 
     constructPage();
     setPrefs();
