@@ -312,10 +312,6 @@ $(document).ready(async function () {
                 return 1;
             };
 
-
-            // set an HTML sanitizer for the menu items
-            const san = new Sanitizer();
-
             // temporarily set list of Tags that we want to display
             // and discretely define what sections are allowed
             const inclusions = [
@@ -352,13 +348,12 @@ $(document).ready(async function () {
                     for (let menu of inclusions) {
                         if (subtree[menu]) {
                             const titleElement = document.createElement('h2');
-                            const titleText = menu;
+							const titleText = capitalize(menu);
                             titleElement.textContent = unpun(titleText);
                             document.getElementById("menu").appendChild(titleElement);
-
                             const menuElement = document.createElement('p');
-                            const menuText = formatMenu(subtree[menu], ', ');
-                            menuElement.setHTML(menuText, { sanitizer: san });
+							const menuText = formatMenu(subtree[menu], ', '); 
+							menuElement.innerHTML = menuText;
                             document.getElementById("menu").appendChild(menuElement);
                         } else {
                             errors.push(menu);
@@ -376,10 +371,9 @@ $(document).ready(async function () {
                             const titleText = capitalize(menu);
                             titleElement.textContent = unpun(titleText);
                             document.getElementById("menu").appendChild(titleElement);
-
                             const menuElement = document.createElement('p');
-                            const menuText = subtree[menu];
-                            menuElement.setHTML(menuText, { sanitizer: san });
+							const menuText = subtree[menu]; 
+							menuElement.innerHTML = menuText;
                             document.getElementById("menu").appendChild(menuElement);
                         } else {
                             errors.push(menu);
@@ -397,11 +391,9 @@ $(document).ready(async function () {
                             const titleText = capitalize(menu);
                             titleElement.textContent = unpun(titleText);
                             document.getElementById("menu").appendChild(titleElement);
-
                             const menuElement = document.createElement('p');
                             var menuText = formatMenu(subtree[menu], '<br>');
-
-                            menuElement.setHTML(menuText, { sanitizer: san });
+                            menuElement.innerHTML = menuText;
                             document.getElementById("menu").appendChild(menuElement);
                         } else {
                             errors.push(menu);
