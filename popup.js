@@ -425,17 +425,27 @@ setTheme(darkMode);
 let cachedObj = localStorage.getItem("data");
 cachedObj = JSON.parse(cachedObj)
 
-let now = Date.parse(new Date());
-let curMenuDate = Date.parse(cachedObj["date"]);
-
-
 // if nothing is cached OR day has reset, perform a fetch
-if (!cachedObj || now > curMenuDate) {
+if (!cachedObj) {
     cachedObj = await getMenus();
-    localStorage.setItem("data", cachedObj);
-    console.log("Fetched formatted API data: ")
+    localStorage.setItem("data", JSON.stringify(cachedObj));
+    console.log("Null fetched formatted API data: ")
 } else {
-    console.log("Cached formatted API data: ")
+
+    let now = new Date();
+    let today = new Date(cachedObj["date"]);
+    let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0,5,0,0);
+
+    // if we're 00:05 AM on the next day, fetch new data
+    // (keep in mind the diningAPI refreshes once a day, at 00:01 AM)
+    // maybe change this to check if a hash is different, then pull
+    if (Date.parse(now) > Date.parse(tomorrow)) {
+        cachedObj = await getMenus();
+        localStorage.setItem("data", JSON.stringify(cachedObj));
+        console.log("Fetched formatted API data: ")
+    } else {
+        console.log("Cached formatted API data: ")
+    }
 }
 
 console.log(cachedObj)
