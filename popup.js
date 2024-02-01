@@ -285,7 +285,7 @@ function constructPage(obj) {
 
 		// if it's kohlberg, then add note about Brandy's Bar
 		timeElement.textContent = (venue == "Kohlberg") ?
-            "Hours: " + timeText + "  (aka Kolhberg)" : "Hours: " + timeText;
+            "Hours: " + timeText + "  (aka Kohlberg)" : "Hours: " + timeText;
 
 		document.getElementById("menu").appendChild(timeElement);
 		
@@ -422,11 +422,25 @@ Array.from(tagToggles).forEach(function (toggle) {
 let darkMode = getThemeSetting();
 setTheme(darkMode);
 
-const obj = await getMenus();
-console.log("Formatted API data: ")
-console.log(obj)
+let cachedObj = localStorage.getItem("data");
+cachedObj = JSON.parse(cachedObj)
 
-constructPage(obj);
+let now = Date.parse(new Date());
+let curMenuDate = Date.parse(cachedObj["date"]);
+
+
+// if nothing is cached OR day has reset, perform a fetch
+if (!cachedObj || now > curMenuDate) {
+    cachedObj = await getMenus();
+    localStorage.setItem("data", cachedObj);
+    console.log("Fetched formatted API data: ")
+} else {
+    console.log("Cached formatted API data: ")
+}
+
+console.log(cachedObj)
+
+constructPage(cachedObj);
 setPrefs();
 
 
