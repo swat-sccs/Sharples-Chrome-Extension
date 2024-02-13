@@ -1,37 +1,32 @@
 import manifest from './manifest.json' assert { type: 'json' };
 
-// // Keywords to sort by for menu items in order
-// const keywords = ["chicken", "steak", "beef", "shrimp", "bacon", "sausage", 
-// "pork", "pot roast", "meatball", "lamb", "turkey", "tilapia", "salmon", "wing", 
-// "fried rice", "curry", "aloo gobi", "pizza", "vindaloo", "cod", "fish", "pollock",
-// "falafel", "catfish", "quesadilla", "pancake", "waffle", "tempeh", "tofu", 
-// "seitan", "pollock", "masala", "lo mein", "chow mein", "pad thai", "pasta",
-// "mahi", "bean bake", "catfish", "risotto", "meatloaf"];
+const tagHTML = (tag) => '<abbr class="tag ' + tag + '" title="' + capitalize(tag) + '">' + abbr(tag) + '</abbr>'
 
-// dictionary of the HTML dietary tags
-const tags = {
-    vegan: '<abbr class="tag vegan" title="Vegan">v</abbr>',
-    vegetarian: '<abbr class="tag vegetarian" title="Vegetarian">vg</abbr>',
-    halal: '<abbr class="tag halal" title="Halal">h</abbr>',
-    glutenfree: '<abbr class="tag glutenfree" title="Gluten Free">gf</abbr>',
-    alcohol: '<abbr class="tag alcohol" title="Alcohol">alc</abbr>',
-    egg: '<abbr class="tag egg" title="Egg">e</abbr>',
-    fish: '<abbr class="tag fish" title="Fish">f</abbr>',
-    milk: '<abbr class="tag milk" title="Milk">m</abbr>',
-    peanut: '<abbr class="tag peanut" title="Peanut">p</abbr>',
-    sesame: '<abbr class="tag sesame" title="Sesame">ses</abbr>',
-    shellfish: '<abbr class="tag shellfish" title="Shellfish">sf</abbr>',
-    soy: '<abbr class="tag soy" title="Soy">s</abbr>',
-    treenut: '<abbr class="tag treenut" title="Tree Nut">tn</abbr>',
-    wheat: '<abbr class="tag wheat" title="Wheat">w</abbr>',
-	locallysourced: '',
-	organic: '',
-};
+function abbr(tag) {
+    switch(tag) {
+        case ("vegetarian"):
+            return "vg";
+        case ("glutenfree"):
+            return "gf";
+        case ("sesame"):
+            return "ses";
+        case ("shellfish"):
+            return "sf";
+        case ("locallysourced"):
+            return "ls";
+        case ("vegetarian"):
+            return "vg";
+        case ("treenut"):
+            return "tn";
+        default:
+            return tag[0];
+    }
+}
 
 const tagsIDs = ["vegan", "vegetarian", "halal",
     "glutenfree", "alcohol", "egg", "fish", "milk",
     "peanut", "sesame", "shellfish", "soy", "treenut",
-    "wheat"];
+    "wheat", "locallysourced", "organic", "kosher"];
 
 // Variables to store and get today's date elements
 {
@@ -192,7 +187,7 @@ function constructPage(obj) {
 			var string = item.item;
 			if (item.properties != null) {
 				for (let prop of item.properties) {
-					string += tags[prop];
+					string += tagHTML(prop);
 				};
 			};
 			newLst.push(string);

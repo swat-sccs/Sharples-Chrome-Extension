@@ -187,6 +187,7 @@ th {
   font-size: 15px;
   visibility: visible;
   color: hsl(216, 13%, 10%) !important;
+  background-color: hsl(41, 75%, 67%);
 }
 #main .alcohol {
   background-color: hsl(196, 75%, 67%);
