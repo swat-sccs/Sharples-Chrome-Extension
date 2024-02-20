@@ -287,10 +287,8 @@ th {
 .switch, .tagswitch {
   position: relative;
   display: inline-block;
-  width: 30px;
-  height: 16px;
+  align-content: center;
   margin-top: 7px;
-  margin-inline: 25%;
 }
 
 #darkSwitch, #toggleTags {
@@ -367,6 +365,10 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: center;
   height: 100%;
+}
+
+#prefMenu {
+  display: flex;
 }
 
 .prefParent {

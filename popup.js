@@ -315,6 +315,44 @@ function constructPage(obj) {
 		closeElement.textContent = "Dining Center is closed";
 		document.getElementById("menu").appendChild(closeElement);
 	};
+
+    const testIDS = ["vegan", "vegetarian", "halal",
+        "glutenfree", "alcohol", "egg", "fish", "milk",
+        "peanut", "sesame", "shellfish", "soy", "treenut",
+        "wheat", "locallysourced", "organic", "kosher"];
+
+    for (let id of testIDS) {
+        createSwitch(id)
+    }
+
+
+    function createSwitch(name) {
+
+        let row = document.createElement("tr")
+        let titleElement = document.createElement("td")
+        let switchElement = document.createElement("td")
+
+        titleElement.textContent = capitalize(name)
+
+        row.appendChild(titleElement)
+        row.appendChild(switchElement)
+
+        switchElement.setAttribute("class", "tagswitch")
+        switchElement.setAttribute("id", name + "Switch")
+
+        let switchInput = document.createElement("input")
+        switchInput.setAttribute("type", "checkbox")
+        switchInput.setAttribute("id", name)
+
+        switchElement.appendChild(switchInput)
+
+        let switchSpan = document.createElement("span")
+        switchSpan.setAttribute("class", "slider round")
+        switchElement.appendChild(switchSpan)
+
+        document.getElementById("tagTable").appendChild(row)
+    }
+
 };
 
 // Set user preferences
@@ -383,37 +421,6 @@ document.getElementById("darkSwitch").addEventListener("change", toggleTheme);
 // runs the command (toggleTags) when the main tag toggle switch is changed
 document.getElementById("toggleTags").addEventListener("change", toggleTags);
 
-// handles tag toggling menu, tag visibility, and local storage
-const tagToggles = document.getElementsByClassName("tagswitch");
-
-Array.from(tagToggles).forEach(function (toggle) {
-	toggle.addEventListener("change", (event) => {
-		let tag = toggle.id.slice(0, -6);
-		if (localStorage.getItem("tags") == "true") { // if tags allowed
-			// turning tag off
-			if (localStorage.getItem(tag) == "true") {
-				console.log("allowed, toggling off")
-				switchOffTag(tag);
-				hideTag(tag);
-			} else {
-				// turning on tag
-				console.log("allowed, toggling on")
-				switchOnTag(tag);
-				showTag(tag);
-			};
-		} else { // tags not allowed (not disabling)
-			// turning tag off
-			if (localStorage.getItem(tag) == "true") {
-				console.log("not allowed, toggling off")
-				switchOffTag(tag);
-			} else {
-				// turning on tag
-				console.log("not allowed, toggling on")
-				switchOnTag(tag);
-			};
-		};
-	});
-});
 
 
 let darkMode = getThemeSetting();
@@ -448,7 +455,73 @@ if (!cachedObj) {
 console.log(cachedObj)
 
 constructPage(cachedObj);
-setPrefs();
+
+
+// handles tag toggling menu, tag visibility, and local storage
+const tagToggles = document.getElementsByClassName("tagswitch");
+
+for(let id of tagsIDs) {
+    let switchElement = document.getElementById(id)
+    // console.log(switchElement)
+    switchElement.addEventListener("change", () => {
+        let tag = id
+        if (localStorage.getItem("tags") == "true") { // if tags allowed
+            // turning tag off
+            if (localStorage.getItem(tag) == "true") {
+                console.log("allowed, toggling off")
+                switchOffTag(tag);
+                hideTag(tag);
+            } else {
+                // turning on tag
+                console.log("allowed, toggling on")
+                switchOnTag(tag);
+                showTag(tag);
+            };
+        } else { // tags not allowed (not disabling)
+            // turning tag off
+            if (localStorage.getItem(tag) == "true") {
+                console.log("not allowed, toggling off")
+                switchOffTag(tag);
+            } else {
+                // turning on tag
+                console.log("not allowed, toggling on")
+                switchOnTag(tag);
+            };
+        };
+    });
+}
+
+Array.from(tagToggles).forEach(function (toggle) {
+    console.log(toggle.input)
+    // toggle.addEventListener("change", (event) => {
+    //     let tag = toggle.id.slice(0, -6);
+    //     if (localStorage.getItem("tags") == "true") { // if tags allowed
+    //         // turning tag off
+    //         if (localStorage.getItem(tag) == "true") {
+    //             console.log("allowed, toggling off")
+    //             switchOffTag(tag);
+    //             hideTag(tag);
+    //         } else {
+    //             // turning on tag
+    //             console.log("allowed, toggling on")
+    //             switchOnTag(tag);
+    //             showTag(tag);
+    //         };
+    //     } else { // tags not allowed (not disabling)
+    //         // turning tag off
+    //         if (localStorage.getItem(tag) == "true") {
+    //             console.log("not allowed, toggling off")
+    //             switchOffTag(tag);
+    //         } else {
+    //             // turning on tag
+    //             console.log("not allowed, toggling on")
+    //             switchOnTag(tag);
+    //         };
+    //     };
+    // });
+});
+// setPrefs();
+
 
 
 
