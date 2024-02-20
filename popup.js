@@ -23,122 +23,116 @@ function abbr(tag) {
 	}
 }
 
-const tagsIDs = ["vegan", "vegetarian", "halal",
+var tagsIDs = ["vegan", "vegetarian", "halal",
 	"glutenfree", "alcohol", "egg", "fish", "milk",
 	"peanut", "sesame", "shellfish", "soy", "treenut",
 	"wheat", "locallysourced", "organic", "kosher"];
 
-// Variables to store and get today's date elements
-{
-	const monthNames = ["January", "February", "March", "April", "May", "June",
-		"July", "August", "September", "October", "November", "December"
-	];
-	var today = new Date();
-	var dd = String(today.getDate()).padStart(2, '0');
-	var mm = monthNames[today.getUTCMonth()];
-	var hour = today.getHours();
-}
 
 const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
 
-function getThemeSetting() {
+
+
+/**
+ * Section below pertains to Theme (Dark/light mode)
+ */
+
+function getTheme() {
 	return localStorage.getItem('dark');
 }
 
-function setThemeSetting(setting) {
+function setTheme(setting) {
 	localStorage.setItem('dark', setting);
 }
 
-function setTheme(mode) {
+function applyTheme(mode) {
 	document.documentElement.dataset.appliedMode = mode;
-}
-
-async function getMenus() {
-	const response = await fetch('http://dining.sccs.swarthmore.edu/api')
-		.catch(error => console.error('Error:', error));
-	const data = await response.json();
-	return data;
 }
 
 // Handles dark mode and tag visibility toggles
 function toggleTheme() {
 	// updates based on stage
-	if (getThemeSetting() == "light") { // turn off dark mode
-		setThemeSetting("dark");
-		setTheme(getThemeSetting());
-	} else {                          // turn off dark mode
-		setThemeSetting("light");
-		setTheme(getThemeSetting());
-	}
+	getTheme() == "light" ? setTheme("dark") : setTheme("light")
+	applyTheme(getTheme());
 }
+
+
+
+
+/**
+ * Section below pertains to Tags
+ */
 
 // toggles visibility of all tags
 function toggleTags() {
-	if (typeof (Storage) !== "undefined") {
-		if (localStorage.getItem("tags") == "false") {
-
-			localStorage.setItem("tags", "true");
-			document.getElementById("mfer2").checked = true;
-			for (let tag of tagsIDs) { showTag(tag) };
-
-		} else {
-
-			localStorage.setItem("tags", "false");
-			document.getElementById("mfer2").checked = false;
-			for (let tag of tagsIDs) { hideTag(tag) };
-
-		}
-	} else {
-		document.getElementById("debug").textContent =
-			"If you see this message, email ale3@swarthmore.edu. Error Code: 12b";
-	}
+	(localStorage.getItem("tags") == "false") ? localStorage.setItem("tags", "true") :
+		localStorage.setItem("tags", "false");
+	refreshTags();
 }
 
 // refreshes page with tag preferences
 function refreshTags() {
+	// hide all tags first
+	// if the global tag visibility is allowed, check for individual tag visibility
+	// if the individual tag visibility is allowed, show it
 	for (let tag of tagsIDs) {
-		if (localStorage.getItem("tags") == "true") { //if tags allowed
-			if (localStorage.getItem(tag) == "true") {
-				switchOnTag(tag);
-				showTag(tag);
-			} else {
-				switchOffTag(tag);
-				hideTag(tag);
-			}
-		} else {
-			if (localStorage.getItem(tag) == "true") {
-				switchOnTag(tag);
-			} else {
-				switchOffTag(tag);
-			}
-			hideTag(tag);
-		}
+		$("." + tag).hide();
+		if (localStorage.getItem("tags") == "true")  //if tags allowed
+			if (localStorage.getItem(tag) == "true")
+				$("." + tag).show();
 	}
 }
 
-// tag local storage and checked status set to off
-function switchOffTag(tag) {
-	localStorage.setItem(tag, "false");
-	document.getElementById(tag).checked = false;
+// create the switch with a given name
+function createSwitch(name) {
+
+	// <label class="tagswitch" id="vegan">
+	// 	<input type="checkbox">
+	// 	<span class="slider round"></span>
+	// </label>
+
+	let row = document.createElement("tr")
+	let titleElement = document.createElement("td")
+	let switchElement = document.createElement("td")
+
+	titleElement.textContent = capitalize(name)
+
+	row.appendChild(titleElement)
+	row.appendChild(switchElement)
+
+	let switchLabel = document.createElement("label")
+	switchLabel.setAttribute("class", "tagswitch")
+	switchLabel.setAttribute("id", name)
+
+	switchElement.appendChild(switchLabel)
+
+	let switchInput = document.createElement("input")
+	switchInput.setAttribute("type", "checkbox")
+	switchInput.checked = localStorage.getItem(name) == "true";
+
+	switchLabel.appendChild(switchInput)
+
+	let switchSpan = document.createElement("span")
+	switchSpan.setAttribute("class", "slider round")
+	switchLabel.appendChild(switchSpan)
+
+	document.getElementById("tagTable").appendChild(row)
 }
 
-// tag local storage and checked status set to on
-function switchOnTag(tag) {
-	localStorage.setItem(tag, "true");
-	document.getElementById(tag).checked = true;
+// function that runs for a switch when it is toggled
+function watchSwitch(name) {
+	(localStorage.getItem(name) == "true") ? localStorage.setItem(name, "false") :
+		localStorage.setItem(name, "true")
+	refreshTags();
 }
 
-// disables visibility of tag, does NOT update local storage or switch
-function hideTag(tag) {
-	$("." + tag).hide();
-}
 
-// enables visibility of tag, does NOT update local storage or switch
-function showTag(tag) {
-	if (document.getElementById(tag).checked == true) {
-		$("." + tag).show();
-	}
-}
+
+
+
+/**
+ * Section below pertains to Page/Data handling
+ */
 
 // set the active tab's css style
 function setActiveTab(activeTabID) {
@@ -174,7 +168,8 @@ function constructPage(obj) {
 
 	// set title and date
 	const title = document.getElementById("title");
-	title.textContent = "Narples - " + mm + " " + dd;
+	const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+	title.textContent = "Narples - " + months[new Date().getMonth()] + " " + new Date().getDate();
 
 	// turns objectified menu into a parsed string, returned string
 	function formatMenu(items, delim) {
@@ -297,6 +292,7 @@ function constructPage(obj) {
 
 	try {
 		const subtree = obj['Dining Center'];
+		let hour = new Date().getHours()
 		if (hour < 10) {
 			setMenu(subtree.breakfast, 'Dining Center');
 			setActiveTab("breakfastTab");
@@ -316,75 +312,32 @@ function constructPage(obj) {
 		document.getElementById("menu").appendChild(closeElement);
 	};
 
-    const testIDS = ["vegan", "vegetarian", "halal",
-        "glutenfree", "alcohol", "egg", "fish", "milk",
-        "peanut", "sesame", "shellfish", "soy", "treenut",
-        "wheat", "locallysourced", "organic", "kosher"];
-
-    for (let id of testIDS) {
-        createSwitch(id)
-    }
-
-
-    function createSwitch(name) {
-
-        let row = document.createElement("tr")
-        let titleElement = document.createElement("td")
-        let switchElement = document.createElement("td")
-
-        titleElement.textContent = capitalize(name)
-
-        row.appendChild(titleElement)
-        row.appendChild(switchElement)
-
-        switchElement.setAttribute("class", "tagswitch")
-        switchElement.setAttribute("id", name + "Switch")
-
-        let switchInput = document.createElement("input")
-        switchInput.setAttribute("type", "checkbox")
-        switchInput.setAttribute("id", name)
-
-        switchElement.appendChild(switchInput)
-
-        let switchSpan = document.createElement("span")
-        switchSpan.setAttribute("class", "slider round")
-        switchElement.appendChild(switchSpan)
-
-        document.getElementById("tagTable").appendChild(row)
-    }
 
 };
 
 // Set user preferences
 function setPrefs() {
-	const darkModeSwitch = document.getElementById("mfer");
-	if (localStorage.getItem("dark") == "light") {
-		darkModeSwitch.checked = false;
-		setThemeSetting("light");
-		setTheme("light");
-	} else {
-		darkModeSwitch.checked = true;
-		setThemeSetting("dark");
-		setTheme("dark");
-	}
 
-	const tagVisSwitch = document.getElementById("mfer2");
-	if (localStorage.getItem("tags") == "false") {
-		tagVisSwitch.checked = false;
-		localStorage.setItem("tags", "false");
-		$('.tag').hide();
-	} else {
-		tagVisSwitch.checked = true;
-		localStorage.setItem("tags", "true");
-	}
+	// set the toggle state for tag vis and dark/light modes
+	document.getElementById("mfer").checked = localStorage.getItem("dark") == "dark"
+	document.getElementById("mfer2").checked = localStorage.getItem("tags") == "false";
 
-	refreshTags();
+	// apply the dark/light theme
+	applyTheme(getTheme());
 
 	// set version number in preferences menu
 	const versionControl = document.getElementById("version");
 	versionControl.textContent = "Running on v" + manifest.version;
 };
 
+
+
+
+
+
+/**
+ * Section below pertains to Event Handlers
+ */
 
 // Handles links
 $('body').on('click', 'a', function () {
@@ -406,10 +359,9 @@ $('body').on('click', '.closebtn', function () {
 	$('#brandyInfo').hide();
 });
 
-const modal = document.getElementById("prefMenu");
-const brandy = document.getElementById("brandyInfo");
 window.onclick = function (event) {
-	if (event.target == modal || event.target == brandy) {
+	if (event.target == document.getElementById("prefMenu") ||
+		event.target == document.getElementById("brandyInfo")) {
 		$('#prefMenu').hide();
 		$('#brandyInfo').hide();
 	}
@@ -419,15 +371,29 @@ window.onclick = function (event) {
 document.getElementById("darkSwitch").addEventListener("change", toggleTheme);
 
 // runs the command (toggleTags) when the main tag toggle switch is changed
-document.getElementById("toggleTags").addEventListener("change", toggleTags);
+document.getElementById("mfer2").addEventListener("change", toggleTags);
 
 
 
-let darkMode = getThemeSetting();
-setTheme(darkMode);
 
-let cachedObj = localStorage.getItem("data");
-cachedObj = JSON.parse(cachedObj)
+
+
+
+
+/**
+ * Section below pertains to Main function flow
+ */
+
+// set theme and other preferences so users dont get flashbanged
+setPrefs();
+
+// populate tag switch menu and start event watchers
+for (let id of tagsIDs) {
+	createSwitch(id)
+	document.getElementById(id).addEventListener("change", () => { watchSwitch(id) })
+}
+
+let cachedObj = JSON.parse(localStorage.getItem("data"))
 
 // if nothing is cached OR day has reset, perform a fetch
 if (!cachedObj) {
@@ -437,12 +403,15 @@ if (!cachedObj) {
 } else {
 
 	let now = new Date();
-	let today = new Date(cachedObj["date"]);
+	let today = new Date(cachedObj["TimeOfGeneration"]);
 	let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 5, 0, 0);
 
 	// if we're 00:05 AM on the next day, fetch new data
 	// (keep in mind the diningAPI refreshes once a day, at 00:01 AM)
 	// maybe change this to check if a hash is different, then pull
+	console.log("now:  " + now)
+	console.log("new data:  " + today)
+	console.log("tomorrow:  " + tomorrow)
 	if (Date.parse(now) > Date.parse(tomorrow)) {
 		cachedObj = await getMenus();
 		localStorage.setItem("data", JSON.stringify(cachedObj));
@@ -455,72 +424,6 @@ if (!cachedObj) {
 console.log(cachedObj)
 
 constructPage(cachedObj);
-
-
-// handles tag toggling menu, tag visibility, and local storage
-const tagToggles = document.getElementsByClassName("tagswitch");
-
-for(let id of tagsIDs) {
-    let switchElement = document.getElementById(id)
-    // console.log(switchElement)
-    switchElement.addEventListener("change", () => {
-        let tag = id
-        if (localStorage.getItem("tags") == "true") { // if tags allowed
-            // turning tag off
-            if (localStorage.getItem(tag) == "true") {
-                console.log("allowed, toggling off")
-                switchOffTag(tag);
-                hideTag(tag);
-            } else {
-                // turning on tag
-                console.log("allowed, toggling on")
-                switchOnTag(tag);
-                showTag(tag);
-            };
-        } else { // tags not allowed (not disabling)
-            // turning tag off
-            if (localStorage.getItem(tag) == "true") {
-                console.log("not allowed, toggling off")
-                switchOffTag(tag);
-            } else {
-                // turning on tag
-                console.log("not allowed, toggling on")
-                switchOnTag(tag);
-            };
-        };
-    });
-}
-
-Array.from(tagToggles).forEach(function (toggle) {
-    console.log(toggle.input)
-    // toggle.addEventListener("change", (event) => {
-    //     let tag = toggle.id.slice(0, -6);
-    //     if (localStorage.getItem("tags") == "true") { // if tags allowed
-    //         // turning tag off
-    //         if (localStorage.getItem(tag) == "true") {
-    //             console.log("allowed, toggling off")
-    //             switchOffTag(tag);
-    //             hideTag(tag);
-    //         } else {
-    //             // turning on tag
-    //             console.log("allowed, toggling on")
-    //             switchOnTag(tag);
-    //             showTag(tag);
-    //         };
-    //     } else { // tags not allowed (not disabling)
-    //         // turning tag off
-    //         if (localStorage.getItem(tag) == "true") {
-    //             console.log("not allowed, toggling off")
-    //             switchOffTag(tag);
-    //         } else {
-    //             // turning on tag
-    //             console.log("not allowed, toggling on")
-    //             switchOnTag(tag);
-    //         };
-    //     };
-    // });
-});
-// setPrefs();
 
 
 

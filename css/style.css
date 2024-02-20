@@ -284,18 +284,21 @@ th {
   background-color: var(--background2);
 }
 
-.switch, .tagswitch {
+.switch,
+.tagswitch {
   position: relative;
   display: inline-block;
   align-content: center;
   margin-top: 7px;
 }
 
-#darkSwitch, #toggleTags {
+#darkSwitch,
+#toggleTags {
   margin-top: 0;
 }
 
-.switch input, .tagswitch input {
+.switch input,
+.tagswitch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -436,6 +439,10 @@ input:checked + .slider:before {
 
 .overlay-parent .closebtn:hover {
   color: hsl(16, 75%, 67%);
+}
+
+.closebtn {
+  color: hsl(56, 6%, 94%) !important;
 }
 
 #brandyTextDiv {

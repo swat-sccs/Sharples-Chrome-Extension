@@ -8,22 +8,22 @@ $light-navy-blue: hsl(216, 33%, 30%);
 $baby-blue: hsl(216, 33%, 35%);
 
 @font-face {
-  font-family: Raleway;
-  src: url(Raleway.ttf);
+    font-family: Raleway;
+    src: url(Raleway.ttf);
 }
 
 :root[data-applied-mode="light"] {
     color-scheme: light;
-    --text: hsl(216, 13%, 10%);            // $blacker
-    --background: hsl(56, 6%, 94%);        // $white
-    --background2: hsl(56, 6%, 94%);       // $white
+    --text: hsl(216, 13%, 10%); // $blacker
+    --background: hsl(56, 6%, 94%); // $white
+    --background2: hsl(56, 6%, 94%); // $white
 }
 
 :root[data-applied-mode="dark"] {
     color-scheme: dark;
-    --text: hsl(56, 6%, 94%);              // $white
-    --background: hsl(216, 13%, 13%);      // $black
-    --background2: hsl(216, 33%, 35%);     // $baby-blue
+    --text: hsl(56, 6%, 94%); // $white
+    --background: hsl(216, 13%, 13%); // $black
+    --background2: hsl(216, 33%, 35%); // $baby-blue
 }
 
 /* Elements */
@@ -60,24 +60,24 @@ img {
 }
 
 table {
-	border: 0 !important;
-	border-radius: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
 }
 
 td {
-	padding: 0 15px;
-	margin: 0;
-	text-align: left;
+    padding: 0 15px;
+    margin: 0;
+    text-align: left;
 }
 
 .line {
-	height: 5px;
-	background-color: $navy-blue;
+    height: 5px;
+    background-color: $navy-blue;
 }
 
 th {
-	text-align: left; 
-	padding: 8px 15px;
+    text-align: left;
+    padding: 8px 15px;
 }
 
 
@@ -89,7 +89,7 @@ th {
     height: 600px;
     width: 630px;
     position: relative;
-    
+
     color: var(--text);
     background-color: var(--background);
 }
@@ -150,6 +150,7 @@ th {
         top: 0;
         display: flex;
         width: 100%;
+
         .tab {
             font-family: inherit;
             font-size: 18px;
@@ -171,7 +172,7 @@ th {
             cursor: pointer;
         }
     }
-    
+
     #content {
         position: absolute;
         top: 33px;
@@ -322,7 +323,7 @@ th {
 /* Elements by Classes */
 
 .root {
-    color: var(--text); 
+    color: var(--text);
     background-color: var(--background);
     overflow: hidden;
 }
@@ -334,18 +335,21 @@ th {
 
 
 
-.switch, .tagswitch {
+.switch,
+.tagswitch {
     position: relative;
     display: inline-block;
     align-content: center;
     margin-top: 7px;
 }
 
-#darkSwitch, #toggleTags {
+#darkSwitch,
+#toggleTags {
     margin-top: 0;
 }
 
-.switch input, .tagswitch input {
+.switch input,
+.tagswitch input {
     opacity: 0;
     width: 0;
     height: 0;
@@ -422,7 +426,7 @@ input:checked+.slider:before {
     align-items: center;
     justify-content: center;
     height: 100%;
-    
+
 }
 
 #prefMenu {
@@ -430,56 +434,56 @@ input:checked+.slider:before {
 }
 
 .prefParent {
-	height: min-content;
-	width: max-content;
-	background-color: $dark-navy-blue;
-	color: white;
+    height: min-content;
+    width: max-content;
+    background-color: $dark-navy-blue;
+    color: white;
 
-	display: grid;
-	grid-template-columns: 3fr 2fr;
-	grid-template-rows: repeat(5, 3fr) 1fr;
-	grid-column-gap: 5px;
-	grid-row-gap: 5px;
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    grid-template-rows: repeat(5, 3fr) 1fr;
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
 
-	border: 5px solid $dark-navy-blue;
-	border-radius: 5px;
-	
-	text-align: center;
-	align-items: center;
-	justify-content: center;
+    border: 5px solid $dark-navy-blue;
+    border-radius: 5px;
+
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 
 .prefChild {
-	box-sizing: border-box;
-	height: 100%;
-	background-color: $baby-blue;
-	border: 5px solid $navy-blue;
-	border-radius: 5px;
-	border-collapse: collapse;
-	font-size: large;
-	margin: 0;
+    box-sizing: border-box;
+    height: 100%;
+    background-color: $baby-blue;
+    border: 5px solid $navy-blue;
+    border-radius: 5px;
+    border-collapse: collapse;
+    font-size: large;
+    margin: 0;
 }
 
 #left-column-grid {
-	grid-area: 1 / 1 / 7 / 2;
-	border: 5px solid $navy-blue;
-	border-radius: 5px;
+    grid-area: 1 / 1 / 7 / 2;
+    border: 5px solid $navy-blue;
+    border-radius: 5px;
 }
 
 #tagVis {
-	grid-area: 1 / 2 / 2 / 3;
+    grid-area: 1 / 2 / 2 / 3;
 }
 
 #Theme {
-	grid-area: 2 / 2 / 3 / 3;
+    grid-area: 2 / 2 / 3 / 3;
 }
 
 #version {
-	grid-area: 6 / 2 / 7 / 3;
-	border-width: 3px;
-	border-radius: 3px;
-	padding: 2px 0;
+    grid-area: 6 / 2 / 7 / 3;
+    border-width: 3px;
+    border-radius: 3px;
+    padding: 2px 0;
     font-size: small;
 }
 
@@ -497,7 +501,11 @@ input:checked+.slider:before {
 }
 
 .overlay-parent .closebtn:hover {
-    color:$orange;
+    color: $orange;
+}
+
+.closebtn {
+    color: $white !important;
 }
 
 
@@ -518,7 +526,7 @@ input:checked+.slider:before {
 .brandyText {
     margin: 8px 15px !important;
     font-size: large !important;
-    line-height: 1.5em; 
+    line-height: 1.5em;
     text-align: justify;
 }
 
