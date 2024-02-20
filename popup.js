@@ -3,54 +3,54 @@ import manifest from './manifest.json' assert { type: 'json' };
 const tagHTML = (tag) => '<abbr class="tag ' + tag + '" title="' + capitalize(tag) + '">' + abbr(tag) + '</abbr>'
 
 function abbr(tag) {
-    switch(tag) {
-        case ("vegetarian"):
-            return "vg";
-        case ("glutenfree"):
-            return "gf";
-        case ("sesame"):
-            return "ses";
-        case ("shellfish"):
-            return "sf";
-        case ("locallysourced"):
-            return "ls";
-        case ("vegetarian"):
-            return "vg";
-        case ("treenut"):
-            return "tn";
-        default:
-            return tag[0];
-    }
+	switch (tag) {
+		case ("vegetarian"):
+			return "vg";
+		case ("glutenfree"):
+			return "gf";
+		case ("sesame"):
+			return "ses";
+		case ("shellfish"):
+			return "sf";
+		case ("locallysourced"):
+			return "ls";
+		case ("vegetarian"):
+			return "vg";
+		case ("treenut"):
+			return "tn";
+		default:
+			return tag[0];
+	}
 }
 
 const tagsIDs = ["vegan", "vegetarian", "halal",
-    "glutenfree", "alcohol", "egg", "fish", "milk",
-    "peanut", "sesame", "shellfish", "soy", "treenut",
-    "wheat", "locallysourced", "organic", "kosher"];
+	"glutenfree", "alcohol", "egg", "fish", "milk",
+	"peanut", "sesame", "shellfish", "soy", "treenut",
+	"wheat", "locallysourced", "organic", "kosher"];
 
 // Variables to store and get today's date elements
 {
-    const monthNames = ["January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = monthNames[today.getUTCMonth()];
-    var hour = today.getHours();
+	const monthNames = ["January", "February", "March", "April", "May", "June",
+		"July", "August", "September", "October", "November", "December"
+	];
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = monthNames[today.getUTCMonth()];
+	var hour = today.getHours();
 }
 
 const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
 
 function getThemeSetting() {
-    return localStorage.getItem('dark');
+	return localStorage.getItem('dark');
 }
 
 function setThemeSetting(setting) {
-    localStorage.setItem('dark', setting);
+	localStorage.setItem('dark', setting);
 }
 
 function setTheme(mode) {
-    document.documentElement.dataset.appliedMode = mode;
+	document.documentElement.dataset.appliedMode = mode;
 }
 
 async function getMenus() {
@@ -187,7 +187,9 @@ function constructPage(obj) {
 			var string = item.item;
 			if (item.properties != null) {
 				for (let prop of item.properties) {
-					string += tagHTML(prop);
+					if (tagsIDs.includes(prop)) {
+						string += tagHTML(prop);
+					}
 				};
 			};
 			newLst.push(string);
@@ -280,10 +282,10 @@ function constructPage(obj) {
 
 		// if it's kohlberg, then add note about Brandy's Bar
 		timeElement.textContent = (venue == "Kohlberg") ?
-            "Hours: " + timeText + "  (aka Kohlberg)" : "Hours: " + timeText;
+			"Hours: " + timeText + "  (aka Kohlberg)" : "Hours: " + timeText;
 
 		document.getElementById("menu").appendChild(timeElement);
-		
+
 		const bar = document.createElement('hr');
 		document.getElementById("menu").appendChild(bar);
 
@@ -422,25 +424,25 @@ cachedObj = JSON.parse(cachedObj)
 
 // if nothing is cached OR day has reset, perform a fetch
 if (!cachedObj) {
-    cachedObj = await getMenus();
-    localStorage.setItem("data", JSON.stringify(cachedObj));
-    console.log("Null fetched formatted API data: ")
+	cachedObj = await getMenus();
+	localStorage.setItem("data", JSON.stringify(cachedObj));
+	console.log("Null fetched formatted API data: ")
 } else {
 
-    let now = new Date();
-    let today = new Date(cachedObj["date"]);
-    let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0,5,0,0);
+	let now = new Date();
+	let today = new Date(cachedObj["date"]);
+	let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 5, 0, 0);
 
-    // if we're 00:05 AM on the next day, fetch new data
-    // (keep in mind the diningAPI refreshes once a day, at 00:01 AM)
-    // maybe change this to check if a hash is different, then pull
-    if (Date.parse(now) > Date.parse(tomorrow)) {
-        cachedObj = await getMenus();
-        localStorage.setItem("data", JSON.stringify(cachedObj));
-        console.log("Fetched formatted API data: ")
-    } else {
-        console.log("Cached formatted API data: ")
-    }
+	// if we're 00:05 AM on the next day, fetch new data
+	// (keep in mind the diningAPI refreshes once a day, at 00:01 AM)
+	// maybe change this to check if a hash is different, then pull
+	if (Date.parse(now) > Date.parse(tomorrow)) {
+		cachedObj = await getMenus();
+		localStorage.setItem("data", JSON.stringify(cachedObj));
+		console.log("Fetched formatted API data: ")
+	} else {
+		console.log("Cached formatted API data: ")
+	}
 }
 
 console.log(cachedObj)

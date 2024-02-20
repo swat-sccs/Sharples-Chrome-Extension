@@ -2,51 +2,51 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sharples Menu</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/lib/jquery-3.6.1.js"></script>
-    <script src="popup.js" type="module"></script>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Sharples Menu</title>
+	<link rel="stylesheet" href="/css/style.css">
+	<script src="/lib/jquery-3.6.1.js"></script>
+	<script src="popup.js" type="module"></script>
 </head>
 
 <body>
 
-    <!-- Beta Tag copy is below -->
-    <!-- <abbr title="This feature is currently being tested!" class="beta tag">
+	<!-- Beta Tag copy is below -->
+	<!-- <abbr title="This feature is currently being tested!" class="beta tag">
         Beta
     </abbr> -->
 
-    <div class="root" id="inner">
+	<div class="root" id="inner">
 
-        <div id="headers">
-            <!-- Title, date, and dark mode switch -->
-            <h1 id="title">Narples</h1>
-            <div id="gearDiv">
-                <img src="./img/gear.png" id="gear">
-            </div>
-        </div>
+		<div id="headers">
+			<!-- Title, date, and dark mode switch -->
+			<h1 id="title">Narples</h1>
+			<div id="gearDiv">
+				<img src="./img/gear.png" id="gear">
+			</div>
+		</div>
 
-        <!-- Debug print element; user should never see this element -->
-        <h3 id="debug"></h3>
+		<!-- Debug print element; user should never see this element -->
+		<h3 id="debug"></h3>
 
-        <div id="main">
-            <div id="navigation">
-                <!-- titles go here -->
-                <button class="tab" id="breakfastTab">Breakfast</button>
-                <button class="tab" id="lunchTab">Lunch</button>
-                <button class="tab" id="dinnerTab">Dinner</button>
-                <button class="tab" id="EssiesTab">Essie's</button>
-                <button class="tab" id="KohlbergTab">Brandy's Bar</button>
-            </div>
-            <div class="menu-content" id="content">
-                <!-- Menu contents below -->
-                <div id="menu"></div>
+		<div id="main">
+			<div id="navigation">
+				<!-- titles go here -->
+				<button class="tab" id="breakfastTab">Breakfast</button>
+				<button class="tab" id="lunchTab">Lunch</button>
+				<button class="tab" id="dinnerTab">Dinner</button>
+				<button class="tab" id="EssiesTab">Essie's</button>
+				<button class="tab" id="KohlbergTab">Brandy's Bar</button>
+			</div>
+			<div class="menu-content" id="content">
+				<!-- Menu contents below -->
+				<div id="menu"></div>
 
 
-                <!-- COMMENT THESE TAGS AFTER TESTING -->
-                <!-- <abbr class="tag vegan" title="Vegan">v</abbr>
+				<!-- COMMENT THESE TAGS AFTER TESTING -->
+				<!-- <abbr class="tag vegan" title="Vegan">v</abbr>
                 <abbr class="tag vegetarian" title="Vegetarian">vg</abbr>
                 <abbr class="tag halal" title="Halal">h</abbr>
                 <abbr class="tag glutenfree" title="Gluten Free">gf</abbr>
@@ -61,36 +61,36 @@
                 <abbr class="tag treenut" title="Tree Nut">tn</abbr>
                 <abbr class="tag wheat" title="Wheat">w</abbr>
                 <abbr class="tag beta" title="Beta">Beta</abbr> -->
-                <!-- COMMENT THESE TAGS AFTER TESTING -->
+				<!-- COMMENT THESE TAGS AFTER TESTING -->
 
 
-            </div>
-        </div>
+			</div>
+		</div>
 
-        <div id="footer">
-            <!-- Contentious Orange Stripe -->
-            <hr id="bar">
+		<div id="footer">
+			<!-- Contentious Orange Stripe -->
+			<hr id="bar">
 
-            <!-- Links below -->
-            <div id="links">
-                <a href="https://dash.swarthmore.edu/" id="dashlink">
-                    More info on the Dash
-                </a>
-                <a href="https://forms.gle/5fS8ieox4cXbwzLZ6">
-                    Suggestions/bugs?
-                </a>
-                <p id="button">
-                    Who is Brandy?
-                </p>
+			<!-- Links below -->
+			<div id="links">
+				<a href="https://dash.swarthmore.edu/" id="dashlink">
+					More info on the Dash
+				</a>
+				<a href="https://forms.gle/5fS8ieox4cXbwzLZ6">
+					Suggestions/bugs?
+				</a>
+				<p id="button">
+					Who is Brandy?
+				</p>
 
-            </div>
-        </div>
+			</div>
+		</div>
 
-    </div>
+	</div>
 
-    <!-- Overlay section -->
-    <div class="overlay-parent" id="prefMenu">
-        <p class="closebtn">&times;</p>
+	<!-- Overlay section -->
+	<div class="overlay-parent" id="prefMenu">
+		<p class="closebtn">&times;</p>
 		<div class="prefParent">
 			<div id="left-column-grid">
 				<table class="prefChild">
@@ -198,6 +198,27 @@
 								<span class="slider round"></span>
 							</label></td>
 					</tr>
+					<tr>
+						<td>Locally Sourced</td>
+						<td><label class="tagswitch" id="locallysourcedSwitch">
+								<input type="checkbox" id="locallysourced">
+								<span class="slider round"></span>
+							</label></td>
+					</tr>
+					<tr>
+						<td>Organic</td>
+						<td><label class="tagswitch" id="organicSwitch">
+								<input type="checkbox" id="organic">
+								<span class="slider round"></span>
+							</label></td>
+					</tr>
+					<tr>
+						<td>Kosher</td>
+						<td><label class="tagswitch" id="kosherSwitch">
+								<input type="checkbox" id="kosher">
+								<span class="slider round"></span>
+							</label></td>
+					</tr>
 				</table>
 			</div>
 			<div class="prefChild" id="TagVis">
@@ -217,35 +238,35 @@
 			<p class="prefChild" id="version">I like Cashews :D</p>
 
 		</div>
-    </div>
+	</div>
 
-    <div class="overlay-parent" id="brandyInfo">
-        <p class="closebtn">&times;</p>
-        <div class="overlay-child" id="brandyTextDiv">
-            <h1 id="brandyHeader">Who is Brandy?</h1>
-            <div id="brandyInnerDiv">
-                <p class="brandyText" id="brandyNestedText">
-                    Brandy was a dog that worked at ITS with Oliver,
-                    one of our hardware repair specialists. She often visited
-                    Kohlberg Coffee Bar on her breaks and was beloved to both
-                    ITS and Kohlberg staff.
-                </p>
-                <img src="./img/brandy.jpg" id="brandyImage">
-            </div>
+	<div class="overlay-parent" id="brandyInfo">
+		<p class="closebtn">&times;</p>
+		<div class="overlay-child" id="brandyTextDiv">
+			<h1 id="brandyHeader">Who is Brandy?</h1>
+			<div id="brandyInnerDiv">
+				<p class="brandyText" id="brandyNestedText">
+					Brandy was a dog that worked at ITS with Oliver,
+					one of our hardware repair specialists. She often visited
+					Kohlberg Coffee Bar on her breaks and was beloved to both
+					ITS and Kohlberg staff.
+				</p>
+				<img src="./img/brandy.jpg" id="brandyImage">
+			</div>
 
-            <p class="brandyText">
-                Unfortunately, she was diagnosed with a terminal bone
-                cancer and was only given weeks to live. She fought for
-                8 more months before the difficult decision was made by Oliver
-                to relieve her of her pain.
-            </p>
-            <p class="brandyText" id="brandyNestedText">
-                We remember Brandy by calling Kohlberg Coffee Bar,
-                Brandy's Bar.
-            </p>
+			<p class="brandyText">
+				Unfortunately, she was diagnosed with a terminal bone
+				cancer and was only given weeks to live. She fought for
+				8 more months before the difficult decision was made by Oliver
+				to relieve her of her pain.
+			</p>
+			<p class="brandyText" id="brandyNestedText">
+				We remember Brandy by calling Kohlberg Coffee Bar,
+				Brandy's Bar.
+			</p>
 
-        </div>
-    </div>
+		</div>
+	</div>
 
 
 </body>
