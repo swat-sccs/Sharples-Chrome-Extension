@@ -80,6 +80,10 @@ th {
     padding: 8px 15px;
 }
 
+label {
+    width: 30px;
+}
+
 
 
 /* Elements by Sections */
@@ -430,7 +434,7 @@ input:checked+.slider:before {
 }
 
 #prefMenu {
-    display: flex;
+    display: none;
 }
 
 .prefParent {

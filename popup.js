@@ -320,7 +320,7 @@ function setPrefs() {
 
 	// set the toggle state for tag vis and dark/light modes
 	document.getElementById("mfer").checked = localStorage.getItem("dark") == "dark"
-	document.getElementById("mfer2").checked = localStorage.getItem("tags") == "false";
+	document.getElementById("mfer2").checked = localStorage.getItem("tags") == "true";
 
 	// apply the dark/light theme
 	applyTheme(getTheme());
@@ -387,7 +387,7 @@ document.getElementById("mfer2").addEventListener("change", toggleTags);
 // set theme and other preferences so users dont get flashbanged
 setPrefs();
 
-// populate tag switch menu and start event watchers
+// populate tag switch menu and start event watchers 
 for (let id of tagsIDs) {
 	createSwitch(id)
 	document.getElementById(id).addEventListener("change", () => { watchSwitch(id) })

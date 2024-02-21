@@ -70,6 +70,10 @@ th {
   padding: 8px 15px;
 }
 
+label {
+  width: 30px;
+}
+
 /* Elements by Sections */
 #inner {
   font-family: Raleway;
@@ -371,7 +375,7 @@ input:checked + .slider:before {
 }
 
 #prefMenu {
-  display: flex;
+  display: none;
 }
 
 .prefParent {
