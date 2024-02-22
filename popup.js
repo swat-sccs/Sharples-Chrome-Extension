@@ -134,6 +134,13 @@ function watchSwitch(name) {
  * Section below pertains to Page/Data handling
  */
 
+async function getMenus() {
+    const response = await fetch('http://dining.sccs.swarthmore.edu/api')
+        .catch(error => console.error('Error:', error));
+    const data = await response.json();
+    return data;
+}
+
 // set the active tab's css style
 function setActiveTab(activeTabID) {
 	for (let tab of $('.tab')) { tab.style = "" }
