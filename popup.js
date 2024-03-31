@@ -1,4 +1,4 @@
-import manifest from './manifest.json' assert { type: 'json' };
+import manifest from './manifest.json' with { type: 'json' };
 
 const tagHTML = (tag) => '<abbr class="tag ' + tag + '" title="' + capitalize(tag) + '">' + abbr(tag) + '</abbr>'
 
@@ -172,6 +172,10 @@ function constructPage(obj) {
 		setMenu(obj.Kohlberg, "Kohlberg");
 		setActiveTab("KohlbergTab");
 	});
+    $('body').on('click', '#CrumbTab', function () {
+        setMenu(obj.Crumb, "Crumb");
+        setActiveTab("CrumbTab");
+    });
 
 	// set title and date
 	const title = document.getElementById("title");
@@ -241,6 +245,7 @@ function constructPage(obj) {
 	}
 
 	function setMenu(subtree, venue) {
+        
 		// clear menu board first
 		const board = document.getElementById("menu");
 		while (board.firstChild) {
@@ -291,7 +296,61 @@ function constructPage(obj) {
 		const bar = document.createElement('hr');
 		document.getElementById("menu").appendChild(bar);
 
-		const delimiter = (venue == 'Kohlberg') ? "<br>" : ", ";
+		const delimiter = (['Kohlberg','Crumb'].includes(venue)) ? "<br>" : ", ";
+
+        if (venue == "Crumb") {
+            let menu = document.getElementById("menu");
+
+            const disclaimer = document.createElement('h3');
+            disclaimer.innerHTML = "Warning: Dietary tags are not yet implemented for Crumb Cafe!<br><br>";
+            menu.appendChild(disclaimer);
+
+            const container = document.createElement("div")
+            container.style.display = "flex"
+            menu.appendChild(container)
+
+            const leftSubContainer = document.createElement("div")
+            leftSubContainer.style.display = "flex"
+            leftSubContainer.style.flexDirection = "column"
+
+            leftSubContainer.style.flexGrow = 1
+            container.appendChild(leftSubContainer)
+
+            const rightSubContainer = document.createElement("div")
+            rightSubContainer.style.flexGrow = 1
+            container.appendChild(rightSubContainer)
+
+            const titleElement = document.createElement('h2');
+            titleElement.innerHTML = "Menu"
+            rightSubContainer.appendChild(titleElement);
+
+            var menuElement = document.createElement('p');
+            menuElement.innerHTML = subtree["menu"].join("<br>")
+            rightSubContainer.appendChild(menuElement);
+
+            for (let list in subtree){
+                if (["time", "menu"].includes(list))
+                    continue
+
+                const leftInnerContainer = document.createElement("div")
+                leftInnerContainer.style.flexGrow = 1
+                leftSubContainer.appendChild(leftInnerContainer)
+
+                const titleElement = document.createElement('h2');
+                titleElement.innerHTML = capitalize(list)
+                leftInnerContainer.appendChild(titleElement);
+
+                var menuElement = document.createElement('p');
+                menuElement.innerHTML = subtree[list].join("<br>")
+                leftInnerContainer.appendChild(menuElement);
+
+            }
+
+            
+
+            return
+        }
+
 		generateMenuElement(subtree, inclusions, delimiter);
 
 		return 0;
@@ -303,14 +362,17 @@ function constructPage(obj) {
 		if (hour < 10) {
 			setMenu(subtree.breakfast, 'Dining Center');
 			setActiveTab("breakfastTab");
-		} else if (hour < 14) {
-			if (setMenu(obj['Dining Center'].lunch, "Dining Center")) {
-				setMenu(obj['Dining Center'].brunch, "Dining Center")
-			};
-			setActiveTab("lunchTab");
-		} else {
-			setMenu(subtree.dinner, 'Dining Center');
-			setActiveTab("dinnerTab");
+        } else if (hour < 14) {
+            if (setMenu(obj['Dining Center'].lunch, "Dining Center")) {
+                setMenu(obj['Dining Center'].brunch, "Dining Center")
+            };
+            setActiveTab("lunchTab");
+        } else if (hour < 21) {
+            setMenu(subtree.dinner, 'Dining Center');
+            setActiveTab("dinnerTab");
+        } else {
+            setMenu(obj.Crumb, "Crumb")
+            setActiveTab("CrumbTab");
 		};
 	} catch (error) {
 		console.log(error);
