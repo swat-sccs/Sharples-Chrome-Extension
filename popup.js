@@ -138,6 +138,7 @@ async function getMenus() {
 	const response = await fetch('http://dining.sccs.swarthmore.edu/api')
 		.catch(error => console.error('Error:', error));
 	const data = await response.json();
+	localStorage.setItem("data", JSON.stringify(data));
 	return data;
 }
 
@@ -186,10 +187,10 @@ function setTabOnClicks(obj) {
 		setMenu(obj.Kohlberg, "Kohlberg");
 		setActiveTab("KohlbergTab");
 	});
-	$('body').on('click', '#CrumbTab', function () {
-		setMenu(obj.Crumb, "Crumb");
-		setActiveTab("CrumbTab");
-	});
+	// $('body').on('click', '#CrumbTab', function () {
+	// 	setMenu(obj.Crumb, "Crumb");
+	// 	setActiveTab("CrumbTab");
+	// });
 }
 
 // turns objectified menu into a parsed string, returned string
@@ -249,12 +250,23 @@ function setMenu(subtree, venue) {
 
 	// if given data is null or empty, display a closed message
 	// and terminate function
-	if (!subtree || Object.keys(subtree).length === 0) {
+	if (!subtree) {
 		console.log("Selected menu contains no data.");
 		const close = document.createElement("h2");
 		const bar = document.createElement("hr");
 		close.textContent = (venue == "Kohlberg") ?
 			"Venue (aka Kohlberg) is closed" : "Venue is closed";
+
+		document.getElementById("menu").appendChild(close);
+		document.getElementById("menu").appendChild(bar);
+		return 1;
+	};
+
+	if (!subtree.open) {
+		console.log("Selected menu contains no data.");
+		const close = document.createElement("h2");
+		const bar = document.createElement("hr");
+		close.textContent = subtree.desc;
 
 		document.getElementById("menu").appendChild(close);
 		document.getElementById("menu").appendChild(bar);
@@ -291,63 +303,55 @@ function setMenu(subtree, venue) {
 	const bar = document.createElement('hr');
 	document.getElementById("menu").appendChild(bar);
 
-	const delimiter = (['Kohlberg', 'Crumb'].includes(venue)) ? "<br>" : ", ";
+	const delimiter = (venue == 'Kholberg') ? "<br>" : ", ";
 
-	if (venue == "Crumb") {
-		let menu = document.getElementById("menu");
+	// if (venue == "Crumb") {
+	// 	let menu = document.getElementById("menu");
 
-		const disclaimer = document.createElement('h3');
-		disclaimer.innerHTML = "Warning: Dietary tags are not yet implemented for Crumb Cafe!<br>";
-		disclaimer.style.textAlign = "center";
-		disclaimer.style.border = "2px dashed  #EA6C6C";
-		disclaimer.style.borderRadius = "4px";
-		disclaimer.style.padding = "4px";
-		menu.appendChild(disclaimer);
+	// 	const container = document.createElement("div")
+	// 	container.style.display = "flex"
+	// 	menu.appendChild(container)
 
-		const container = document.createElement("div")
-		container.style.display = "flex"
-		menu.appendChild(container)
+	// 	const leftSubContainer = document.createElement("div")
+	// 	leftSubContainer.style.display = "flex"
+	// 	leftSubContainer.style.flexDirection = "column"
 
-		const leftSubContainer = document.createElement("div")
-		leftSubContainer.style.display = "flex"
-		leftSubContainer.style.flexDirection = "column"
+	// 	leftSubContainer.style.flexGrow = 1
+	// 	container.appendChild(leftSubContainer)
 
-		leftSubContainer.style.flexGrow = 1
-		container.appendChild(leftSubContainer)
+	// 	const rightSubContainer = document.createElement("div")
+	// 	rightSubContainer.style.flexGrow = 1
+	// 	container.appendChild(rightSubContainer)
 
-		const rightSubContainer = document.createElement("div")
-		rightSubContainer.style.flexGrow = 1
-		container.appendChild(rightSubContainer)
+	// 	const titleElement = document.createElement('h2');
+	// 	titleElement.style.padding = "6px"
+	// 	titleElement.innerHTML = "Menu"
+	// 	rightSubContainer.appendChild(titleElement);
 
-		const titleElement = document.createElement('h2');
-		titleElement.style.padding = "6px"
-		titleElement.innerHTML = "Menu"
-		rightSubContainer.appendChild(titleElement);
+	// 	var menuElement = document.createElement('p');
+	// 	menuElement.innerHTML = subtree["menu"].join("<br>")
+	// 	rightSubContainer.appendChild(menuElement);
 
-		var menuElement = document.createElement('p');
-		menuElement.innerHTML = subtree["menu"].join("<br>")
-		rightSubContainer.appendChild(menuElement);
+	// 	for (let list in subtree) {
+	// 		if (["time", "menu"].includes(list))
+	// 			continue
 
-		for (let list in subtree) {
-			if (["time", "menu"].includes(list))
-				continue
+	// 		const leftInnerContainer = document.createElement("div")
+	// 		leftInnerContainer.style.flexGrow = 1
+	// 		leftSubContainer.appendChild(leftInnerContainer)
 
-			const leftInnerContainer = document.createElement("div")
-			leftInnerContainer.style.flexGrow = 1
-			leftSubContainer.appendChild(leftInnerContainer)
+	// 		const titleElement = document.createElement('h2');
+	// 		titleElement.style.padding = "6px"
+	// 		titleElement.innerHTML = capitalize(list)
+	// 		leftInnerContainer.appendChild(titleElement);
 
-			const titleElement = document.createElement('h2');
-			titleElement.style.padding = "6px"
-			titleElement.innerHTML = capitalize(list)
-			leftInnerContainer.appendChild(titleElement);
+	// 		var menuElement = document.createElement('p');
+	// 		menuElement.innerHTML = subtree[list].join("<br>")
+	// 		leftInnerContainer.appendChild(menuElement);
 
-			var menuElement = document.createElement('p');
-			menuElement.innerHTML = subtree[list].join("<br>")
-			leftInnerContainer.appendChild(menuElement);
-
-		}
-		return
-	}
+	// 	}
+	// 	return
+	// }
 
 	generateMenuElement(subtree, inclusions, delimiter);
 
@@ -370,16 +374,14 @@ function constructPage(obj) {
 			setMenu(subtree.breakfast, 'Dining Center');
 			setActiveTab("breakfastTab");
 		} else if (hour < 14) {
-			if (setMenu(subtree.lunch, "Dining Center")) {
-				setMenu(subtree.brunch, "Dining Center")
-			};
+			setMenu(subtree.lunch, "Dining Center");
 			setActiveTab("lunchTab");
 		} else if (hour < 21) {
 			setMenu(subtree.dinner, 'Dining Center');
 			setActiveTab("dinnerTab");
 		} else {
-			setMenu(obj.Crumb, "Crumb")
-			setActiveTab("CrumbTab");
+			setMenu(obj.Essies, "Essies");
+			setActiveTab("EssiesTab");
 		};
 	} catch (error) {
 		console.log(error);
@@ -469,39 +471,22 @@ for (let id of tagsIDs) {
 	document.getElementById(id).addEventListener("change", () => { watchSwitch(id) })
 }
 
-let cachedObj = JSON.parse(localStorage.getItem("data"))
-
-// if nothing is cached OR day has reset, perform a fetch
-if (!cachedObj) {
-	cachedObj = await getMenus();
-	localStorage.setItem("data", JSON.stringify(cachedObj));
-	console.log("Null fetched formatted API data: ")
-} else {
-
-	let now = new Date();
-	let today = new Date(cachedObj["TimeOfGeneration"]);
-	let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 5, 0, 0);
-
-	// if we're 00:05 AM on the next day, fetch new data
-	// (keep in mind the diningAPI refreshes once a day, at 00:01 AM)
-	// maybe change this to check if a hash is different, then pull
-	console.log("now:  " + now)
-	console.log("new data:  " + today)
-	console.log("tomorrow:  " + tomorrow)
-
-	if (Date.parse(now) > Date.parse(tomorrow)) {
-		cachedObj = await getMenus();
-		localStorage.setItem("data", JSON.stringify(cachedObj));
-		console.log("Fetched formatted API data: ")
-	} else {
-		console.log("Cached formatted API data: ")
-	}
-}
+let cachedObj = localStorage.getItem("data") ? JSON.parse(localStorage.getItem("data")) : await getMenus();
 
 console.log(cachedObj)
 
 constructPage(cachedObj);
 
+// let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 5, 0, 0);
+
+// if (Date.parse(new Date()) > Date.parse(tomorrow) || cachedObj.hash != await getMenus().hash) {
+
+await getMenus().then(data => {
+	if (cachedObj.hash != data.hash) {
+		console.log("Hash changed, fetching data.")
+		cachedObj = data;
+	}
+})
 
 
 
