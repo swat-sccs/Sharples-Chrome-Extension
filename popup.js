@@ -132,6 +132,7 @@ async function getMenus() {
 
 // set the active tab's css style
 function setActiveTab(activeTabID) {
+	return
 	for (let tab of $('.tab')) { tab.style = '' }
 	document.getElementById(activeTabID).style['backgroundColor'] = 'hsl(216, 33%, 25%)';
 	refreshTags();
@@ -154,54 +155,34 @@ function unpun(title) {
 
 function setTabOnClicks(obj) {
 	const tabs = [
-		'breakfast',
-		'lunch',
-		'dinner',
-		'essies',
-		'kohlberg',
+		[obj['Dining Center'], 'breakfast'],
+		[obj['Dining Center'], 'lunch'],
+		[obj['Dining Center'], 'dinner'],
+		[obj.Essies, 'essies'],
+		[obj.Kohlberg, 'kohlberg']
 	]
-	$('body').on('click', '#breakfastTab', function () {
-		setMenu(obj['Dining Center'], 'breakfast');
-		setActiveTab('breakfastTab');
-	});
-	$('body').on('click', '#lunchTab', function () {
-		setMenu(obj['Dining Center'], 'lunch')
-		setActiveTab('lunchTab');
-	});
-	$('body').on('click', '#dinnerTab', function () {
-		setMenu(obj['Dining Center'], 'dinner');
-		setActiveTab('dinnerTab');
-	});
-	$('body').on('click', '#essiesTab', function () {
-		setMenu(obj.Essies);
-		setActiveTab('essiesTab');
-	});
-	$('body').on('click', '#kohlbergTab', function () {
-		setMenu(obj.Kohlberg);
-		setActiveTab('kohlbergTab');
-	});
+	for (let item of tabs) {
+		$('body').on('click', `#${item[1]}Tab`, function () {
+			setMenu(item[0], item[1]);
+		});
+	}
 }
 
 // turns objectified menu into a parsed string, returned string
 function formatMenu(items, delim) {
-	var newLst = [];
-	if (typeof (items) == 'string') {
-		return [items];
-	}
+	var ret = [];
+	if (typeof (items) == 'string') return [items];
 
 	for (let item of items) {
 		var string = item.item;
-		if (item.properties != null) {
-			for (let prop of item.properties) {
-				if (tagsIDs.includes(prop)) {
-					string += tagHTML(prop);
-				}
-			};
-		};
-		newLst.push(string);
+		if (!item.properties) continue;
+		item.properties.forEach(prop => {
+			if (tagsIDs.includes(prop)) string += tagHTML(prop);
+		});
+		ret.push(string);
 	};
 
-	return newLst.join(delim);
+	return ret.join(delim);
 };
 
 function generateMenuElement(subtree) {
@@ -248,40 +229,45 @@ function displayClosedVenue(msg) {
 	menuTitle.textContent = msg ? msg : 'Venue is closed.';
 }
 
-function setMenu(subtree, meal = null) {
+function setMenu(subtree, venue) {
+
+	// check if subtree exists
+	if (!subtree) {
+		console.log('Undefined subtree');
+		displayClosedVenue(subtree.desc);
+		return 1;
+	};
+
+	// check if venue is open
+	if (!subtree.open) {
+		console.log('venue not open');
+		displayClosedVenue(subtree.desc);
+		return 1;
+	};
+
+	// check if meals is not empty
+	if (!subtree.meals) {
+		console.log('subtree empty');
+		displayClosedVenue(subtree.desc);
+		return 1;
+	};
 
 	// clear menu board first
 	while (menu.firstChild) menu.removeChild(menu.firstChild);
 
-
-	if (!subtree.open) {
-		console.log('venue not open');
-		displayClosedVenue(subtree.desc ? subtree.desc : null);
-		return 1;
-	};
-
-	subtree = meal ? subtree.meals[meal] : subtree
+	// check if subtree is in dining center or not
+	subtree = ['breakfast', 'lunch', 'dinner'].includes(venue) ? subtree.meals[venue] : subtree
 
 	// set the menu time
 	menuTitle.textContent = 'Hours: ' + subtree.time;
 
-	// if given data is null or empty, display a closed message
-	// and terminate function
-	if (meal) {
-		if (!subtree) {
-			console.log('Undefined subtree');
-			displayClosedVenue(null);
-			return 1;
-		};
-	} else {
-		if (!subtree.meals) {
-			console.log('subtree empty');
-			displayClosedVenue(null);
-			return 1;
-		};
-	}
-
+	// generate the menu
 	generateMenuElement(subtree);
+
+	// set active tab and refresh tabs
+	for (let tab of $('.tab')) { tab.style = '' }
+	document.getElementById(`${venue}Tab`).style['backgroundColor'] = 'hsl(216, 33%, 25%)';
+	refreshTags();
 
 	return 0;
 };
@@ -298,16 +284,12 @@ function constructPage(obj) {
 	let hour = new Date().getHours()
 	if (hour < 10) {
 		setMenu(subtree, 'breakfast');
-		setActiveTab('breakfastTab');
 	} else if (hour < 14) {
 		setMenu(subtree, 'lunch');
-		setActiveTab('lunchTab');
 	} else if (hour < 21) {
 		setMenu(subtree, 'dinner');
-		setActiveTab('dinnerTab');
 	} else {
-		setMenu(obj.Essies);
-		setActiveTab('essiesTab');
+		setMenu(obj.Essies, 'essies');
 	};
 
 };
@@ -316,8 +298,8 @@ function constructPage(obj) {
 function setPrefs() {
 
 	// set the toggle state for tag vis and dark/light modes
-	mfer.checked = localStorage.getItem('dark') == 'dark'
-	mfer2.checked = localStorage.getItem('tags') == 'true';
+	darkSwitch.checked = localStorage.getItem('dark') == 'dark'
+	tagToggle.checked = localStorage.getItem('tags') == 'true';
 
 	// apply the dark/light theme
 	applyTheme(getTheme());
@@ -362,11 +344,12 @@ window.onclick = function (event) {
 	}
 }
 
+// runs the command (toggleTags) when the main tag toggle switch is changed
+tagToggle.addEventListener('change', toggleTags);
+
 // runs the command (darkMode) when the dark mode toggle switch is changed
 darkSwitch.addEventListener('change', toggleTheme);
 
-// runs the command (toggleTags) when the main tag toggle switch is changed
-mfer2.addEventListener('change', toggleTags);
 
 
 
@@ -393,8 +376,6 @@ console.log(cachedObj)
 constructPage(cachedObj);
 
 // let tomorrow = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 5, 0, 0);
-
-// if (Date.parse(new Date()) > Date.parse(tomorrow) || cachedObj.hash != await getMenus().hash) {
 
 await getMenus().then(data => {
 	if (cachedObj.hash != data.hash) {
