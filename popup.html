@@ -13,6 +13,18 @@
 
 <body>
 
+	<template id="switchTemplate">
+		<tr>
+			<td id="switchTitle">TagName</td>
+			<td>
+				<label class="tagswitch" id="name">
+					<input type="checkbox">
+					<span class="slider round"></span>
+				</label>
+			</td>
+		</tr>
+	</template>
+
 	<!-- Beta Tag copy is below -->
 	<!-- <abbr title="This feature is currently being tested!" class="beta tag">
         Beta
@@ -37,13 +49,16 @@
 				<button class="tab" id="breakfastTab">Breakfast</button>
 				<button class="tab" id="lunchTab">Lunch</button>
 				<button class="tab" id="dinnerTab">Dinner</button>
-				<button class="tab" id="EssiesTab">Essie's</button>
-				<button class="tab" id="KohlbergTab">Brandy's</button>
+				<button class="tab" id="essiesTab">Essie's</button>
+				<button class="tab" id="kohlbergTab">Brandy's</button>
 				<!-- <button class="tab" id="CrumbTab">Crumb</button> -->
 			</div>
 			<div class="menu-content" id="content">
 				<!-- Menu contents below -->
-				<div id="menu"></div>
+				<h2 id="menuTitle"></h2>
+				<hr>
+				<div id="menu">
+				</div>
 
 
 				<!-- COMMENT THESE TAGS AFTER TESTING -->

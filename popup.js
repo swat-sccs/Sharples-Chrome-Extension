@@ -4,29 +4,29 @@ const tagHTML = (tag) => '<abbr class="tag ' + tag + '" title="' + capitalize(ta
 
 function abbr(tag) {
 	switch (tag) {
-		case ("vegetarian"):
-			return "vg";
-		case ("glutenfree"):
-			return "gf";
-		case ("sesame"):
-			return "ses";
-		case ("shellfish"):
-			return "sf";
-		case ("locallysourced"):
-			return "ls";
-		case ("vegetarian"):
-			return "vg";
-		case ("treenut"):
-			return "tn";
+		case ('vegetarian'):
+			return 'vg';
+		case ('glutenfree'):
+			return 'gf';
+		case ('sesame'):
+			return 'ses';
+		case ('shellfish'):
+			return 'sf';
+		case ('locallysourced'):
+			return 'ls';
+		case ('vegetarian'):
+			return 'vg';
+		case ('treenut'):
+			return 'tn';
 		default:
 			return tag[0];
 	}
 }
 
-var tagsIDs = ["vegan", "vegetarian", "halal",
-	"glutenfree", "alcohol", "egg", "fish", "milk",
-	"peanut", "sesame", "shellfish", "soy", "treenut",
-	"wheat", "locallysourced", "organic", "kosher"];
+var tagsIDs = ['vegan', 'vegetarian', 'halal',
+	'glutenfree', 'alcohol', 'egg', 'fish', 'milk',
+	'peanut', 'sesame', 'shellfish', 'soy', 'treenut',
+	'wheat', 'locallysourced', 'organic', 'kosher'];
 
 
 const capitalize = (word) => word[0].toUpperCase() + word.slice(1);
@@ -52,7 +52,7 @@ function applyTheme(mode) {
 // Handles dark mode and tag visibility toggles
 function toggleTheme() {
 	// updates based on stage
-	getTheme() == "light" ? setTheme("dark") : setTheme("light")
+	getTheme() == 'light' ? setTheme('dark') : setTheme('light')
 	applyTheme(getTheme());
 }
 
@@ -63,66 +63,54 @@ function toggleTheme() {
  * Section below pertains to Tags
  */
 
-// toggles visibility of all tags
-function toggleTags() {
-	(localStorage.getItem("tags") == "false") ? localStorage.setItem("tags", "true") :
-		localStorage.setItem("tags", "false");
-	refreshTags();
-}
 
 // refreshes page with tag preferences
 function refreshTags() {
 	// hide all tags first
-	// if the global tag visibility is allowed, check for individual tag visibility
-	// if the individual tag visibility is allowed, show it
+	$('.tag').hide();
+
+	// if the global tag visibility is allowed and the individual tag visibility is allowed, show it
 	for (let tag of tagsIDs) {
-		$("." + tag).hide();
-		if (localStorage.getItem("tags") == "true")  //if tags allowed
-			if (localStorage.getItem(tag) == "true")
-				$("." + tag).show();
+		if (localStorage.getItem('tags') == 'true' && localStorage.getItem(tag) == 'true')  //if tags allowed
+			$('.' + tag).show();
 	}
 }
 
 // create the switch with a given name
-function createSwitch(name) {
+function createSwitches() {
+	for (let id of tagsIDs) {
+		const temp = document.getElementById("switchTemplate");
+		let root = temp.content.querySelector("tr");
+		let a = document.importNode(root, true);
 
-	// <label class="tagswitch" id="vegan">
-	// 	<input type="checkbox">
-	// 	<span class="slider round"></span>
-	// </label>
+		let label = a.querySelector("label");
+		label.setAttribute('id', id);
 
-	let row = document.createElement("tr")
-	let titleElement = document.createElement("td")
-	let switchElement = document.createElement("td")
+		let title = a.querySelector("#switchTitle");
+		title.textContent = capitalize(id)
 
-	titleElement.textContent = capitalize(name)
+		let input = a.querySelector("input");
+		input.checked = localStorage.getItem(id) == 'true';
 
-	row.appendChild(titleElement)
-	row.appendChild(switchElement)
+		tagTable.appendChild(a);
 
-	let switchLabel = document.createElement("label")
-	switchLabel.setAttribute("class", "tagswitch")
-	switchLabel.setAttribute("id", name)
-
-	switchElement.appendChild(switchLabel)
-
-	let switchInput = document.createElement("input")
-	switchInput.setAttribute("type", "checkbox")
-	switchInput.checked = localStorage.getItem(name) == "true";
-
-	switchLabel.appendChild(switchInput)
-
-	let switchSpan = document.createElement("span")
-	switchSpan.setAttribute("class", "slider round")
-	switchLabel.appendChild(switchSpan)
-
-	document.getElementById("tagTable").appendChild(row)
+		document.getElementById(id).addEventListener('change', () => { watchSwitch(id) })
+	}
+	return
 }
 
-// function that runs for a switch when it is toggled
+// toggles visibility of all tags
+function toggleTags() {
+	(localStorage.getItem('tags') == 'false') ? localStorage.setItem('tags', 'true') :
+		localStorage.setItem('tags', 'false');
+	refreshTags();
+}
+
+
+// toggle switch state in local storage and refresh tags
 function watchSwitch(name) {
-	(localStorage.getItem(name) == "true") ? localStorage.setItem(name, "false") :
-		localStorage.setItem(name, "true")
+	localStorage.getItem(name) == 'true' ? localStorage.setItem(name, 'false') :
+		localStorage.setItem(name, 'true')
 	refreshTags();
 }
 
@@ -138,65 +126,66 @@ async function getMenus() {
 	const response = await fetch('http://dining.sccs.swarthmore.edu/api')
 		.catch(error => console.error('Error:', error));
 	const data = await response.json();
-	localStorage.setItem("data", JSON.stringify(data));
+	localStorage.setItem('data', JSON.stringify(data));
 	return data;
 }
 
 // set the active tab's css style
 function setActiveTab(activeTabID) {
-	for (let tab of $('.tab')) { tab.style = "" }
-	document.getElementById(activeTabID).style["backgroundColor"] = "hsl(216, 33%, 25%)";
+	for (let tab of $('.tab')) { tab.style = '' }
+	document.getElementById(activeTabID).style['backgroundColor'] = 'hsl(216, 33%, 25%)';
 	refreshTags();
 };
 
 // unpuns the menu names
 function unpun(title) {
 	return title
-		.replace("Classics", "Menu 1")
-		.replace("World of Flavor", "Menu 2")
-		.replace("Spice", "Menu 3")
-		.replace("Verdant & Vegan", "Vegan")
-		.replace("Free Zone", "Allergen Choice")
-		.replace("Daily Kneads", "Dessert")
-		.replace("Field of Greens", "Salad")
-		.replace("Meal", "Meal Plan Selection")
-		.replace("Special", "Lunch Special")
-		.replace("Soup", "Daily Soup")
+		.replace('Classics', 'Menu 1')
+		.replace('World of Flavor', 'Menu 2')
+		.replace('Spice', 'Menu 3')
+		.replace('Verdant & Vegan', 'Vegan')
+		.replace('Free Zone', 'Allergen Choice')
+		.replace('Daily Kneads', 'Dessert')
+		.replace('Field of Greens', 'Salad')
+		.replace('Meal', 'Meal Plan Selection')
+		.replace('Special', 'Lunch Special')
+		.replace('Soup', 'Daily Soup')
 };
 
 function setTabOnClicks(obj) {
+	const tabs = [
+		'breakfast',
+		'lunch',
+		'dinner',
+		'essies',
+		'kohlberg',
+	]
 	$('body').on('click', '#breakfastTab', function () {
-		setMenu(obj['Dining Center'].breakfast, "Dining Center");
-		setActiveTab("breakfastTab");
+		setMenu(obj['Dining Center'], 'breakfast');
+		setActiveTab('breakfastTab');
 	});
 	$('body').on('click', '#lunchTab', function () {
-		if (setMenu(obj['Dining Center'].lunch, "Dining Center")) {
-			setMenu(obj['Dining Center'].brunch, "Dining Center")
-		};
-		setActiveTab("lunchTab");
+		setMenu(obj['Dining Center'], 'lunch')
+		setActiveTab('lunchTab');
 	});
 	$('body').on('click', '#dinnerTab', function () {
-		setMenu(obj['Dining Center'].dinner, "Dining Center");
-		setActiveTab("dinnerTab");
+		setMenu(obj['Dining Center'], 'dinner');
+		setActiveTab('dinnerTab');
 	});
-	$('body').on('click', '#EssiesTab', function () {
-		setMenu(obj.Essies, "Essies");
-		setActiveTab("EssiesTab");
+	$('body').on('click', '#essiesTab', function () {
+		setMenu(obj.Essies);
+		setActiveTab('essiesTab');
 	});
-	$('body').on('click', '#KohlbergTab', function () {
-		setMenu(obj.Kohlberg, "Kohlberg");
-		setActiveTab("KohlbergTab");
+	$('body').on('click', '#kohlbergTab', function () {
+		setMenu(obj.Kohlberg);
+		setActiveTab('kohlbergTab');
 	});
-	// $('body').on('click', '#CrumbTab', function () {
-	// 	setMenu(obj.Crumb, "Crumb");
-	// 	setActiveTab("CrumbTab");
-	// });
 }
 
 // turns objectified menu into a parsed string, returned string
 function formatMenu(items, delim) {
 	var newLst = [];
-	if (typeof (items) == "string") {
+	if (typeof (items) == 'string') {
 		return [items];
 	}
 
@@ -215,145 +204,84 @@ function formatMenu(items, delim) {
 	return newLst.join(delim);
 };
 
-function generateMenuElement(subtree, inclusions, delimiter) {
+function generateMenuElement(subtree) {
 	var errors = [];
+	const inclusions = [
+		'Classics',
+		'World of Flavor',
+		'Spice',
+		'Verdant & Vegan',
+		'Free Zone',
+		'Field of Greens',
+		'Daily Kneads',
+		'soup',
+		'lunch',
+		'special',
+		'menu',
+		'meal'
+	];
 	// for each menu in the venue
-	for (let menu of inclusions) {
+	for (let station of inclusions) {
 		// if the menu exists
-		if (subtree[menu]) {
-			// create, capitalize, unpun, and append menu title to div
-			const titleElement = document.createElement('h2');
-			const titleText = capitalize(menu);
-			titleElement.textContent = unpun(titleText);
-			document.getElementById("menu").appendChild(titleElement);
+		if (!subtree[station]) {
+			errors.push(station);
+			continue
+		}
 
-			// create, format, and append menu content to div
-			const menuElement = document.createElement('p');
-			const menuText = formatMenu(subtree[menu], delimiter);
-			menuElement.innerHTML = menuText;
-			document.getElementById("menu").appendChild(menuElement);
-		} else {
-			// for all other menus that weren't found, push to array to log
-			errors.push(menu);
-		};
+		// create, capitalize, unpun, and append menu title to div
+		const titleElement = document.createElement('h2');
+		const titleText = capitalize(station);
+		titleElement.textContent = unpun(titleText);
+		menu.appendChild(titleElement);
+
+		// create, format, and append menu content to div
+		const menuElement = document.createElement('p');
+		const menuText = formatMenu(subtree[station], ', ');
+		menuElement.innerHTML = menuText;
+		menu.appendChild(menuElement);
 	};
-	// console.log("Menus not found: " + errors.join(", "));
+	// console.log('Menus not found: ' + errors.join(', '));
+};
+
+function displayClosedVenue(msg) {
+	console.log('Selected menu contains no data.');
+	menuTitle.textContent = msg ? msg : 'Venue is closed.';
 }
 
-function setMenu(subtree, venue) {
+function setMenu(subtree, meal = null) {
 
 	// clear menu board first
-	const board = document.getElementById("menu");
-	while (board.firstChild) {
-		board.removeChild(board.firstChild);
+	while (menu.firstChild) menu.removeChild(menu.firstChild);
+
+
+	if (!subtree.open) {
+		console.log('venue not open');
+		displayClosedVenue(subtree.desc ? subtree.desc : null);
+		return 1;
 	};
+
+	subtree = meal ? subtree.meals[meal] : subtree
+
+	// set the menu time
+	menuTitle.textContent = 'Hours: ' + subtree.time;
 
 	// if given data is null or empty, display a closed message
 	// and terminate function
-	if (!subtree) {
-		console.log("Selected menu contains no data.");
-		const close = document.createElement("h2");
-		const bar = document.createElement("hr");
-		close.textContent = (venue == "Kohlberg") ?
-			"Venue (aka Kohlberg) is closed" : "Venue is closed";
+	if (meal) {
+		if (!subtree) {
+			console.log('Undefined subtree');
+			displayClosedVenue(null);
+			return 1;
+		};
+	} else {
+		if (!subtree.meals) {
+			console.log('subtree empty');
+			displayClosedVenue(null);
+			return 1;
+		};
+	}
 
-		document.getElementById("menu").appendChild(close);
-		document.getElementById("menu").appendChild(bar);
-		return 1;
-	};
-
-	if (!subtree.open) {
-		console.log("Selected menu contains no data.");
-		const close = document.createElement("h2");
-		const bar = document.createElement("hr");
-		close.textContent = subtree.desc;
-
-		document.getElementById("menu").appendChild(close);
-		document.getElementById("menu").appendChild(bar);
-		return 1;
-	};
-
-	// temporarily set list of Tags that we want to display
-	// and discretely define what sections are allowed
-	const inclusions = [
-		"Classics",
-		"World of Flavor",
-		"Spice",
-		"Verdant & Vegan",
-		"Free Zone",
-		"Field of Greens",
-		"Daily Kneads",
-		"soup",
-		"lunch",
-		"special",
-		"menu",
-		"meal"
-	];
-
-	// set the menu time
-	const timeElement = document.createElement('h2');
-	const timeText = subtree.time
-
-	// if it's kohlberg, then add note about Brandy's Bar
-	timeElement.textContent = (venue == "Kohlberg") ?
-		"Hours: " + timeText + "  (aka Kohlberg)" : "Hours: " + timeText;
-
-	document.getElementById("menu").appendChild(timeElement);
-
-	const bar = document.createElement('hr');
-	document.getElementById("menu").appendChild(bar);
-
-	const delimiter = (venue == 'Kholberg') ? "<br>" : ", ";
-
-	// if (venue == "Crumb") {
-	// 	let menu = document.getElementById("menu");
-
-	// 	const container = document.createElement("div")
-	// 	container.style.display = "flex"
-	// 	menu.appendChild(container)
-
-	// 	const leftSubContainer = document.createElement("div")
-	// 	leftSubContainer.style.display = "flex"
-	// 	leftSubContainer.style.flexDirection = "column"
-
-	// 	leftSubContainer.style.flexGrow = 1
-	// 	container.appendChild(leftSubContainer)
-
-	// 	const rightSubContainer = document.createElement("div")
-	// 	rightSubContainer.style.flexGrow = 1
-	// 	container.appendChild(rightSubContainer)
-
-	// 	const titleElement = document.createElement('h2');
-	// 	titleElement.style.padding = "6px"
-	// 	titleElement.innerHTML = "Menu"
-	// 	rightSubContainer.appendChild(titleElement);
-
-	// 	var menuElement = document.createElement('p');
-	// 	menuElement.innerHTML = subtree["menu"].join("<br>")
-	// 	rightSubContainer.appendChild(menuElement);
-
-	// 	for (let list in subtree) {
-	// 		if (["time", "menu"].includes(list))
-	// 			continue
-
-	// 		const leftInnerContainer = document.createElement("div")
-	// 		leftInnerContainer.style.flexGrow = 1
-	// 		leftSubContainer.appendChild(leftInnerContainer)
-
-	// 		const titleElement = document.createElement('h2');
-	// 		titleElement.style.padding = "6px"
-	// 		titleElement.innerHTML = capitalize(list)
-	// 		leftInnerContainer.appendChild(titleElement);
-
-	// 		var menuElement = document.createElement('p');
-	// 		menuElement.innerHTML = subtree[list].join("<br>")
-	// 		leftInnerContainer.appendChild(menuElement);
-
-	// 	}
-	// 	return
-	// }
-
-	generateMenuElement(subtree, inclusions, delimiter);
+	generateMenuElement(subtree);
 
 	return 0;
 };
@@ -363,33 +291,24 @@ function constructPage(obj) {
 	setTabOnClicks(obj);
 
 	// set title and date
-	const title = document.getElementById("title");
 	const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-	title.textContent = "Narples - " + months[new Date().getMonth()] + " " + new Date().getDate();
+	title.textContent = 'Narples - ' + months[new Date().getMonth()] + ' ' + new Date().getDate();
 
-	try {
-		const subtree = obj['Dining Center'];
-		let hour = new Date().getHours()
-		if (hour < 10) {
-			setMenu(subtree.breakfast, 'Dining Center');
-			setActiveTab("breakfastTab");
-		} else if (hour < 14) {
-			setMenu(subtree.lunch, "Dining Center");
-			setActiveTab("lunchTab");
-		} else if (hour < 21) {
-			setMenu(subtree.dinner, 'Dining Center');
-			setActiveTab("dinnerTab");
-		} else {
-			setMenu(obj.Essies, "Essies");
-			setActiveTab("EssiesTab");
-		};
-	} catch (error) {
-		console.log(error);
-		const closeElement = document.createElement('h2');
-		closeElement.textContent = "Dining Center is closed";
-		document.getElementById("menu").appendChild(closeElement);
+	const subtree = obj['Dining Center'];
+	let hour = new Date().getHours()
+	if (hour < 10) {
+		setMenu(subtree, 'breakfast');
+		setActiveTab('breakfastTab');
+	} else if (hour < 14) {
+		setMenu(subtree, 'lunch');
+		setActiveTab('lunchTab');
+	} else if (hour < 21) {
+		setMenu(subtree, 'dinner');
+		setActiveTab('dinnerTab');
+	} else {
+		setMenu(obj.Essies);
+		setActiveTab('essiesTab');
 	};
-
 
 };
 
@@ -397,15 +316,14 @@ function constructPage(obj) {
 function setPrefs() {
 
 	// set the toggle state for tag vis and dark/light modes
-	document.getElementById("mfer").checked = localStorage.getItem("dark") == "dark"
-	document.getElementById("mfer2").checked = localStorage.getItem("tags") == "true";
+	mfer.checked = localStorage.getItem('dark') == 'dark'
+	mfer2.checked = localStorage.getItem('tags') == 'true';
 
 	// apply the dark/light theme
 	applyTheme(getTheme());
 
 	// set version number in preferences menu
-	const versionControl = document.getElementById("version");
-	versionControl.textContent = "Running on v" + manifest.version;
+	version.textContent = 'Running on v' + manifest.version;
 };
 
 
@@ -438,18 +356,17 @@ $('body').on('click', '.closebtn', function () {
 });
 
 window.onclick = function (event) {
-	if (event.target == document.getElementById("prefMenu") ||
-		event.target == document.getElementById("brandyInfo")) {
+	if (event.target == prefMenu || event.target == brandyInfo) {
 		$('#prefMenu').hide();
 		$('#brandyInfo').hide();
 	}
 }
 
 // runs the command (darkMode) when the dark mode toggle switch is changed
-document.getElementById("darkSwitch").addEventListener("change", toggleTheme);
+darkSwitch.addEventListener('change', toggleTheme);
 
 // runs the command (toggleTags) when the main tag toggle switch is changed
-document.getElementById("mfer2").addEventListener("change", toggleTags);
+mfer2.addEventListener('change', toggleTags);
 
 
 
@@ -466,12 +383,10 @@ document.getElementById("mfer2").addEventListener("change", toggleTags);
 setPrefs();
 
 // populate tag switch menu and start event watchers 
-for (let id of tagsIDs) {
-	createSwitch(id)
-	document.getElementById(id).addEventListener("change", () => { watchSwitch(id) })
-}
+createSwitches();
 
-let cachedObj = localStorage.getItem("data") ? JSON.parse(localStorage.getItem("data")) : await getMenus();
+
+let cachedObj = localStorage.getItem('data') ? JSON.parse(localStorage.getItem('data')) : await getMenus();
 
 console.log(cachedObj)
 
@@ -483,7 +398,7 @@ constructPage(cachedObj);
 
 await getMenus().then(data => {
 	if (cachedObj.hash != data.hash) {
-		console.log("Hash changed, fetching data.")
+		console.log('Hash changed, fetching data.')
 		cachedObj = data;
 	}
 })
