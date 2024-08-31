@@ -78,19 +78,14 @@ function refreshTags() {
 
 // create the switch with a given name
 function createSwitches() {
+	const root = switchTemplate.content.querySelector("tr");
+
 	for (let id of tagsIDs) {
-		const temp = document.getElementById("switchTemplate");
-		let root = temp.content.querySelector("tr");
 		let a = document.importNode(root, true);
 
-		let label = a.querySelector("label");
-		label.setAttribute('id', id);
-
-		let title = a.querySelector("#switchTitle");
-		title.textContent = capitalize(id)
-
-		let input = a.querySelector("input");
-		input.checked = localStorage.getItem(id) == 'true';
+		a.querySelector("label").setAttribute('id', id);
+		a.querySelector("#switchTitle").textContent = capitalize(id);
+		a.querySelector("input").checked = localStorage.getItem(id) == 'true';
 
 		tagTable.appendChild(a);
 
@@ -105,7 +100,6 @@ function toggleTags() {
 		localStorage.setItem('tags', 'false');
 	refreshTags();
 }
-
 
 // toggle switch state in local storage and refresh tags
 function watchSwitch(name) {
@@ -130,27 +124,21 @@ async function getMenus() {
 	return data;
 }
 
-// set the active tab's css style
-function setActiveTab(activeTabID) {
-	return
-	for (let tab of $('.tab')) { tab.style = '' }
-	document.getElementById(activeTabID).style['backgroundColor'] = 'hsl(216, 33%, 25%)';
-	refreshTags();
-};
-
 // unpuns the menu names
 function unpun(title) {
-	return title
-		.replace('Classics', 'Menu 1')
-		.replace('World of Flavor', 'Menu 2')
-		.replace('Spice', 'Menu 3')
-		.replace('Verdant & Vegan', 'Vegan')
-		.replace('Free Zone', 'Allergen Choice')
-		.replace('Daily Kneads', 'Dessert')
-		.replace('Field of Greens', 'Salad')
-		.replace('Meal', 'Meal Plan Selection')
-		.replace('Special', 'Lunch Special')
-		.replace('Soup', 'Daily Soup')
+	const punDict = {
+		'Classics': 'Menu 1',
+		'World of Flavor': 'Menu 2',
+		'Spice': 'Menu 3',
+		'Verdant & Vegan': 'Vegan',
+		'Free Zone': 'Allergen Choice',
+		'Daily Kneads': 'Dessert',
+		'Field of Greens': 'Salad',
+		'Meal': 'Meal Plan Selection',
+		'Special': 'Lunch Special',
+		'Soup': 'Daily Soup',
+	}
+	return punDict[title]
 };
 
 function setTabOnClicks(obj) {
@@ -186,7 +174,6 @@ function formatMenu(items, delim) {
 };
 
 function generateMenuElement(subtree) {
-	var errors = [];
 	const inclusions = [
 		'Classics',
 		'World of Flavor',
@@ -201,35 +188,31 @@ function generateMenuElement(subtree) {
 		'menu',
 		'meal'
 	];
-	// for each menu in the venue
+	// for each station in the meal subtree
 	for (let station of inclusions) {
-		// if the menu exists
-		if (!subtree[station]) {
-			errors.push(station);
-			continue
-		}
+		// if the station doesnt exist, skip it 
+		if (!subtree[station]) continue;
 
 		// create, capitalize, unpun, and append menu title to div
 		const titleElement = document.createElement('h2');
-		const titleText = capitalize(station);
-		titleElement.textContent = unpun(titleText);
+		titleElement.textContent = unpun(capitalize(station));
 		menu.appendChild(titleElement);
 
 		// create, format, and append menu content to div
 		const menuElement = document.createElement('p');
-		const menuText = formatMenu(subtree[station], ', ');
-		menuElement.innerHTML = menuText;
+		menuElement.innerHTML = formatMenu(subtree[station], ', ');
 		menu.appendChild(menuElement);
 	};
-	// console.log('Menus not found: ' + errors.join(', '));
 };
 
-function displayClosedVenue(msg) {
-	console.log('Selected menu contains no data.');
-	menuTitle.textContent = msg ? msg : 'Venue is closed.';
-}
+const displayClosedVenue = function (msg) { menuTitle.textContent = msg ? msg : 'Venue is closed.' };
+
+const clearChildren = function (test) { while (test.firstChild) test.removeChild(test.firstChild) };
 
 function setMenu(subtree, venue) {
+
+	// clear menu board first
+	clearChildren(menu);
 
 	// check if subtree exists
 	if (!subtree) {
@@ -240,20 +223,17 @@ function setMenu(subtree, venue) {
 
 	// check if venue is open
 	if (!subtree.open) {
-		console.log('venue not open');
+		console.log('Venue not open');
 		displayClosedVenue(subtree.desc);
 		return 1;
 	};
 
 	// check if meals is not empty
 	if (!subtree.meals) {
-		console.log('subtree empty');
+		console.log('Subtree meals empty');
 		displayClosedVenue(subtree.desc);
 		return 1;
 	};
-
-	// clear menu board first
-	while (menu.firstChild) menu.removeChild(menu.firstChild);
 
 	// check if subtree is in dining center or not
 	subtree = ['breakfast', 'lunch', 'dinner'].includes(venue) ? subtree.meals[venue] : subtree
