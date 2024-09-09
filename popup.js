@@ -138,16 +138,16 @@ function unpun(title) {
 		'Special': 'Lunch Special',
 		'Soup': 'Daily Soup',
 	}
-	return punDict[title]
+	return punDict[title] ? punDict[title] : title
 };
 
 function setTabOnClicks(obj) {
 	const tabs = [
-		[obj['Dining Center'], 'breakfast'],
-		[obj['Dining Center'], 'lunch'],
-		[obj['Dining Center'], 'dinner'],
-		[obj.Essies, 'essies'],
-		[obj.Kohlberg, 'kohlberg']
+		[obj.dining_center, 'breakfast'],
+		[obj.dining_center, 'lunch'],
+		[obj.dining_center, 'dinner'],
+		[obj.essies, 'essies'],
+		[obj.kohlberg, 'kohlberg']
 	]
 	for (let item of tabs) {
 		$('body').on('click', `#${item[1]}Tab`, function () {
@@ -188,11 +188,12 @@ function generateMenuElement(subtree) {
 		'menu',
 		'meal'
 	];
+	var empty = true;
 	// for each station in the meal subtree
 	for (let station of inclusions) {
 		// if the station doesnt exist, skip it 
 		if (!subtree[station]) continue;
-
+		empty = false
 		// create, capitalize, unpun, and append menu title to div
 		const titleElement = document.createElement('h2');
 		titleElement.textContent = unpun(capitalize(station));
@@ -200,24 +201,34 @@ function generateMenuElement(subtree) {
 
 		// create, format, and append menu content to div
 		const menuElement = document.createElement('p');
-		menuElement.innerHTML = formatMenu(subtree[station], ', ');
+		console.log(subtree)
+		menuElement.innerHTML = formatMenu(subtree[station], subtree.venue == 'kohlberg' ? '<br>' : ', ');
 		menu.appendChild(menuElement);
 	};
+	if (empty) {
+		const description = document.createElement('p');
+		description.innerHTML = subtree.html_desc;
+		menu.appendChild(description);
+	}
 };
 
 const displayClosedVenue = function (msg) { menuTitle.textContent = msg ? msg : 'Venue is closed.' };
 
-const clearChildren = function (test) { while (test.firstChild) test.removeChild(test.firstChild) };
+const clearChildren = function (parent) { while (parent.firstChild) parent.removeChild(parent.firstChild) };
 
-function setMenu(subtree, venue) {
+function setMenu(subtree, mealtime) {
 
 	// clear menu board first
 	clearChildren(menu);
 
+	// set active tab and refresh tabs
+	for (let tab of $('.tab')) { tab.style = '' }
+	document.getElementById(`${mealtime}Tab`).style['backgroundColor'] = 'hsl(216, 33%, 25%)';
+
 	// check if subtree exists
 	if (!subtree) {
 		console.log('Undefined subtree');
-		displayClosedVenue(subtree.desc);
+		displayClosedVenue(null);
 		return 1;
 	};
 
@@ -228,25 +239,25 @@ function setMenu(subtree, venue) {
 		return 1;
 	};
 
-	// check if meals is not empty
-	if (!subtree.meals) {
-		console.log('Subtree meals empty');
-		displayClosedVenue(subtree.desc);
-		return 1;
-	};
-
-	// check if subtree is in dining center or not
-	subtree = ['breakfast', 'lunch', 'dinner'].includes(venue) ? subtree.meals[venue] : subtree
+	// after verifying venue metadata (open? exists?)
+	// descend into meals child at specified mealtime
+	subtree = subtree.meals[capitalize(mealtime)]
 
 	// set the menu time
 	menuTitle.textContent = 'Hours: ' + subtree.time;
 
+	// check if meals is not empty
+	if (!subtree) {
+		console.log('Dining Center subtree empty');
+		displayClosedVenue(null);
+		return 1;
+	};
+
+
 	// generate the menu
 	generateMenuElement(subtree);
 
-	// set active tab and refresh tabs
-	for (let tab of $('.tab')) { tab.style = '' }
-	document.getElementById(`${venue}Tab`).style['backgroundColor'] = 'hsl(216, 33%, 25%)';
+	// refresh tags
 	refreshTags();
 
 	return 0;
@@ -260,16 +271,16 @@ function constructPage(obj) {
 	const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 	title.textContent = 'Narples - ' + months[new Date().getMonth()] + ' ' + new Date().getDate();
 
-	const subtree = obj['Dining Center'];
 	let hour = new Date().getHours()
+
 	if (hour < 10) {
-		setMenu(subtree, 'breakfast');
+		setMenu(obj.dining_center, 'breakfast');
 	} else if (hour < 14) {
-		setMenu(subtree, 'lunch');
+		setMenu(obj.dining_center, 'lunch');
 	} else if (hour < 21) {
-		setMenu(subtree, 'dinner');
+		setMenu(obj.dining_center, 'dinner');
 	} else {
-		setMenu(obj.Essies, 'essies');
+		setMenu(obj.essies, 'essies');
 	};
 
 };
